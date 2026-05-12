@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ========== 用户表 ==========
+model User {
+  id            String   @id @default(cuid())
+  name          String?
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  image         String?
+  role          String   @default("user") // "user" | "admin"
+  emailVerified DateTime?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // 关系
+  comments      Comment[]
+  donations     Donation[]
+
+  @@map("users")
+}
+
+// ========== 文章表 ==========
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  date        String   // YYYY-MM-DD
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // 关系
+  comments    Comment[]
+  donations   Donation[]
+
+  @@map("posts")
+}
+
+// ========== 评论表 ==========
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  postSlug  String   @map("post_slug")
+  userId    String   @map("user_id")
+  parentId  String?  @map("parent_id") // 嵌套回复
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // 关系
+  post      Post     @relation(fields: [postSlug], references: [slug], onDelete: Cascade)
+  author    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+
+  @@index([postSlug])
+  @@index([userId])
+  @@map("comments")
+}
+
+// ========== 打赏记录表 ==========
+// 支付接口预留：后期接入支付宝/微信支付时，
+// 通过 transactionId 关联第三方支付单号
+model Donation {
+  id            String   @id @default(cuid())
+  postSlug      String?  @map("post_slug") // 可为 null（站点评赏）
+  userId        String?  @map("user_id")
+  amount        Int      // 单位：分（避免浮点精度问题）
+  message       String?  // 打赏留言
+  status        String   @default("pending") // "pending" | "paid" | "failed"
+  payMethod     String?  @map("pay_method") // 预留："alipay" | "wechat" | "wechatpay"
+  transactionId String?  @map("transaction_id") // 第三方支付单号
+  paidAt        DateTime? @map("paid_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // 关系
+  post   Post? @relation(fields: [postSlug], references: [slug], onDelete: SetNull)
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([postSlug])
+  @@index([userId])
+  @@map("donations")
+}

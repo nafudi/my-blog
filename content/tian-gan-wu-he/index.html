@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>天干五合数理推演</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0f;
+      color: #e8e6e3;
+      font-family: 'Noto Serif SC', serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ===== Canvas 背景 ===== */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* ===== 标题区 ===== */
+    .hero {
+      text-align: center;
+      padding: 2rem 0 3rem;
+    }
+    .hero h1 {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: #d4a853;
+      margin-bottom: 0.5rem;
+    }
+    .hero .subtitle {
+      color: #9a9590;
+      font-size: 1rem;
+    }
+    .hero .line {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, transparent, #d4a853, transparent);
+      margin: 1rem auto;
+    }
+
+    /* ===== 五合卡片 ===== */
+    .wu-he-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .wu-he-card {
+      background: linear-gradient(145deg, rgba(26,26,46,0.9), rgba(18,18,26,0.9));
+      border: 1px solid rgba(212,168,83,0.12);
+      border-radius: 16px;
+      padding: 1.5rem;
+      position: relative;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .wu-he-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .wu-he-card:hover {
+      border-color: rgba(212,168,83,0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(212,168,83,0.12);
+    }
+    .wu-he-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 20%; right: 20%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .wu-he-card:hover::before { opacity: 1; }
+
+    .wu-he-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .gan-pair {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .gan-char {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      font-size: 1.6rem;
+      transition: transform 0.3s;
+    }
+    .wu-he-card:hover .gan-char:nth-child(1) { transform: translateX(4px); }
+    .wu-he-card:hover .gan-char:nth-child(2) { transform: translateX(-4px); }
+    .he-symbol { color: #d4a853; font-size: 1.2rem; }
+    .element-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .wu-he-desc {
+      color: #9a9590;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+    .wu-he-formula {
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      background: rgba(212,168,83,0.06);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #b89b5e;
+    }
+
+    /* ===== 河图五方位 SVG ===== */
+    .hetu-section { margin: 3rem 0; }
+    .section-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.6rem;
+      color: #d4a853;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .svg-container {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .svg-container svg {
+      max-width: 100%;
+      height: auto;
+      filter: drop-shadow(0 0 20px rgba(212,168,83,0.15));
+    }
+
+    /* ===== 推演按钮 ===== */
+    .action-area {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+    .push-btn {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.2rem;
+      padding: 0.75rem 2.5rem;
+      background: linear-gradient(135deg, #d4a853, #a67c3d);
+      color: #0a0a0f;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .push-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 24px rgba(212,168,83,0.4);
+    }
+    .push-btn:active { transform: scale(0.98); }
+
+    /* ===== 推演结果 ===== */
+    .result-area {
+      background: rgba(18,18,26,0.8);
+      border: 1px solid rgba(212,168,83,0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 1.5rem;
+      display: none;
+    }
+    .result-area.show { display: block; animation: fadeInUp 0.5s ease; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .result-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      animation: slideIn 0.4s ease backwards;
+    }
+    .result-item:last-child { border-bottom: none; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-16px); } }
+
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(212,168,83,0.15);
+      color: #d4a853;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .step-text { line-height: 1.7; color: #ccc; }
+    .highlight { color: #d4a853; font-weight: 600; }
+
+    /* ===== 底部 ===== */
+    .footer-note {
+      text-align: center;
+      padding: 2rem 0;
+      color: #444;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="container">
+  <!-- 标题 -->
+  <div class="hero">
+    <h1>天干五合数理推演</h1>
+    <div class="line"></div>
+    <p class="subtitle">甲己合土 · 乙庚合金 · 丙辛合水 · 丁壬合木 · 戊癸合火</p>
+  </div>
+
+  <!-- 五合卡片 -->
+  <div class="wu-he-grid" id="wuheGrid">
+    <!-- 甲己合土 -->
+    <div class="wu-he-card" style="--accent:#C9A227">
+      <div class="wu-he-header">
+        <div class="gan-pair">
+          <span class="gan-char" style="background:rgba(201,162,39,0.15);color:#C9A227">甲</span>
+          <span class="he-symbol">合</span>
+          <span class="gan-char" style="background:rgba(160,140,80,0.15);color:#A08C50">己</span>
+        </div>
+        <span class="element-badge" style="background:rgba(201,162,39,0.15);color:#C9A227">土</span>
+      </div>
+      <p class="wu-he-desc">甲属阳木，己属阴土。甲木克己土，但甲为己之官星，己为甲之财星，阴阳相配而化合。</p>
+      <div class="wu-he-formula">中正之合 · 化气为<span class="highlight">土</span></div>
+    </div>
+
+    <!-- 乙庚合金 -->
+    <div class="wu-he-card" style="--accent:#E8E8E8">
+      <div class="wu-he-header">
+        <div class="gan-pair">
+          <span class="gan-char" style="background:rgba(100,180,120,0.15);color:#64B478">乙</span>
+          <span class="he-symbol">合</span>
+          <span class="gan-char" style="background:rgba(220,220,220,0.15);color:#DCDCDC">庚</span>
+        </div>
+        <span class="element-badge" style="background:rgba(232,232,232,0.15);color:#E8E8E8">金</span>
+      </div>
+      <p class="wu-he-desc">乙属阴木，庚属阳金。乙庚相合，仁义之合，乙木被庚金所制，化而为金。</p>
+      <div class="wu-he-formula">仁义之合 · 化气为<span class="highlight">金</span></div>
+    </div>
+
+    <!-- 丙辛合水 -->
+    <div class="wu-he-card" style="--accent:#4A90D9">
+      <div class="wu-he-header">
+        <div class="gan-pair">
+          <span class="gan-char" style="background:rgba(220,120,40,0.15);#DC7828">丙</span>
+          <span class="he-symbol">合</span>
+          <span class="gan-char" style="background:rgba(200,200,200,0.15);color:#C8C8C8">辛</span>
+        </div>
+        <span class="element-badge" style="background:rgba(74,144,217,0.15);color:#4A90D9">水</span>
+      </div>
+      <p class="wu-he-desc">丙属阳火，辛属阴金。丙火克制辛金，丙为辛之官，威严制衡，化合为水。</p>
+      <div class="wu-he-formula">威制之合 · 化气为<span class="highlight">水</span></div>
+    </div>
+
+    <!-- 丁壬合木 -->
+    <div class="wu-he-card" style="--accent:#5DBB63">
+      <div class="wu-he-header">
+        <div class="gan-pair">
+          <span class="gan-char" style="background:rgba(200,100,60,0.15);color:#C8643C">丁</span>
+          <span class="he-symbol">合</span>
+          <span class="gan-char" style="background:rgba(80,140,190,0.15);color:#508CBE">壬</span>
+        </div>
+        <span class="element-badge" style="background:rgba(93,187,99,0.15);color:#5DBB63">木</span>
+      </div>
+      <p class="wu-he-desc">丁属阴火，壬属阳水。丁壬相合，淫慼之合（一说仁寿之合），水火既济，化合为木。</p>
+      <div class="wu-he-formula">仁寿之合 · 化气为<span class="highlight">木</span></div>
+    </div>
+
+    <!-- 戊癸合火 -->
+    <div class="wu-he-card" style="--accent:#D95F4A">
+      <div class="wu-he-header">
+        <div class="gan-pair">
+          <span class="gan-char" style="background:rgba(180,150,100,0.15);color:#B49664">戊</span>
+          <span class="he-symbol">合</span>
+          <span class="gan-char" style="background:rgba(100,130,170,0.15);color:#6482AA">癸</span>
+        </div>
+        <span class="element-badge" style="background:rgba(217,95,74,0.15);color:#D95F4A">火</span>
+      </div>
+      <p class="wu-he-desc">戊属阳土，癸属阴水。戊土克制癸水，无情之合（一说真诚之合），化合为火。</p>
+      <div class="wu-he-formula">无情之合 · 化气为<span class="highlight">火</span></div>
+    </div>
+  </div>
+
+  <!-- 河图五方位 -->
+  <div class="hetu-section">
+    <h2 class="section-title">河图五方位与天干对应</h2>
+    <div class="svg-container">
+      <svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- 背景圆 -->
+        <circle cx="200" cy="175" r="140" fill="none" stroke="rgba(212,168,83,0.12)" stroke-width="1"/>
+        <circle cx="200" cy="175" r="70" fill="none" stroke="rgba(212,168,83,0.08)" stroke-width="1"/>
+
+        <!-- 连线：五合关系 -->
+        <line x1="200" y1="45" x2="200" y2="305" stroke="rgba(212,168,83,0.15)" stroke-dasharray="4 4" stroke-width="1"/>
+        <line x1="80" y1="110" x2="320" y2="240" stroke="rgba(212,168,83,0.15)" stroke-dasharray="4 4" stroke-width="1"/>
+        <line x1="320" y1="110" x2="80" y2="240" stroke="rgba(212,168,83,0.15)" stroke-dasharray="4 4" stroke-width="1"/>
+
+        <!-- 北方 水 - 壬癸 -->
+        <g transform="translate(200,305)">
+          <circle r="32" fill="rgba(74,144,217,0.12)" stroke="#4A90D9" stroke-width="1.5"/>
+          <text y="-4" text-anchor="middle" fill="#4A90D9" font-family="'Ma Shan Zheng',cursive" font-size="14">壬癸</text>
+          <text y="14" text-anchor="middle" fill="#4A90D9" font-size="11" opacity="0.7">水 · 北</text>
+        </g>
+
+        <!-- 南方 火 - 丙丁 -->
+        <g transform="translate(200,45)">
+          <circle r="32" fill="rgba(217,95,74,0.12)" stroke="#D95F4A" stroke-width="1.5"/>
+          <text y="-4" text-anchor="middle" fill="#D95F4A" font-family="'Ma Shan Zheng',cursive" font-size="14">丙丁</text>
+          <text y="14" text-anchor="middle" fill="#D95F4A" font-size="11" opacity="0.7">火 · 南</text>
+        </g>
+
+        <!-- 东部 木 - 甲乙 -->
+        <g transform="translate(340,175)">
+          <circle r="32" fill="rgba(93,187,99,0.12)" stroke="#5DBB63" stroke-width="1.5"/>
+          <text y="-4" text-anchor="middle" fill="#5DBB63" font-family="'Ma Shan Zheng',cursive" font-size="14">甲乙</text>
+          <text y="14" text-anchor="middle" fill="#5DBB63" font-size="11" opacity="0.7">木 · 东</text>
+        </g>
+
+        <!-- 西部 金 - 庚辛 -->
+        <g transform="translate(60,175)">
+          <circle r="32" fill="rgba(232,232,232,0.12)" stroke="#C8C8C8" stroke-width="1.5"/>
+          <text y="-4" text-anchor="middle" fill="#E8E8E8" font-family="'Ma Shan Zheng',cursive" font-size="14">庚辛</text>
+          <text y="14" text-anchor="middle" fill="#C8C8C8" font-size="11" opacity="0.7">金 · 西</text>
+        </g>
+
+        <!-- 中央 土 - 戊己 -->
+        <g transform="translate(200,175)">
+          <circle r="38" fill="rgba(201,162,39,0.1)" stroke="#C9A227" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text y="-4" text-anchor="middle" fill="#C9A227" font-family="'Ma Shan Zheng',cursive" font-size="14">戊己</text>
+          <text y="14" text-anchor="middle" fill="#C9A227" font-size="11" opacity="0.7">土 · 中</text>
+        </g>
+
+        <!-- 中心标题 -->
+        <text x="200" y="342" text-anchor="middle" fill="#555" font-size="10">河图五方位示意图</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 推演按钮 -->
+  <div class="action-area">
+    <button class="push-btn" onclick="runPushYan()">一键数理推演</button>
+  </div>
+
+  <!-- 推演结果 -->
+  <div class="result-area" id="resultArea">
+    <h3 style="font-family:'Ma Shan Zheng',cursive;color:#d4a853;margin-bottom:1rem;font-size:1.3rem;">推演过程</h3>
+    <div id="resultList"></div>
+  </div>
+
+  <div class="footer-note">
+    易理 · 天干五合数理推演 · 交互式可视化
+  </div>
+</div>
+
+<script>
+// ========== 粒子背景 ==========
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.r = Math.random() * 1.8 + 0.5;
+    this.alpha = Math.random() * 0.5 + 0.2;
+  }
+  update(mx, my) {
+    const dx = mx - this.x, dy = my - this.y, d = Math.sqrt(dx*dx + dy*dy);
+    if (d < 140) { const f = (140-d)/140; this.vx -= dx/d*f*0.2; this.vy -= dy/d*f*0.2; }
+    this.vx *= 0.98; this.vy *= 0.98;
+    this.x += this.vx; this.y += this.vy;
+    if (this.x<0||this.x>W) this.vx*=-1;
+    if (this.y<0||this.y>H) this.vy*=-1;
+  }
+}
+
+const particles = Array.from({length:60}, () => new Particle());
+let mouse = {x:-999,y:-999};
+document.onmousemove = e => { mouse.x=e.clientX; mouse.y=e.clientY; };
+
+function animate() {
+  ctx.clearRect(0,0,W,H);
+  for (let i=0;i<particles.length;i++) {
+    const p = particles[i];
+    p.update(mouse.x,mouse.y);
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(212,168,83,${p.alpha})`; ctx.fill();
+    for (let j=i+1;j<particles.length;j++) {
+      const q = particles[j], dx=p.x-q.x, dy=p.y-q.y, dist=Math.sqrt(dx*dx+dy*dy);
+      if (dist<120) {
+        ctx.beginPath(); ctx.strokeStyle=`rgba(212,168,83,${((120-dist)/120)*0.08})`;
+        ctx.lineWidth=0.5; ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ========== 卡片入场动画 ==========
+const cards = document.querySelectorAll('.wu-he-card');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 120);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+cards.forEach(c => observer.observe(c));
+
+// ========== 推演功能 ==========
+function runPushYan() {
+  const area = document.getElementById('resultArea');
+  const list = document.getElementById('resultList');
+
+  if (area.classList.contains('show')) {
+    area.classList.remove('show');
+    setTimeout(runPushYan, 300); // 重置后重新播放
+    return;
+  }
+
+  area.classList.add('show');
+  list.innerHTML = '';
+
+  const steps = [
+    { t: "第一步：确定天干阴阳", d: "十天干按奇偶分阴阳：<span class='highlight'>甲、丙、戊、庚、壬</span> 为阳干；<span class='highlight'>乙、丁、己、辛、癸</span> 为阴干。五合皆由一阳一阴相配而成。" },
+    { t: "第二步：定位河图五行", d: "根据《河图》：一六北方水、二七南方火、三八东方木、四九西方金、五十中央土。天干依此方位分布。" },
+    { t: "第三步：甲己合土推导", d: "甲（东木）与己（中土），甲木克土为官，阴阳调和，化气归<span class='highlight'>中宫之土</span>。" },
+    { t: "第四步：乙庚合金推导", d: "乙（东木）与庚（西金），金克木为制，乙庚相就，化气归<span class='highlight'>西方之金</span>。" },
+    { t: "第五步：丙辛合水推导", d: "丙（南火）与辛（西金），火克金为炼，丙辛交熔，化气归<span class='highlight'>北方之水</span>。" },
+    { t: "第六步：丁壬合木推导", d: "丁（南火）与壬（北水），水火既济，阴阳互根，化气归<span class='highlight'>东方之木</span>。" },
+    { t: "第七步：戊癸合火推导", d: "戊（中土）与癸（北水），土克水为塞，戊癸相交，化气归<span class='highlight'>南方之火</span>。" },
+    { t: "总结：五合规律", d: "五合遵循「隔位相合」原则——从甲起顺数五位即得合干。甲→乙→丙→丁→己；乙→丙→丁→戊→庚……形成完美的<span class='highlight'>对称循环体系</span>。" },
+  ];
+
+  steps.forEach((s, i) => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = 'result-item';
+      div.style.animationDelay = `${i*0.1}s`;
+      div.innerHTML = `<span class="step-num">${i+1}</span><div><strong>${s.t}</strong><br><span class="step-text">${s.d}</span></div>`;
+      list.appendChild(div);
+    }, i * 450);
+  });
+}
+</script>
+</body>
+</html>
