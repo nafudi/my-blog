@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
 interface CommentData {
@@ -32,7 +32,7 @@ function CommentItem({
   const [showReplies, setShowReplies] = useState(false);
 
   return (
-    <div className={`pl-4 border-l-2 border-[rgba(212,168,83,0.08)] ${comment.parentId ? "" : ""}`}>
+    <div className="pl-4 border-l-2 border-[rgba(212,168,83,0.08)]">
       <div className="py-3">
         <div className="flex items-center gap-2 mb-1">
           <span className="font-semibold text-sm text-[#d4a853]">
@@ -72,19 +72,28 @@ function CommentItem({
 }
 
 export default function Comments({ postSlug }: CommentsProps) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [comments, setComments] = useState<CommentData[]>([]);
   const [content, setContent] = useState("");
-  const [loading, setLoading] = useState(false);
   const [replyTo, setReplyTo] = useState<{ id: string; name: string } | null>(null);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // 获取评论列表
   const fetchComments = async () => {
-    const res = await fetch(`/api/comments?postSlug=${postSlug}`);
-    if (res.ok) {
-      const data = await res.json();
-      setComments(data);
+    try {
+      const res = await fetch(`/api/comments?postSlug=${postSlug}`);
+      if (res.ok) {
+        const data = await res.json();
+        setComments(data || []);
+      } else {
+        console.error("获取评论失败:", res.status);
+      }
+    } catch (err) {
+      console.error("获取评论失败:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,24 +104,44 @@ export default function Comments({ postSlug }: CommentsProps) {
   // 提交评论
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!session) return;
+    setError(null);
+
+    if (!session) {
+      setError("请先登录");
+      return;
+    }
+
+    if (!content.trim()) {
+      setError("评论内容不能为空");
+      return;
+    }
 
     setSending(true);
-    const res = await fetch("/api/comments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        content,
-        postSlug,
-        parentId: replyTo?.id,
-      }),
-    });
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: content.trim(),
+          postSlug,
+          parentId: replyTo?.id || null,
+        }),
+      });
 
-    setSending(false);
-    if (res.ok) {
-      setContent("");
-      setReplyTo(null);
-      await fetchComments();
+      const data = await res.json();
+
+      if (res.ok) {
+        setContent("");
+        setReplyTo(null);
+        await fetchComments();
+      } else {
+        setError(data.error || "发送失败，请重试");
+      }
+    } catch (err) {
+      console.error("提交评论失败:", err);
+      setError("网络错误，请检查网络后重试");
+    } finally {
+      setSending(false);
     }
   };
 
@@ -122,14 +151,25 @@ export default function Comments({ postSlug }: CommentsProps) {
         留言区 ({comments.length})
       </h3>
 
+      {/* 错误提示 */}
+      {error && (
+        <div className="mb-4 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+          {error}
+        </div>
+      )}
+
       {/* 评论输入框 */}
-      {!session ? (
+      {status === "loading" ? (
+        <div className="bg-[#12121a]/60 rounded-xl p-6 border border-[rgba(212,168,83,0.08)] text-center">
+          <p className="text-sm text-[#555]">加载中...</p>
+        </div>
+      ) : !session ? (
         <div className="bg-[#12121a]/60 rounded-xl p-6 border border-[rgba(212,168,83,0.08)] text-center">
           <p className="text-sm text-[#9a9590]">
             请{" "}
-            <span className="text-[#d4a853] cursor-pointer hover:underline" onClick={() => document.location.href="/login"}>
+            <a href="/login" className="text-[#d4a853] hover:underline cursor-pointer">
               登录
-            </span>{" "}
+            </a>{" "}
             后发表留言
           </p>
         </div>
@@ -160,6 +200,7 @@ export default function Comments({ postSlug }: CommentsProps) {
             }
             className="w-full min-h-[100px] px-4 py-3 rounded-xl bg-[#1a1a2e] border border-[rgba(212,168,83,0.12)] text-[#e8e6e3] placeholder-[#555] focus:outline-none focus:border-[#d4a853] transition-colors resize-y"
             required
+            disabled={sending}
           />
 
           <div className="flex justify-end mt-3">
@@ -176,7 +217,9 @@ export default function Comments({ postSlug }: CommentsProps) {
 
       {/* 评论列表 */}
       <div className="space-y-0">
-        {comments.length === 0 && !loading ? (
+        {loading ? (
+          <p className="text-center text-[#444] py-8 text-sm">加载中...</p>
+        ) : comments.length === 0 ? (
           <p className="text-center text-[#444] py-8 text-sm">暂无留言，来说点什么吧</p>
         ) : (
           comments.map((c) => (
