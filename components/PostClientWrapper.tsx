@@ -26,11 +26,11 @@ export default function PostClientWrapper({
       {/* 文章内容 iframe */}
       <article
         id="article-content"
-        className="bg-[#12121a]/80 backdrop-blur-sm rounded-2xl border border-[rgba(212,168,83,0.1)] p-6 sm:p-10"
+        className=""
       >
         <iframe
           src={`/content/${slug}/index.html`}
-          className="w-full border-0 rounded-xl"
+          className="w-full border-0"
           style={{
             minHeight: "70vh",
             background: "#0a0a0f",
