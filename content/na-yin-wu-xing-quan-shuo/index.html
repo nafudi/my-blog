@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>纳音五行全说</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0f; color: #e8e6e3; font-family: 'Noto Serif SC', serif; min-height: 100vh; }
+    .container { max-width: 100%; margin: 0 auto; padding: 2rem 1.5rem; }
+    .hero { text-align: center; padding: 2rem 0 1rem; }
+    .hero h1 { font-family: 'Ma Shan Zheng', cursive; font-size: clamp(2rem, 6vw, 3.5rem); color: #d4a853; margin-bottom: 0.5rem; }
+    .hero .subtitle { color: #b0b0b0; font-size: 1rem; }
+    .hero .line { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, #d4a853, transparent); margin: 1rem auto; }
+    .intro { color: #ccc; line-height: 1.8; margin-bottom: 2rem; }
+
+    .section-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.6rem;
+      color: #d4a853;
+      margin: 3rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(212,168,83,0.15);
+    }
+    .sub-section-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.3rem;
+      color: #e8c878;
+      margin: 2rem 0 0.8rem;
+    }
+
+    .formula-box {
+      background: linear-gradient(145deg, rgba(26,26,46,0.9), rgba(18,18,26,0.9));
+      border: 1px solid rgba(212,168,83,0.15);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    .formula {
+      font-size: 1.4rem;
+      color: #e8c878;
+      letter-spacing: 1px;
+      margin: 0.5rem 0;
+    }
+    .formula-note { color: #999; font-size: 0.9rem; margin-top: 0.5rem; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 2rem;
+      font-size: 0.95rem;
+    }
+    th {
+      background: rgba(212,168,83,0.1);
+      color: #d4a853;
+      padding: 0.6rem;
+      border: 1px solid rgba(212,168,83,0.12);
+    }
+    td {
+      padding: 0.5rem;
+      border: 1px solid rgba(212,168,83,0.08);
+      text-align: center;
+      color: #e0e0e0;
+    }
+    tr:hover td { background: rgba(255,255,255,0.03); }
+
+    .wx-jin { color: #ffd700; }
+    .wx-mu { color: #66cc66; }
+    .wx-shui { color: #6699ff; }
+    .wx-huo { color: #ff6644; }
+    .wx-tu { color: #cc9966; }
+
+    .koujue {
+      background: linear-gradient(145deg, rgba(26,26,46,0.9), rgba(18,18,26,0.9));
+      border: 1px solid rgba(212,168,83,0.12);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: center;
+      line-height: 2.2;
+      font-size: 1.1rem;
+      color: #e8c878;
+      letter-spacing: 2px;
+    }
+
+    .verify-list { list-style: none; padding: 0; }
+    .verify-list li {
+      background: rgba(26,26,46,0.6);
+      border: 1px solid rgba(212,168,83,0.08);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      margin: 0.4rem 0;
+      color: #ddd;
+      font-size: 0.95rem;
+    }
+    .verify-list li .tag {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    .tag-jin { background: rgba(255,215,0,0.15); color: #ffd700; }
+    .tag-mu { background: rgba(102,204,102,0.15); color: #66cc66; }
+    .tag-shui { background: rgba(102,153,255,0.15); color: #6699ff; }
+    .tag-huo { background: rgba(255,102,68,0.15); color: #ff6644; }
+    .tag-tu { background: rgba(204,153,102,0.15); color: #cc9966; }
+
+    .insight-box {
+      background: rgba(212,168,83,0.05);
+      border-left: 3px solid #d4a853;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      color: #ccc;
+      line-height: 1.8;
+    }
+    .insight-box strong { color: #e8c878; }
+
+    .wuxing-section { margin: 2.5rem 0; }
+    .wuxing-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(212,168,83,0.2);
+    }
+    .wx-jin-title { color: #ffd700; }
+    .wx-mu-title { color: #66cc66; }
+    .wx-shui-title { color: #6699ff; }
+    .wx-huo-title { color: #ff6644; }
+    .wx-tu-title { color: #cc9966; }
+
+    .nayin-card {
+      background: linear-gradient(145deg, rgba(26,26,46,0.8), rgba(18,18,26,0.8));
+      border: 1px solid rgba(212,168,83,0.1);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .nayin-card h3 {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.3rem;
+      color: #e8c878;
+      margin-bottom: 0.5rem;
+    }
+    .nayin-card .yuanwen {
+      background: rgba(0,0,0,0.3);
+      border-left: 3px solid rgba(212,168,83,0.3);
+      padding: 0.6rem 1rem;
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+      color: #c0b8a8;
+      line-height: 1.6;
+    }
+    .nayin-card .jiexi {
+      color: #ddd;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      padding-left: 0.5rem;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(26,26,46,0.8), rgba(18,18,26,0.8));
+      border: 1px solid rgba(212,168,83,0.1);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      margin: 1rem 0;
+    }
+    .card h3 {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.2rem;
+      color: #e8c878;
+      margin-bottom: 0.5rem;
+    }
+    .card p { color: #ccc; line-height: 1.7; font-size: 0.95rem; }
+
+    .content { color: #ddd; line-height: 1.9; margin-bottom: 1.5rem; }
+    .content strong { color: #e8c878; }
+
+    .summary-box {
+      background: rgba(212,168,83,0.05);
+      border: 1px solid rgba(212,168,83,0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .summary-box .he { color: #66cc66; font-size: 1.1rem; }
+    .summary-box .chong { color: #ff6644; font-size: 1.1rem; }
+
+    .metaphor {
+      background: rgba(100,50,150,0.1);
+      border-left: 3px solid #9b59b6;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      color: #ccc;
+      line-height: 1.8;
+    }
+
+    .deep-box {
+      background: rgba(212,168,83,0.05);
+      border-left: 3px solid #d4a853;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      color: #ddd;
+      line-height: 1.9;
+    }
+    .deep-box strong { color: #e8c878; }
+
+    .compare-table td { text-align: left; padding: 0.6rem 0.8rem; }
+
+    .toc {
+      background: linear-gradient(145deg, rgba(26,26,46,0.7), rgba(18,18,26,0.7));
+      border: 1px solid rgba(212,168,83,0.12);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin: 2rem 0;
+    }
+    .toc h3 {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.2rem;
+      color: #d4a853;
+      margin-bottom: 1rem;
+    }
+    .toc ol {
+      padding-left: 1.5rem;
+      color: #ccc;
+      line-height: 2;
+    }
+
+    .note { color: #999; font-size: 0.85rem; text-align: center; margin-top: 1rem; }
+    .source { color: #888; font-size: 0.85rem; text-align: center; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <h1>纳音五行全说</h1>
+    <p class="subtitle">计算 · 口诀 · 解析 · 合冲 · 深层原理</p>
+    <div class="line"></div>
+  </div>
+
+  <p class="intro">
+    纳音五行是命理学中最重要的概念体系之一。六十甲子分为三十组，每组共享一种纳音五行。
+    本篇从太玄数计算规则出发，经过记忆口诀和三十象解析，延伸到天干合与地支冲的数理本质，
+    最后深入探讨纳音的两大核心疑问——为什么必须"双体"计算？为什么公式只能定五行而不能定物象？
+  </p>
+
+  <div class="toc">
+    <h3>目录</h3>
+    <ol>
+      <li>太玄数与计算规则</li>
+      <li>六十甲子记忆口诀与对照表</li>
+      <li>三十象解析（金木水火土）</li>
+      <li>天干合与地支冲的数理本质</li>
+      <li>为什么单看"甲子"算不出来？</li>
+      <li>为什么算不出"海中金"，只能算出"金"？</li>
+    </ol>
+  </div>
+
+  <!-- ============ 第一章：计算规则 ============ -->
+  <h2 class="section-title">一、太玄数与计算规则</h2>
+
+  <p class="content">
+    纳音五行的归属并非随意命名，而是有一套严密的数理公式。该方法源于汉代扬雄的《太玄经》，
+    通过为天干地支赋值，即可快速推算任意干支组合的纳音五行。
+  </p>
+
+  <h3 class="sub-section-title">天干与地支的太玄数</h3>
+
+  <table>
+    <thead>
+      <tr><th>天干</th><th>数值</th><th>地支</th><th>数值</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>甲、己</td><td>9</td><td>子、午</td><td>9</td></tr>
+      <tr><td>乙、庚</td><td>8</td><td>丑、未</td><td>8</td></tr>
+      <tr><td>丙、辛</td><td>7</td><td>寅、申</td><td>7</td></tr>
+      <tr><td>丁、壬</td><td>6</td><td>卯、酉</td><td>6</td></tr>
+      <tr><td>戊、癸</td><td>5</td><td>辰、戌</td><td>5</td></tr>
+      <tr><td></td><td></td><td>巳、亥</td><td>4</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub-section-title">核心公式</h3>
+
+  <div class="formula-box">
+    <div class="formula">
+      纳音五行 = （天干&#8321; + 地支&#8321; + 天干&#8322; + 地支&#8322;）÷ 5 的余数
+    </div>
+    <div class="formula-note">
+      余数对照：余 1 → 火 ｜ 余 2 → 土 ｜ 余 3 → 木 ｜ 余 4 → 金 ｜ 余 0 → 水
+    </div>
+  </div>
+
+  <h3 class="sub-section-title">验证举例</h3>
+  <ul class="verify-list">
+    <li>甲子乙丑：9+9+8+8 = 34，34÷5 余 4 → <strong>金</strong>（海中金）<span class="tag tag-jin">金</span></li>
+    <li>丙寅丁卯：7+7+6+6 = 26，26÷5 余 1 → <strong>火</strong>（炉中火）<span class="tag tag-huo">火</span></li>
+    <li>戊辰己巳：5+5+9+4 = 23，23÷5 余 3 → <strong>木</strong>（大林木）<span class="tag tag-mu">木</span></li>
+    <li>庚午辛未：8+9+7+8 = 32，32÷5 余 2 → <strong>土</strong>（路旁土）<span class="tag tag-tu">土</span></li>
+    <li>壬申癸酉：6+7+5+6 = 24，24÷5 余 4 → <strong>金</strong>（剑锋金）<span class="tag tag-jin">金</span></li>
+    <li>甲戌乙亥：9+5+8+4 = 26，26÷5 余 1 → <strong>火</strong>（山头火）<span class="tag tag-huo">火</span></li>
+    <li>丙子丁丑：7+9+6+8 = 30，30÷5 余 0 → <strong>水</strong>（涧下水）<span class="tag tag-shui">水</span></li>
+    <li>戊寅己卯：5+7+9+6 = 27，27÷5 余 2 → <strong>土</strong>（城头土）<span class="tag tag-tu">土</span></li>
+    <li>庚辰辛巳：8+5+7+4 = 24，24÷5 余 4 → <strong>金</strong>（白蜡金）<span class="tag tag-jin">金</span></li>
+    <li>壬午癸未：6+9+5+8 = 28，28÷5 余 3 → <strong>木</strong>（杨柳木）<span class="tag tag-mu">木</span></li>
+  </ul>
+  <p style="color:#999; font-size:0.9rem; margin-top:0.8rem;">以此类推，所有六十甲子均符合此规律。</p>
+
+  <!-- ============ 第二章：记忆表 ============ -->
+  <h2 class="section-title">二、六十甲子记忆口诀与对照表</h2>
+
+  <h3 class="sub-section-title">背诵口诀</h3>
+  <div class="koujue">
+    甲子乙丑海中金，丙寅丁卯炉中火。<br>
+    戊辰己巳大林木，庚午辛未路旁土。<br>
+    壬申癸酉剑锋金，甲戌乙亥山头火。<br>
+    丙子丁丑涧下水，戊寅己卯城头土。<br>
+    庚辰辛巳白蜡金，壬午癸未杨柳木。<br>
+    甲申乙酉泉中水，丙戌丁亥屋上土。<br>
+    戊子己丑霹雳火，庚寅辛卯松柏木。<br>
+    壬辰癸巳长流水，甲午乙未沙中金。<br>
+    丙申丁酉山下火，戊戌己亥平地木。<br>
+    庚子辛丑壁上土，壬寅癸卯金箔金。<br>
+    甲辰乙巳覆灯火，丙午丁未天河水。<br>
+    戊申己酉大驿土，庚戌辛亥钗钏金。<br>
+    壬子癸丑桑柘木，甲寅乙卯大溪水。<br>
+    丙辰丁巳沙中土，戊午己未天上火。<br>
+    庚申辛酉石榴木，壬戌癸亥大海水。
+  </div>
+
+  <h3 class="sub-section-title">六十甲子纳音对照表</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>序号</th><th>干支</th><th>纳音</th>
+        <th>序号</th><th>干支</th><th>纳音</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>甲子</td><td class="wx-jin">海中金</td><td>2</td><td>乙丑</td><td class="wx-jin">海中金</td></tr>
+      <tr><td>3</td><td>丙寅</td><td class="wx-huo">炉中火</td><td>4</td><td>丁卯</td><td class="wx-huo">炉中火</td></tr>
+      <tr><td>5</td><td>戊辰</td><td class="wx-mu">大林木</td><td>6</td><td>己巳</td><td class="wx-mu">大林木</td></tr>
+      <tr><td>7</td><td>庚午</td><td class="wx-tu">路旁土</td><td>8</td><td>辛未</td><td class="wx-tu">路旁土</td></tr>
+      <tr><td>9</td><td>壬申</td><td class="wx-jin">剑锋金</td><td>10</td><td>癸酉</td><td class="wx-jin">剑锋金</td></tr>
+      <tr><td>11</td><td>甲戌</td><td class="wx-huo">山头火</td><td>12</td><td>乙亥</td><td class="wx-huo">山头火</td></tr>
+      <tr><td>13</td><td>丙子</td><td class="wx-shui">涧下水</td><td>14</td><td>丁丑</td><td class="wx-shui">涧下水</td></tr>
+      <tr><td>15</td><td>戊寅</td><td class="wx-tu">城头土</td><td>16</td><td>己卯</td><td class="wx-tu">城头土</td></tr>
+      <tr><td>17</td><td>庚辰</td><td class="wx-jin">白蜡金</td><td>18</td><td>辛巳</td><td class="wx-jin">白蜡金</td></tr>
+      <tr><td>19</td><td>壬午</td><td class="wx-mu">杨柳木</td><td>20</td><td>癸未</td><td class="wx-mu">杨柳木</td></tr>
+      <tr><td>21</td><td>甲申</td><td class="wx-shui">泉中水</td><td>22</td><td>乙酉</td><td class="wx-shui">泉中水</td></tr>
+      <tr><td>23</td><td>丙戌</td><td class="wx-tu">屋上土</td><td>24</td><td>丁亥</td><td class="wx-tu">屋上土</td></tr>
+      <tr><td>25</td><td>戊子</td><td class="wx-huo">霹雳火</td><td>26</td><td>己丑</td><td class="wx-huo">霹雳火</td></tr>
+      <tr><td>27</td><td>庚寅</td><td class="wx-mu">松柏木</td><td>28</td><td>辛卯</td><td class="wx-mu">松柏木</td></tr>
+      <tr><td>29</td><td>壬辰</td><td class="wx-shui">长流水</td><td>30</td><td>癸巳</td><td class="wx-shui">长流水</td></tr>
+      <tr><td>31</td><td>甲午</td><td class="wx-jin">沙中金</td><td>32</td><td>乙未</td><td class="wx-jin">沙中金</td></tr>
+      <tr><td>33</td><td>丙申</td><td class="wx-huo">山下火</td><td>34</td><td>丁酉</td><td class="wx-huo">山下火</td></tr>
+      <tr><td>35</td><td>戊戌</td><td class="wx-mu">平地木</td><td>36</td><td>己亥</td><td class="wx-mu">平地木</td></tr>
+      <tr><td>37</td><td>庚子</td><td class="wx-tu">壁上土</td><td>38</td><td>辛丑</td><td class="wx-tu">壁上土</td></tr>
+      <tr><td>39</td><td>壬寅</td><td class="wx-jin">金箔金</td><td>40</td><td>癸卯</td><td class="wx-jin">金箔金</td></tr>
+      <tr><td>41</td><td>甲辰</td><td class="wx-huo">覆灯火</td><td>42</td><td>乙巳</td><td class="wx-huo">覆灯火</td></tr>
+      <tr><td>43</td><td>丙午</td><td class="wx-shui">天河水</td><td>44</td><td>丁未</td><td class="wx-shui">天河水</td></tr>
+      <tr><td>45</td><td>戊申</td><td class="wx-tu">大驿土</td><td>46</td><td>己酉</td><td class="wx-tu">大驿土</td></tr>
+      <tr><td>47</td><td>庚戌</td><td class="wx-jin">钗钏金</td><td>48</td><td>辛亥</td><td class="wx-jin">钗钏金</td></tr>
+      <tr><td>49</td><td>壬子</td><td class="wx-mu">桑柘木</td><td>50</td><td>癸丑</td><td class="wx-mu">桑柘木</td></tr>
+      <tr><td>51</td><td>甲寅</td><td class="wx-shui">大溪水</td><td>52</td><td>乙卯</td><td class="wx-shui">大溪水</td></tr>
+      <tr><td>53</td><td>丙辰</td><td class="wx-tu">沙中土</td><td>54</td><td>丁巳</td><td class="wx-tu">沙中土</td></tr>
+      <tr><td>55</td><td>戊午</td><td class="wx-huo">天上火</td><td>56</td><td>己未</td><td class="wx-huo">天上火</td></tr>
+      <tr><td>57</td><td>庚申</td><td class="wx-mu">石榴木</td><td>58</td><td>辛酉</td><td class="wx-mu">石榴木</td></tr>
+      <tr><td>59</td><td>壬戌</td><td class="wx-shui">大海水</td><td>60</td><td>癸亥</td><td class="wx-shui">大海水</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub-section-title">三十种纳音一览</h3>
+  <table>
+    <thead><tr><th>五行</th><th>六种纳音</th></tr></thead>
+    <tbody>
+      <tr><td class="wx-jin">金</td><td>海中金、剑锋金、白蜡金、沙中金、金箔金、钗钏金</td></tr>
+      <tr><td class="wx-mu">木</td><td>大林木、杨柳木、松柏木、平地木、桑柘木、石榴木</td></tr>
+      <tr><td class="wx-shui">水</td><td>涧下水、泉中水、长流水、天河水、大溪水、大海水</td></tr>
+      <tr><td class="wx-huo">火</td><td>炉中火、山头火、霹雳火、山下火、覆灯火、天上火</td></tr>
+      <tr><td class="wx-tu">土</td><td>路旁土、城头土、屋上土、壁上土、大驿土、沙中土</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ 第三章：三十象解析 ============ -->
+  <h2 class="section-title">三、三十象解析</h2>
+
+  <p class="intro">
+    纳音五行的命名源于十二长生与五行生克关系。每组天干地支所处的长生阶段（生、旺、死、墓、绝等）
+    决定了该纳音的性质与意象。以下逐一解析三十种纳音的原文含义。
+  </p>
+
+  <!-- 金 -->
+  <div class="wuxing-section">
+    <h2 class="wuxing-title wx-jin-title">金（六种）</h2>
+    <div class="nayin-card">
+      <h3>1. 海中金 — 甲子、乙丑</h3>
+      <div class="yuanwen">甲子乙丑海中金者，子属水，又为湖，又为水旺之地，兼金死于子，墓于丑，水旺而金死墓，故曰海中金也。</div>
+      <div class="jiexi">子是水旺之地，金在子死、在丑墓。金死墓于水旺之地，如同沉在大海，故称海中金。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>2. 金箔金 — 壬寅、癸卯</h3>
+      <div class="yuanwen">壬寅癸卯金箔金者，寅卯为木旺之地，木旺则金缺，金绝于寅，胎于卯，金既无力，故曰金箔金也。</div>
+      <div class="jiexi">金在寅卯处绝地、胎地，极其微弱，且被旺木所缺，薄如蝉翼，故称金箔金。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>3. 白蜡金 — 庚辰、辛巳</h3>
+      <div class="yuanwen">庚辰辛巳白蜡金者，金养于辰，生于巳，形质初成，未能坚利，故曰白蜡金也。</div>
+      <div class="jiexi">金在辰为养地，在巳为生地，刚刚成形，质地柔软不坚，如白蜡一般，故称白蜡金。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>4. 沙中金 — 甲午、乙未</h3>
+      <div class="yuanwen">甲午乙未沙中金者，午为火旺之地，火旺则金败，未为火衰之地，火衰则金冠带。败而冠带，未能斫削，故曰沙中金也。</div>
+      <div class="jiexi">金在午败（死），在未冠带。此时金混在火生土的沙石中，需要淘洗才能得金，故称沙中金。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>5. 剑锋金 — 壬申、癸酉</h3>
+      <div class="yuanwen">壬申癸酉剑锋金者，金临官于申，帝旺于酉，金既生旺，则成刚矣，故曰剑锋金也。</div>
+      <div class="jiexi">申酉是金最旺盛的时候，刚强锋利，如同宝剑之锋，故称剑锋金。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>6. 钗钏金 — 庚戌、辛亥</h3>
+      <div class="yuanwen">庚戌辛亥钗钏金者，金至戌而衰，至亥而病，金既衰病，则诚柔弱，故曰钗钏金也。</div>
+      <div class="jiexi">金在戌亥处衰病之地，气势已尽，变得柔弱，只能做成首饰钗钏，故称钗钏金。</div>
+    </div>
+  </div>
+
+  <!-- 木 -->
+  <div class="wuxing-section">
+    <h2 class="wuxing-title wx-mu-title">木（六种）</h2>
+    <div class="nayin-card">
+      <h3>1. 杨柳木 — 壬午、癸未</h3>
+      <div class="yuanwen">壬午癸未杨柳木者，木死于午，墓于未。甲乙木至午则死，至未则墓。木既死墓，虽得天干壬癸之水以生之，终是柔弱，故曰杨柳木也。</div>
+      <div class="jiexi">木在午死、在未墓。虽有壬癸水生养，但根基已失，如同杨柳随风摇摆，柔弱无力。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>2. 松柏木 — 庚寅、辛卯</h3>
+      <div class="yuanwen">庚寅辛卯松柏木者，木临官在寅，帝旺在卯，木既生旺，则非柔弱之比，故曰松柏木也。</div>
+      <div class="jiexi">木在寅卯处于最旺盛的临官、帝旺之地，质地坚硬，如同松柏经冬不凋，故称松柏木。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>3. 平地木 — 戊戌、己亥</h3>
+      <div class="yuanwen">戊戌己亥平地木者，戌为原野，亥为木生之地，盖木生亥，而死在午，墓在未，今以此戌亥为平地，故曰平地木也。</div>
+      <div class="jiexi">戌为平原旷野，亥是木生之地，木生于平原，故称平地木。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>4. 桑柘木 — 壬子、癸丑</h3>
+      <div class="yuanwen">壬子癸丑桑柘木者，子属水，丑属金，金生水，水生木，其气发越，故曰桑柘木也。</div>
+      <div class="jiexi">水旺生木，但处于寒冬，桑柘之木耐寒，且其叶可饲蚕，多用于实务，非参天大树。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>5. 石榴木 — 庚申、辛酉</h3>
+      <div class="yuanwen">庚申辛酉石榴木者，申为七月，酉为八月，此时木气已绝，惟石榴之木结实，故曰石榴木也。</div>
+      <div class="jiexi">申酉是金旺木死之地，万木凋零，唯独石榴树在这个时候结实，故称石榴木。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>6. 大林木 — 戊辰、己巳</h3>
+      <div class="yuanwen">戊辰己巳大林木者，辰为原野，巳为六阳，木至六阳则枝荣叶茂，以茂盛之木而在原野之间，故曰大林木也。</div>
+      <div class="jiexi">辰是水库湿土，巳是温暖之地，木气繁茂，生于原野，故称大林木。</div>
+    </div>
+  </div>
+
+  <!-- 水 -->
+  <div class="wuxing-section">
+    <h2 class="wuxing-title wx-shui-title">水（六种）</h2>
+    <div class="nayin-card">
+      <h3>1. 涧下水 — 丙子、丁丑</h3>
+      <div class="yuanwen">丙子丁丑涧下水者，水旺于子，衰于丑，旺而反衰，则不能为江河，故曰涧下水也。</div>
+      <div class="jiexi">水在子旺，在丑衰。旺水遇衰地，不能形成大江大河，只能流于山涧，故称涧下水。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>2. 井泉水 — 甲申、乙酉</h3>
+      <div class="yuanwen">甲申乙酉井泉水者，金生水，水生木，申酉金之旺地，木死于申，墓于酉，水源不断，而木不能受，故曰井泉水也。</div>
+      <div class="jiexi">申酉金旺生水，水源源不断，但木死墓无法吸纳水，水积聚一处而不流动，如井中之泉。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>3. 长流水 — 壬辰、癸巳</h3>
+      <div class="yuanwen">壬辰癸巳长流水者，辰为水库，巳为金长生之地，金生水，水性不绝，故曰长流水也。</div>
+      <div class="jiexi">辰是水库，巳中金生水，水源不断，细水长流，故称长流水。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>4. 天河水 — 丙午、丁未</h3>
+      <div class="yuanwen">丙午丁未天河水者，丙丁属火，午为火旺之地，火旺则水气为火所化，其水在天，故曰天河水也。</div>
+      <div class="jiexi">午是火旺之地，水在火旺处被蒸发上天，化为雨露，故称天河水。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>5. 大溪水 — 甲寅、乙卯</h3>
+      <div class="yuanwen">甲寅乙卯大溪水者，寅为东北，卯为正东，水流正东，则其性顺，川涧俱纳，故曰大溪水也。</div>
+      <div class="jiexi">寅卯是木旺之地，水生木，水被泄气但流向东方，汇聚成溪流，故称大溪水。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>6. 大海水 — 壬戌、癸亥</h3>
+      <div class="yuanwen">壬戌癸亥大海水者，水冠带在戌，临官在亥，水冠带临官，则其源远流长，故曰大海水也。</div>
+      <div class="jiexi">亥是水临官旺地，戌是冠带，水势浩大，百川归海，故称大海水。</div>
+    </div>
+  </div>
+
+  <!-- 火 -->
+  <div class="wuxing-section">
+    <h2 class="wuxing-title wx-huo-title">火（六种）</h2>
+    <div class="nayin-card">
+      <h3>1. 炉中火 — 丙寅、丁卯</h3>
+      <div class="yuanwen">丙寅丁卯炉中火者，寅为三阳，卯为四阳，火既得地，又得木生，此火气方生，故曰炉中火也。</div>
+      <div class="jiexi">寅卯属木，木生火，火在地支中有根，如同在炉灶中燃烧，故称炉中火。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>2. 山头火 — 甲戌、乙亥</h3>
+      <div class="yuanwen">甲戌乙亥山头火者，戌亥为天门，火照天门，其光在上，故曰山头火也。</div>
+      <div class="jiexi">戌亥为天门，火在此位高高在上，如同山头的野火或晚霞，故称山头火。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>3. 霹雳火 — 戊子、己丑</h3>
+      <div class="yuanwen">戊子己丑霹雳火者，子属水，丑属土，水中之火，水火相激，则声如雷，故曰霹雳火也。</div>
+      <div class="jiexi">子是水，火在水中，水火相激，如同雷电霹雳，故称霹雳火。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>4. 山下火 — 丙申、丁酉</h3>
+      <div class="yuanwen">丙申丁酉山下火者，申为地户，酉为日落之所，日藏于山，故曰山下火也。</div>
+      <div class="jiexi">申酉是日落西山的时候，太阳隐没在山下，余辉闪烁，故称山下火。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>5. 覆灯火 — 甲辰、乙巳</h3>
+      <div class="yuanwen">甲辰乙巳覆灯火者，辰为食时，巳为日中，日中则昃，光不显，故曰覆灯火也。</div>
+      <div class="jiexi">辰巳是白天，太阳升起，灯火的光芒被掩盖，故称覆灯火。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>6. 天上火 — 戊午、己未</h3>
+      <div class="yuanwen">戊午己未天上火者，午为火旺之地，未为木库，木生火，火势炎上，故曰天上火也。</div>
+      <div class="jiexi">午是火最旺之地，火势极盛，烈日当空，故称天上火。</div>
+    </div>
+  </div>
+
+  <!-- 土 -->
+  <div class="wuxing-section">
+    <h2 class="wuxing-title wx-tu-title">土（六种）</h2>
+    <div class="nayin-card">
+      <h3>1. 路旁土 — 庚午、辛未</h3>
+      <div class="yuanwen">庚午辛未路旁土者，未为土，午为火，火生土，其气已发，故曰路旁土也。</div>
+      <div class="jiexi">火生土，土气生发，但此时土是生发之始，田地之土，也就是路边之土，故称路旁土。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>2. 城头土 — 戊寅、己卯</h3>
+      <div class="yuanwen">戊寅己卯城头土者，寅卯木旺之地，土为木所制，其势不能远及，故曰城头土也。</div>
+      <div class="jiexi">寅卯木旺克土，土被木控制，不能延伸，只能堆积如城墙，故称城头土。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>3. 屋上土 — 丙戌、丁亥</h3>
+      <div class="yuanwen">丙戌丁亥屋上土者，戌亥为天门，土居天门，高处立基，故曰屋上土也。</div>
+      <div class="jiexi">戌亥是天门，位置极高，土在高处，如同房屋的瓦土，故称屋上土。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>4. 壁上土 — 庚子、辛丑</h3>
+      <div class="yuanwen">庚子辛丑壁上土者，丑为土，子为水，水和土而泥，故曰壁上土也。</div>
+      <div class="jiexi">子是水，丑是土，水土能和成泥，用于涂墙，故称壁上土。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>5. 大驿土 — 戊申、己酉</h3>
+      <div class="yuanwen">戊申己酉大驿土者，申为坤，坤为地，酉为兑，兑为泽，泽与地连，故曰大驿土也。</div>
+      <div class="jiexi">申为地，酉为泽，通衢大道，四通八达，故称大驿土。</div>
+    </div>
+    <div class="nayin-card">
+      <h3>6. 沙中土 — 丙辰、丁巳</h3>
+      <div class="yuanwen">丙辰丁巳沙中土者，辰为水库，巳为金生，土之有水有金，而无力，故曰沙中土也。</div>
+      <div class="jiexi">辰是水库，巳是金生地，土中混杂了水和金，变得松散不实，故称沙中土。</div>
+    </div>
+  </div>
+
+  <!-- ============ 第四章：合冲数理 ============ -->
+  <h2 class="section-title">四、天干合与地支冲的数理本质</h2>
+
+  <p class="content">
+    在太玄数体系中，一个有趣的现象是：天干数值相同为"合"，地支数值相同却为"冲"。
+    同样的数字，为什么在天干和地支中表现出截然相反的关系？答案藏在中国哲学最核心的"体用"逻辑中。
+  </p>
+
+  <h3 class="sub-section-title">天干同数：为何是"合"？</h3>
+
+  <div class="content">
+    <p>天干代表天道、气、功能。古人认为，<strong>同气相求</strong>，性质相同（数值相同）的事物，在天道层面会相互感应、融合。</p>
+  </div>
+
+  <div class="card">
+    <h3>数理上的"中正"</h3>
+    <p>以甲己合化土为例：甲数9，己数9。在洛书九宫中，5是中央土的数字。甲(9) + 己(9) = 18，1+8 = 9。甲己之中数为5（土之生数），与中央土相应。</p>
+  </div>
+
+  <div class="card">
+    <h3>阴阳互补</h3>
+    <p>天干有阴阳之分。甲是阳木，己是阴土，虽然数值都是9，但一个是阳，一个是阴。<strong>孤阴不生，独阳不长。</strong>当两个数值相同但阴阳属性相反的天干相遇时，就像正负电荷吸引一样，会发生强烈的"化学反应"。这种吸引力叫<strong>"合"</strong>。合，意味着和谐、协作、生成新事物。</p>
+  </div>
+
+  <div class="content">
+    <p><strong>结论：</strong>天干数值相同，代表它们在同一能量等级上。阴阳相配，势均力敌，故能合。</p>
+  </div>
+
+  <h3 class="sub-section-title">地支同数：为何是"冲"？</h3>
+
+  <div class="content">
+    <p>地支代表地道、质、方位。地支是有实体的、有方位的。在同一个圆周上，力量相等意味着位置对立。</p>
+  </div>
+
+  <div class="card">
+    <h3>方位上的"对冲"</h3>
+    <p>子（9）与午（9）：子是正北（水），午是正南（火），在圆周上正好相差180度。卯（6）与酉（6）：卯是正东（木），酉是正西（金）。就像两个人拔河，力气完全一样大（数值相同），方向相反，形成最剧烈的对抗。</p>
+  </div>
+
+  <div class="card">
+    <h3>五行相克</h3>
+    <p>六组相冲的地支，虽然数值相同，但五行往往是相克的：</p>
+    <p>子（水）冲午（火）——水克火<br>寅（木）冲申（金）——金克木<br>卯（木）冲酉（金）——金克木</p>
+    <p><strong>势均力敌 + 性质相反 = 最激烈的冲突。</strong></p>
+  </div>
+
+  <div class="content">
+    <p><strong>结论：</strong>地支数值相同，代表它们在空间上处于对立面，能量相当且互不相让，故为冲。</p>
+  </div>
+
+  <h3 class="sub-section-title">体用对照：天圆地方</h3>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>比较维度</th><th>天干（天道）</th><th>地支（地道）</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>性质</td><td>气（流动的、虚无的）</td><td>质（实体的、方位的）</td></tr>
+      <tr><td>同数含义</td><td>同频共振（如两个音叉共鸣）</td><td>能量对等（如两球对撞）</td></tr>
+      <tr><td>相遇结果</td><td>合（融合为一体）</td><td>冲（撞击并损伤）</td></tr>
+      <tr><td>哲学解释</td><td>天主动，动则相吸，追求统一</td><td>地主静，静则对峙，追求分明</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub-section-title">一个形象的比喻</h3>
+
+  <div class="metaphor">
+    <p>想象"9"这个数值：</p>
+    <p>在<strong>天干</strong>（甲、己）：就像两个才华相当的人（都是9分能力），一个男（阳），一个女（阴）。他们因为能力匹配、三观一致（数值相同），所以结为夫妻——这就是<strong>"甲己合"</strong>。</p>
+    <p>在<strong>地支</strong>（子、午）：就像两个武林高手（都是9分武功），一个在山南（午火），一个在山北（子水）。他们功力相当，但立场完全相反。一旦相遇，必然拼个你死我活——这就是<strong>"子午冲"</strong>。</p>
+  </div>
+
+  <div class="summary-box">
+    <p class="he">同数相合（天干）：阴阳调和，精神层面的共鸣</p>
+    <p class="chong">同数相冲（地支）：势均力敌，物质层面的对抗</p>
+  </div>
+
+  <div class="content">
+    <p>古人的数字模型并非乱排，而是将物理法则（力的相互作用）和伦理法则（阴阳和合）完美融入了这十个数字之中。</p>
+  </div>
+
+  <!-- ============ 第五章：为什么双体 ============ -->
+  <h2 class="section-title">五、为什么单看"甲子"算不出来？</h2>
+
+  <div class="deep-box">
+    <p>因为纳音五行原本就是<strong>"双体共振"</strong>的产物，而非单体属性。</p>
+    <p>在六十甲子纳音中，五行属性是每两个干支共享的（甲子、乙丑同属金；丙寅、丁卯同属火……）。古人为什么这样设计？</p>
+  </div>
+
+  <h3 class="sub-section-title">从音律角度（纳音的本源）</h3>
+
+  <div class="content">
+    <p>纳音脱胎于古代乐律学（十二律吕）。在乐律中，单音不成乐，必须阴阳相配（如黄钟配林钟）。
+    甲为阳，子为阳；乙为阴，丑为阴。甲子与乙丑，是一阳一阴的共振，产生一个特定的"音"
+    （即五行属性）。所以，必须把两个干支的太玄数加在一起，才构成一个完整的频率/音律。</p>
+  </div>
+
+  <h3 class="sub-section-title">从气数角度</h3>
+
+  <div class="content">
+    <p>如果只算"甲子"，甲9+子9=18，18÷5余3，按公式余3为"木"。但甲本就是阳木，
+    子中藏癸水，这叫"本气"，而纳音算的是<strong>"化气"</strong>（两者结合后产生的新物质）。
+    单独的甲子只是原材料，甲子加上乙丑，才完成了从"原料"到"新物质"的化学反应。</p>
+  </div>
+
+  <div class="insight-box">
+    <strong>结论：</strong>太玄数求纳音五行，必须把一对干支（四个字）的数全加起来，
+    这反映的是"耦合"后的结果，而不是单个干支的先天属性。
+  </div>
+
+  <!-- ============ 第六章：为什么定不了物象 ============ -->
+  <h2 class="section-title">六、为什么算不出"海中金"，只能算出"金"？</h2>
+
+  <div class="deep-box">
+    <p>因为你推导的这个公式（总和÷5看余数），它的<strong>功能上限就是"定五行"</strong>，而定不了"纳音象"。</p>
+    <p>完整的纳音包含两部分：<strong>五行（体）+ 物象（用）</strong>。</p>
+    <p>五行（金木水火土）：是定性的，由数学规律（如你总结的除以5看余数）严格推导。<br>
+    物象（海中、炉中、大林木等）：是定象的，是古人对这组五行在不同阶段（十二长生宫）的意象描述，无法用简单的除法得出。</p>
+  </div>
+
+  <h3 class="sub-section-title">"海中金"的"海中"是怎么来的？</h3>
+
+  <div class="content">
+    <p>它是基于<strong>五行十二长生</strong>的逻辑：</p>
+    <p>甲子、乙丑的五行是"金"（你的公式已证明）。<br>
+    金的长生在"巳"，帝旺在"酉"，墓库在"丑"。</p>
+    <p>看"甲子"：子在十二地支中，对于金来说，处于<strong>"死"地</strong>（水泄金气，金沉水底）。<br>
+    看"乙丑"：丑是金的<strong>"墓库"</strong>（金气隐藏收藏）。</p>
+    <p>甲子金在"死"地（水底），乙丑金在"墓"地（埋藏），两者都是金气极其微弱、深藏不露、被水/土掩埋的状态。
+    古人看到这种"金沉水底、暗藏于下"的易象，就给它取了一个形象的名字——<strong>海中金</strong>。</p>
+  </div>
+
+  <h3 class="sub-section-title">同为金，不同象的对比</h3>
+
+  <div class="card">
+    <h3>壬寅、癸卯 — 金箔金</h3>
+    <p>金处于"绝"地，但寅卯属木，金藏在木中，如同刀剑未开刃，薄如蝉翼。</p>
+  </div>
+  <div class="card">
+    <h3>庚辰、辛巳 — 白蜡金</h3>
+    <p>金处于"长生/养"地，刚刚萌发，夹杂在矿石泥土中，质地柔软。</p>
+  </div>
+  <div class="card">
+    <h3>甲午、乙未 — 沙中金</h3>
+    <p>金处于"沐浴/冠带"之地，经过火炼，开始成型，混在沙石中。</p>
+  </div>
+  <div class="card">
+    <h3>壬申、癸酉 — 剑锋金</h3>
+    <p>金处于"帝旺/临官"之地，金气最盛，坚刚无比，锋利如剑。</p>
+  </div>
+
+  <div class="insight-box">
+    <strong>总结：</strong>太玄数公式（÷5取余）解决的是"是什么五行"的问题，
+    而"海中""剑锋""白蜡"这些物象名称，需要结合十二长生宫（死、墓、绝、养、旺等）
+    才能确定。两者缺一不可，合在一起才是完整的纳音。
+  </div>
+
+  <p class="source">出处：《太玄经》· 扬雄（汉代）｜《三命通会》· 万民英（明代）｜ 河图洛书数理体系</p>
+</div>
+</body>
+</html>
