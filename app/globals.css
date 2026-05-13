@@ -23,11 +23,23 @@ html {
 }
 
 body {
-  background-color: var(--bg-primary);
+  background-color: transparent;
+  background-image: url('/m31-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: var(--text-primary);
   font-family: "Noto Serif SC", "Songti SC", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* 内容区域半透明背景 */
+.main-content {
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(2px);
 }
 
 /* ===== 滚动条美化 ===== */

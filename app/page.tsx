@@ -1,5 +1,4 @@
 import { getAllPosts } from "@/lib/posts";
-import StarBg from "@/components/StarBg";
 import Navbar from "@/components/Navbar";
 import CardGrid from "@/components/CardGrid";
 import PostSidebar from "@/components/PostSidebar";
@@ -10,8 +9,7 @@ export default function HomePage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* 宇宙星空背景 */}
-      <StarBg />
+      {/* 侧边栏 */}
 
       {/* 侧边栏 */}
       <PostSidebar />

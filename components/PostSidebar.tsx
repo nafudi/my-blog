@@ -55,7 +55,7 @@ export default function PostSidebar() {
 
       {/* 侧边栏 */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-[#0d0d15]/95 backdrop-blur-md border-r border-[rgba(212,168,83,0.1)] z-40 transition-transform duration-300 overflow-y-auto scrollbar-thin scrollbar-thumb-[rgba(212,168,83,0.3)] scrollbar-track-transparent pt-20 ${
+        className={`fixed top-0 left-0 h-full w-64 bg-[#0d0d15]/30 backdrop-blur-md border-r border-[rgba(212,168,83,0.1)] z-40 transition-transform duration-300 overflow-y-auto scrollbar-thin scrollbar-thumb-[rgba(212,168,83,0.3)] scrollbar-track-transparent pt-20 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >

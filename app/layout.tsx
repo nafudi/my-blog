@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="dark">
       <body
-        className={`${maShanZheng.variable} ${notoSerif.variable} font-[family-name:var(--font-noto-serif)] min-h-screen bg-[#0a0a0f] text-[#e8e6e3] antialiased`}
+        className={`${maShanZheng.variable} ${notoSerif.variable} font-[family-name:var(--font-noto-serif)] min-h-screen antialiased`}
       >
         <SessionProvider>
           {children}
