@@ -1,20 +1,15 @@
 import { notFound } from "next/navigation";
-import { getPostBySlug } from "@/lib/posts";
+import { getPostBySlug, getAllPosts } from "@/lib/posts";
 import Navbar from "@/components/Navbar";
 import PostContentClient from "@/components/PostClientWrapper";
 import PostSidebar from "@/components/PostSidebar";
 import StarBg from "@/components/StarBg";
 
-// 生成静态参数
 export function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
 
-// 需要在文件顶部导入（避免循环依赖）
-import { getAllPosts } from "@/lib/posts";
-
-// 服务端组件
 export default async function PostPage({
   params,
 }: {
@@ -29,17 +24,11 @@ export default async function PostPage({
 
   return (
     <div className="min-h-screen relative">
-      {/* 星空背景 */}
       <StarBg />
-
-      {/* 侧边栏 */}
       <PostSidebar />
-
-      {/* 主内容区 */}
       <div className="lg:ml-64">
         <Navbar />
 
-        {/* 页面头部 */}
         <header className="relative z-10 pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           <div className="mb-2 flex gap-2 flex-wrap">
             {post.tags?.map((tag) => (
@@ -52,9 +41,7 @@ export default async function PostPage({
             ))}
           </div>
 
-          <h1
-            className="font-[family-name:var(--font-ma-shan)] text-3xl sm:text-5xl text-[#ffffff] mb-3"
-          >
+          <h1 className="font-[family-name:var(--font-ma-shan)] text-3xl sm:text-5xl text-[#ffffff] mb-3">
             {post.title}
           </h1>
 
@@ -67,7 +54,6 @@ export default async function PostPage({
           </div>
         </header>
 
-        {/* 主内容区 */}
         <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16">
           <PostContentClient
             slug={slug}
@@ -76,12 +62,8 @@ export default async function PostPage({
           />
         </main>
 
-        {/* 页脚 */}
         <footer className="relative z-10 mt-8 pt-6 border-t border-[rgba(212,168,83,0.08)] text-center px-4 pb-8">
-          <a
-            href="/"
-            className="text-sm text-[#cccccc] hover:text-[#ffffff] transition-colors duration-300"
-          >
+          <a href="/" className="text-sm text-[#cccccc] hover:text-[#ffffff] transition-colors duration-300">
             ← 返回首页
           </a>
         </footer>
