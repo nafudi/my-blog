@@ -181,7 +181,16 @@ export default function PostClientWrapper({
         const bodyMatch = text.match(/<body[^>]*>([\s\S]*)<\/body>/i);
         const bodyContent = bodyMatch ? bodyMatch[1] : text;
         const cleaned = cleanArticleHTML(bodyContent);
-        setHtml(cleaned);
+
+        // 给 h2 标签添加 id，以便 TOC 锚点跳转
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(cleaned, "text/html");
+        doc.querySelectorAll("h2").forEach((h2) => {
+          const title = h2.textContent || "";
+          const id = title.replace(/\s+/g, "-").toLowerCase();
+          h2.id = id;
+        });
+        setHtml(doc.body.innerHTML);
 
         // 解析目录
         const h2Matches = cleaned.matchAll(/<h2[^>]*>(.*?)<\/h2>/gi);
