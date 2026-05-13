@@ -124,10 +124,10 @@ export default function PostClientWrapper({
         />
       )}
 
-      {/* Desktop TOC sidebar */}
+      {/* Desktop TOC sidebar - right side */}
       {toc.length > 0 && (
         <aside
-          className={`fixed top-16 right-0 w-60 h-[calc(100vh-4rem)] bg-[#0d0d15]/95 backdrop-blur-xl border-l border-[rgba(212,168,83,0.1)] overflow-y-auto p-5 z-40 transition-transform duration-300 ${
+          className={`fixed top-16 right-0 w-60 h-[calc(100vh-4rem)] bg-[#0d0d15]/95 backdrop-blur-xl border-l border-[rgba(212,168,83,0.1)] overflow-y-auto p-5 z-30 transition-transform duration-300 ${
             tocOpen ? "translate-x-0" : "translate-x-full"
           } lg:translate-x-0`}
         >
@@ -161,8 +161,8 @@ export default function PostClientWrapper({
         </aside>
       )}
 
-      {/* Main content area with padding for TOC */}
-      <div className="lg:pr-60">
+      {/* Main content area - padded on BOTH sides for sidebars */}
+      <div className="lg:pl-4 lg:pr-60">
         <article
           id="article-content"
           className="article-content px-4 sm:px-6"
