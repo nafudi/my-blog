@@ -1,0 +1,219 @@
+#!/usr/bin/env python3
+"""Convert markdown files to blog article HTML format."""
+
+import sys
+import os
+
+def get_html_header(title):
+    return '''<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>''' + title + '''</title>
+<style>
+/* ========================================
+   博客文章统一样式 v3.0（安全版）
+   所有选择器限定在 .article-wrapper 内
+   ════════════════════════════════════════ */
+
+.article-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
+  color: #e8e6e3;
+  font-family: "Noto Serif SC", "Source Han Serif CN", "STSong", serif;
+  line-height: 1.9;
+  font-size: 1.05rem;
+}
+
+/* ─── 标题层级 ─── */
+.article-wrapper h1 {
+  font-family: "Ma Shan Zheng", cursive;
+  font-size: 2.2em;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 0 0.8em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid rgba(212,168,83,0.2);
+  line-height: 1.3;
+}
+.article-wrapper h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #d4a853;
+  margin: 2em 0 1em;
+  padding-left: 0.6em;
+  border-left: 3px solid #d4a853;
+  line-height: 1.4;
+}
+.article-wrapper h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #e0c878;
+  margin: 1.5em 0 0.8em;
+  line-height: 1.4;
+}
+.article-wrapper h4 {
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #cccccc;
+  margin: 1.2em 0 0.6em;
+}
+
+/* ─── 段落 ─── */
+.article-wrapper p {
+  margin: 0.8em 0;
+  text-align: justify;
+}
+
+/* ─── 链接 ─── */
+.article-wrapper a {
+  color: #d4a853;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.article-wrapper a:hover { color: #e8c878; }
+
+/* ─── 列表 ─── */
+.article-wrapper ul, .article-wrapper ol {
+  padding-left: 1.5em;
+  margin: 0.8em 0;
+}
+.article-wrapper li {
+  margin: 0.3em 0;
+  line-height: 1.7;
+}
+
+/* ─── 引用 ─── */
+.article-wrapper blockquote {
+  border-left: 3px solid rgba(212,168,83,0.3);
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  background: rgba(212,168,83,0.05);
+  border-radius: 0 8px 8px 0;
+  color: #cccccc;
+}
+
+/* ─── 表格 ─── */
+.article-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95em;
+}
+.article-wrapper thead { background: rgba(212,168,83,0.1); }
+.article-wrapper th {
+  padding: 0.7em 0.8em;
+  text-align: left;
+  color: #d4a853;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(212,168,83,0.3);
+  white-space: nowrap;
+}
+.article-wrapper td {
+  padding: 0.6em 0.8em;
+  border-bottom: 1px solid rgba(212,168,83,0.08);
+  vertical-align: top;
+}
+.article-wrapper tr:hover td { background: rgba(212,168,83,0.03); }
+
+/* ─── 代码 ─── */
+.article-wrapper code {
+  background: rgba(212,168,83,0.1);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #e8c878;
+}
+.article-wrapper pre {
+  background: rgba(10,10,15,0.8);
+  border: 1px solid rgba(212,168,83,0.15);
+  border-radius: 12px;
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.article-wrapper pre code {
+  background: none;
+  padding: 0;
+  color: #e8e6e3;
+}
+
+/* ─── 分割线 ─── */
+.article-wrapper hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,83,0.2), transparent);
+  margin: 2em 0;
+}
+
+/* ─── 图片 ─── */
+.article-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+
+/* ─── 强调 ─── */
+.article-wrapper strong { color: #ffffff; font-weight: 600; }
+
+/* ─── 移动端适配 ─── */
+@media (max-width: 640px) {
+  .article-wrapper { font-size: 1rem; }
+  .article-wrapper h1 { font-size: 1.6em; }
+  .article-wrapper h2 { font-size: 1.3em; }
+  .article-wrapper h3 { font-size: 1.1em; }
+}
+</style>
+</head>
+<body>
+<article class="article-wrapper">
+'''
+
+HTML_FOOTER = '''
+</article>
+</body>
+</html>
+'''
+
+
+def md_to_html(md_text, title):
+    """Convert markdown to HTML with blog styling."""
+    import markdown
+
+    # Convert markdown to HTML
+    html_body = markdown.markdown(
+        md_text,
+        extensions=['tables', 'fenced_code', 'toc']
+    )
+
+    # Combine
+    full_html = get_html_header(title) + html_body + HTML_FOOTER
+    return full_html
+
+
+def main():
+    if len(sys.argv) < 3:
+        print("Usage: md_to_html.py <input.md> <output.html> [title]")
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
+    title = sys.argv[3] if len(sys.argv) > 3 else os.path.splitext(os.path.basename(input_file))[0]
+
+    with open(input_file, 'r', encoding='utf-8') as f:
+        md_text = f.read()
+
+    html = md_to_html(md_text, title)
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(html)
+
+    print(f"Converted: {input_file} -> {output_file}")
+
+
+if __name__ == '__main__':
+    main()

@@ -33,7 +33,7 @@ export default function PostSidebar() {
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    fetch("/api/posts")
+          fetch("/api/posts")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -43,7 +43,19 @@ export default function PostSidebar() {
             if (!groupMap[cat]) groupMap[cat] = [];
             groupMap[cat].push(post);
           }
-          const groups = Object.entries(groupMap).map(([name, posts]) => ({
+
+          // 定义分类排序：戏算第一，杂谈第二，溯源第三，其他按原顺序
+          const sortOrder: Record<string, number> = {
+            "戏算": 1,
+            "杂谈": 2,
+            "溯源": 3,
+          };
+          const sortedEntries = Object.entries(groupMap).sort((a, b) => {
+            const orderA = sortOrder[a[0]] || 999;
+            const orderB = sortOrder[b[0]] || 999;
+            return orderA - orderB;
+          });
+          const groups = sortedEntries.map(([name, posts]) => ({
             name,
             posts,
           }));

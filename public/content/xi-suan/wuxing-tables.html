@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五行天干地支十神参考表</title>
+<style>
+/* ========================================
+   博客文章统一样式 v3.0（安全版）
+   所有选择器限定在 .article-wrapper 内
+   ════════════════════════════════════════ */
+
+.article-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
+  color: #e8e6e3;
+  font-family: "Noto Serif SC", "Source Han Serif CN", "STSong", serif;
+  line-height: 1.9;
+  font-size: 1.05rem;
+}
+
+/* ─── 标题层级 ─── */
+.article-wrapper h1 {
+  font-family: "Ma Shan Zheng", cursive;
+  font-size: 2.2em;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 0 0.8em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid rgba(212,168,83,0.2);
+  line-height: 1.3;
+}
+.article-wrapper h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #d4a853;
+  margin: 2em 0 1em;
+  padding-left: 0.6em;
+  border-left: 3px solid #d4a853;
+  line-height: 1.4;
+}
+.article-wrapper h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #e0c878;
+  margin: 1.5em 0 0.8em;
+  line-height: 1.4;
+}
+.article-wrapper h4 {
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #cccccc;
+  margin: 1.2em 0 0.6em;
+}
+
+/* ─── 段落 ─── */
+.article-wrapper p {
+  margin: 0.8em 0;
+  text-align: justify;
+}
+
+/* ─── 链接 ─── */
+.article-wrapper a {
+  color: #d4a853;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.article-wrapper a:hover { color: #e8c878; }
+
+/* ─── 列表 ─── */
+.article-wrapper ul, .article-wrapper ol {
+  padding-left: 1.5em;
+  margin: 0.8em 0;
+}
+.article-wrapper li {
+  margin: 0.3em 0;
+  line-height: 1.7;
+}
+
+/* ─── 引用 ─── */
+.article-wrapper blockquote {
+  border-left: 3px solid rgba(212,168,83,0.3);
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  background: rgba(212,168,83,0.05);
+  border-radius: 0 8px 8px 0;
+  color: #cccccc;
+}
+
+/* ─── 表格 ─── */
+.article-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95em;
+}
+.article-wrapper thead { background: rgba(212,168,83,0.1); }
+.article-wrapper th {
+  padding: 0.7em 0.8em;
+  text-align: left;
+  color: #d4a853;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(212,168,83,0.3);
+  white-space: nowrap;
+}
+.article-wrapper td {
+  padding: 0.6em 0.8em;
+  border-bottom: 1px solid rgba(212,168,83,0.08);
+  vertical-align: top;
+}
+.article-wrapper tr:hover td { background: rgba(212,168,83,0.03); }
+
+/* ─── 代码 ─── */
+.article-wrapper code {
+  background: rgba(212,168,83,0.1);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #e8c878;
+}
+.article-wrapper pre {
+  background: rgba(10,10,15,0.8);
+  border: 1px solid rgba(212,168,83,0.15);
+  border-radius: 12px;
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.article-wrapper pre code {
+  background: none;
+  padding: 0;
+  color: #e8e6e3;
+}
+
+/* ─── 分割线 ─── */
+.article-wrapper hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,83,0.2), transparent);
+  margin: 2em 0;
+}
+
+/* ─── 图片 ─── */
+.article-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+
+/* ─── 强调 ─── */
+.article-wrapper strong { color: #ffffff; font-weight: 600; }
+
+/* ─── 移动端适配 ─── */
+@media (max-width: 640px) {
+  .article-wrapper { font-size: 1rem; }
+  .article-wrapper h1 { font-size: 1.6em; }
+  .article-wrapper h2 { font-size: 1.3em; }
+  .article-wrapper h3 { font-size: 1.1em; }
+}
+</style>
+</head>
+<body>
+<article class="article-wrapper">
+<h1 id="_1">五行、天干地支、十神参考表</h1>
+<h2 id="_2">目录</h2>
+<ol>
+<li><a href="#十天干阴阳五行表">十天干阴阳五行表</a></li>
+<li><a href="#十二地支阴阳五行表">十二地支阴阳五行表</a></li>
+<li><a href="#天干五合">天干五合</a></li>
+<li><a href="#地支关系">地支关系</a></li>
+<li><a href="#十神定义及生克关系">十神定义及生克关系</a></li>
+<li><a href="#十二长生表">十二长生表</a></li>
+<li><a href="#地支藏干表">地支藏干表</a></li>
+</ol>
+<hr />
+<h2 id="_3">十天干阴阳五行表</h2>
+<table>
+<thead>
+<tr>
+<th>天干</th>
+<th>阴阳</th>
+<th>五行</th>
+<th>方位</th>
+<th>季节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>甲</td>
+<td>阳</td>
+<td>木</td>
+<td>东</td>
+<td>春</td>
+</tr>
+<tr>
+<td>乙</td>
+<td>阴</td>
+<td>木</td>
+<td>东</td>
+<td>春</td>
+</tr>
+<tr>
+<td>丙</td>
+<td>阳</td>
+<td>火</td>
+<td>南</td>
+<td>夏</td>
+</tr>
+<tr>
+<td>丁</td>
+<td>阴</td>
+<td>火</td>
+<td>南</td>
+<td>夏</td>
+</tr>
+<tr>
+<td>戊</td>
+<td>阳</td>
+<td>土</td>
+<td>中</td>
+<td>四季末</td>
+</tr>
+<tr>
+<td>己</td>
+<td>阴</td>
+<td>土</td>
+<td>中</td>
+<td>四季末</td>
+</tr>
+<tr>
+<td>庚</td>
+<td>阳</td>
+<td>金</td>
+<td>西</td>
+<td>秋</td>
+</tr>
+<tr>
+<td>辛</td>
+<td>阴</td>
+<td>金</td>
+<td>西</td>
+<td>秋</td>
+</tr>
+<tr>
+<td>壬</td>
+<td>阳</td>
+<td>水</td>
+<td>北</td>
+<td>冬</td>
+</tr>
+<tr>
+<td>癸</td>
+<td>阴</td>
+<td>水</td>
+<td>北</td>
+<td>冬</td>
+</tr>
+</tbody>
+</table>
+<p>阳干：甲丙戊庚壬
+阴干：乙丁己辛癸</p>
+<hr />
+<h2 id="_4">十二地支阴阳五行表</h2>
+<table>
+<thead>
+<tr>
+<th>地支</th>
+<th>阴阳</th>
+<th>五行</th>
+<th>方位</th>
+<th>月份（农历）</th>
+<th>生肖</th>
+<th>时辰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>子</td>
+<td>阳</td>
+<td>水</td>
+<td>北</td>
+<td>十一月</td>
+<td>鼠</td>
+<td>23:00-01:00</td>
+</tr>
+<tr>
+<td>丑</td>
+<td>阴</td>
+<td>土</td>
+<td>东北</td>
+<td>十二月</td>
+<td>牛</td>
+<td>01:00-03:00</td>
+</tr>
+<tr>
+<td>寅</td>
+<td>阳</td>
+<td>木</td>
+<td>东北</td>
+<td>正月</td>
+<td>虎</td>
+<td>03:00-05:00</td>
+</tr>
+<tr>
+<td>卯</td>
+<td>阴</td>
+<td>木</td>
+<td>东</td>
+<td>二月</td>
+<td>兔</td>
+<td>05:00-07:00</td>
+</tr>
+<tr>
+<td>辰</td>
+<td>阳</td>
+<td>土</td>
+<td>东南</td>
+<td>三月</td>
+<td>龙</td>
+<td>07:00-09:00</td>
+</tr>
+<tr>
+<td>巳</td>
+<td>阴</td>
+<td>火</td>
+<td>东南</td>
+<td>四月</td>
+<td>蛇</td>
+<td>09:00-11:00</td>
+</tr>
+<tr>
+<td>午</td>
+<td>阳</td>
+<td>火</td>
+<td>南</td>
+<td>五月</td>
+<td>马</td>
+<td>11:00-13:00</td>
+</tr>
+<tr>
+<td>未</td>
+<td>阴</td>
+<td>土</td>
+<td>西南</td>
+<td>六月</td>
+<td>羊</td>
+<td>13:00-15:00</td>
+</tr>
+<tr>
+<td>申</td>
+<td>阳</td>
+<td>金</td>
+<td>西南</td>
+<td>七月</td>
+<td>猴</td>
+<td>15:00-17:00</td>
+</tr>
+<tr>
+<td>酉</td>
+<td>阴</td>
+<td>金</td>
+<td>西</td>
+<td>八月</td>
+<td>鸡</td>
+<td>17:00-19:00</td>
+</tr>
+<tr>
+<td>戌</td>
+<td>阳</td>
+<td>土</td>
+<td>西北</td>
+<td>九月</td>
+<td>狗</td>
+<td>19:00-21:00</td>
+</tr>
+<tr>
+<td>亥</td>
+<td>阴</td>
+<td>水</td>
+<td>西北</td>
+<td>十月</td>
+<td>猪</td>
+<td>21:00-23:00</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_5">天干五合</h2>
+<p>甲己合化土
+乙庚合化金
+丙辛合化水
+丁壬合化木
+戊癸合化火</p>
+<p>合化条件：需得时得令，天干相邻且地支有合化之根，方论化。仅合不化则为"合绊"，力量牵制。</p>
+<hr />
+<h2 id="_6">地支关系</h2>
+<h3 id="_7">六冲</h3>
+<p>子午冲、丑未冲、寅申冲、卯酉冲、辰戌冲、巳亥冲</p>
+<h3 id="_8">三合局</h3>
+<ul>
+<li>申子辰合水局</li>
+<li>亥卯未合木局</li>
+<li>寅午戌合火局</li>
+<li>巳酉丑合金局</li>
+</ul>
+<p>三合局需三字全见方成局，缺一则为半合（如申子半合水、子辰半合水），力量减半。</p>
+<h3 id="_9">三会局（方局）</h3>
+<ul>
+<li>寅卯辰会东方木局</li>
+<li>巳午未会南方火局</li>
+<li>申酉戌会西方金局</li>
+<li>亥子丑会北方水局</li>
+</ul>
+<p>三会局力量大于三合局，需三字全见。</p>
+<h3 id="_10">六合</h3>
+<p>子丑合土、寅亥合木、卯戌合火、辰酉合金、巳申合水、午未合火（或合土，有争议）</p>
+<h3 id="_11">相刑</h3>
+<ul>
+<li>寅巳申三刑（无恩之刑）</li>
+<li>丑戌未三刑（持势之刑）</li>
+<li>子卯相刑（无礼之刑）</li>
+<li>辰辰自刑、午午自刑、酉酉自刑、亥亥自刑</li>
+</ul>
+<h3 id="_12">相害（相穿）</h3>
+<p>子未害、丑午害、寅巳害、卯辰害、申亥害、酉戌害</p>
+<hr />
+<h2 id="_13">十神定义及生克关系</h2>
+<h3 id="_14">十神推导规则</h3>
+<p>以日干（日主）为中心，根据其他天干与日干的五行生克关系及阴阳异同来确定十神：</p>
+<table>
+<thead>
+<tr>
+<th>关系</th>
+<th>阴阳相同</th>
+<th>阴阳不同</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生我（我之母）</td>
+<td>偏印（枭神）</td>
+<td>正印</td>
+</tr>
+<tr>
+<td>我生（我之子）</td>
+<td>食神</td>
+<td>伤官</td>
+</tr>
+<tr>
+<td>克我（克我者）</td>
+<td>偏官（七杀）</td>
+<td>正官</td>
+</tr>
+<tr>
+<td>我克（我制者）</td>
+<td>偏财</td>
+<td>正财</td>
+</tr>
+<tr>
+<td>同我（同类）</td>
+<td>比肩</td>
+<td>劫财</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_15">十神详解</h3>
+<table>
+<thead>
+<tr>
+<th>十神</th>
+<th>含义</th>
+<th>代表人事</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>比肩</td>
+<td>同我者，阴阳相同</td>
+<td>兄弟、朋友、同辈、竞争者</td>
+</tr>
+<tr>
+<td>劫财</td>
+<td>同我者，阴阳不同</td>
+<td>姐妹、竞争对手、损财者</td>
+</tr>
+<tr>
+<td>食神</td>
+<td>我生者，阴阳相同</td>
+<td>子女（女命）、才华、口福</td>
+</tr>
+<tr>
+<td>伤官</td>
+<td>我生者，阴阳不同</td>
+<td>子女（女命）、才艺、叛逆</td>
+</tr>
+<tr>
+<td>偏财</td>
+<td>我克者，阴阳相同</td>
+<td>偏财、父（男命）、情人</td>
+</tr>
+<tr>
+<td>正财</td>
+<td>我克者，阴阳不同</td>
+<td>正财、妻（男命）、稳定收入</td>
+</tr>
+<tr>
+<td>偏官（七杀）</td>
+<td>克我者，阴阳相同</td>
+<td>偏权、压力、小人之类</td>
+</tr>
+<tr>
+<td>正官</td>
+<td>克我者，阴阳不同</td>
+<td>正权、上级、夫（女命）</td>
+</tr>
+<tr>
+<td>偏印（枭神）</td>
+<td>生我者，阴阳相同</td>
+<td>偏学术、继母、孤独</td>
+</tr>
+<tr>
+<td>正印</td>
+<td>生我者，阴阳不同</td>
+<td>母亲、学业、贵人</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_16">五行生克</h3>
+<ul>
+<li>相生：木→火→土→金→水→木</li>
+<li>相克：木→土→水→火→金→木</li>
+</ul>
+<hr />
+<h2 id="_17">十二长生表</h2>
+<p>以五行（天干）论十二长生，表示五行之气从生到灭的过程：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>甲木（阳木）</th>
+<th>乙木（阴木）</th>
+<th>丙火（阳火）</th>
+<th>丁火（阴火）</th>
+<th>戊土（阳土）</th>
+<th>己土（阴土）</th>
+<th>庚金（阳金）</th>
+<th>辛金（阴金）</th>
+<th>壬水（阳水）</th>
+<th>癸水（阴水）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>长生</td>
+<td>亥</td>
+<td>午</td>
+<td>寅</td>
+<td>酉</td>
+<td>寅</td>
+<td>酉</td>
+<td>巳</td>
+<td>子</td>
+<td>申</td>
+<td>卯</td>
+</tr>
+<tr>
+<td>沐浴</td>
+<td>子</td>
+<td>巳</td>
+<td>卯</td>
+<td>申</td>
+<td>卯</td>
+<td>申</td>
+<td>午</td>
+<td>亥</td>
+<td>酉</td>
+<td>寅</td>
+</tr>
+<tr>
+<td>冠带</td>
+<td>丑</td>
+<td>辰</td>
+<td>辰</td>
+<td>未</td>
+<td>辰</td>
+<td>未</td>
+<td>未</td>
+<td>戌</td>
+<td>戌</td>
+<td>丑</td>
+</tr>
+<tr>
+<td>临官</td>
+<td>寅</td>
+<td>卯</td>
+<td>巳</td>
+<td>午</td>
+<td>巳</td>
+<td>午</td>
+<td>申</td>
+<td>酉</td>
+<td>亥</td>
+<td>子</td>
+</tr>
+<tr>
+<td>帝旺</td>
+<td>卯</td>
+<td>寅</td>
+<td>午</td>
+<td>巳</td>
+<td>午</td>
+<td>巳</td>
+<td>酉</td>
+<td>申</td>
+<td>子</td>
+<td>亥</td>
+</tr>
+<tr>
+<td>衰</td>
+<td>辰</td>
+<td>丑</td>
+<td>未</td>
+<td>辰</td>
+<td>未</td>
+<td>辰</td>
+<td>戌</td>
+<td>未</td>
+<td>丑</td>
+<td>戌</td>
+</tr>
+<tr>
+<td>病</td>
+<td>巳</td>
+<td>子</td>
+<td>申</td>
+<td>卯</td>
+<td>申</td>
+<td>卯</td>
+<td>亥</td>
+<td>午</td>
+<td>寅</td>
+<td>酉</td>
+</tr>
+<tr>
+<td>死</td>
+<td>午</td>
+<td>亥</td>
+<td>酉</td>
+<td>寅</td>
+<td>酉</td>
+<td>寅</td>
+<td>子</td>
+<td>巳</td>
+<td>卯</td>
+<td>申</td>
+</tr>
+<tr>
+<td>墓</td>
+<td>未</td>
+<td>戌</td>
+<td>戌</td>
+<td>丑</td>
+<td>戌</td>
+<td>丑</td>
+<td>丑</td>
+<td>辰</td>
+<td>辰</td>
+<td>未</td>
+</tr>
+<tr>
+<td>绝</td>
+<td>申</td>
+<td>酉</td>
+<td>亥</td>
+<td>子</td>
+<td>亥</td>
+<td>子</td>
+<td>寅</td>
+<td>卯</td>
+<td>巳</td>
+<td>午</td>
+</tr>
+<tr>
+<td>胎</td>
+<td>酉</td>
+<td>申</td>
+<td>子</td>
+<td>亥</td>
+<td>子</td>
+<td>亥</td>
+<td>卯</td>
+<td>寅</td>
+<td>午</td>
+<td>巳</td>
+</tr>
+<tr>
+<td>养</td>
+<td>戌</td>
+<td>未</td>
+<td>丑</td>
+<td>戌</td>
+<td>丑</td>
+<td>戌</td>
+<td>辰</td>
+<td>丑</td>
+<td>未</td>
+<td>辰</td>
+</tr>
+</tbody>
+</table>
+<p>注：阳干顺行，阴干逆行。十二长生主要用于判断天干在地支中的旺衰状态。</p>
+<hr />
+<h2 id="_18">地支藏干表</h2>
+<table>
+<thead>
+<tr>
+<th>地支</th>
+<th>本气</th>
+<th>中气</th>
+<th>余气</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>子</td>
+<td>癸水</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>丑</td>
+<td>己土</td>
+<td>癸水</td>
+<td>辛金</td>
+</tr>
+<tr>
+<td>寅</td>
+<td>甲木</td>
+<td>丙火</td>
+<td>戊土</td>
+</tr>
+<tr>
+<td>卯</td>
+<td>乙木</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>辰</td>
+<td>戊土</td>
+<td>乙木</td>
+<td>癸水</td>
+</tr>
+<tr>
+<td>巳</td>
+<td>丙火</td>
+<td>庚金</td>
+<td>戊土</td>
+</tr>
+<tr>
+<td>午</td>
+<td>丁火</td>
+<td>己土</td>
+<td>—</td>
+</tr>
+<tr>
+<td>未</td>
+<td>己土</td>
+<td>丁火</td>
+<td>乙木</td>
+</tr>
+<tr>
+<td>申</td>
+<td>庚金</td>
+<td>壬水</td>
+<td>戊土</td>
+</tr>
+<tr>
+<td>酉</td>
+<td>辛金</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>戌</td>
+<td>戊土</td>
+<td>辛金</td>
+<td>丁火</td>
+</tr>
+<tr>
+<td>亥</td>
+<td>壬水</td>
+<td>甲木</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>藏干的力量权重：本气 &gt; 中气 &gt; 余气。本气约占 60%，中气约 30%，余气约 10%。</p>
+</article>
+</body>
+</html>
