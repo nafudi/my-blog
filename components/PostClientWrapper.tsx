@@ -5,6 +5,12 @@ import Comments from "@/components/Comments";
 import DonationModal from "@/components/DonationModal";
 import { useEffect, useState } from "react";
 
+interface TocItem {
+  id: string;
+  title: string;
+  level: number;
+}
+
 interface PostClientWrapperProps {
   slug: string;
   postTitle: string;
@@ -17,30 +23,50 @@ export default function PostClientWrapper({
   postDescription,
 }: PostClientWrapperProps) {
   const [html, setHtml] = useState<string>("");
-  const toc = [
+  const [styles, setStyles] = useState<string>("");
+  const [toc, setToc] = useState<TocItem[]>([
     { id: "article-content", title: "正文内容", level: 1 },
     { id: "comments-section", title: "留言区", level: 1 },
-  ];
+  ]);
   const activeId = useActiveToc(toc);
 
   useEffect(() => {
     fetch(`/content/${slug}/index.html`)
       .then((res) => res.text())
       .then((text) => {
+        // Extract styles
+        const styleMatch = text.match(/<style[^>]*>([\s\S]*)<\/style>/i);
+        if (styleMatch) {
+          setStyles(styleMatch[1]);
+        }
+        
+        // Extract body content
         const bodyMatch = text.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-        if (bodyMatch) {
-          setHtml(bodyMatch[1]);
-        } else {
-          setHtml(text);
+        const bodyContent = bodyMatch ? bodyMatch[1] : text;
+        setHtml(bodyContent);
+        
+        // Parse TOC from h2 elements
+        const h2Matches = bodyContent.matchAll(/<h2[^>]*>(.*?)<\/h2>/gi);
+        const parsedToc: TocItem[] = [];
+        for (const match of h2Matches) {
+          const title = match[1].replace(/<[^>]*>/g, ""); // Strip HTML tags
+          const id = title.replace(/\s+/g, "-").toLowerCase();
+          parsedToc.push({ id, title, level: 1 });
+        }
+        if (parsedToc.length > 0) {
+          setToc([...parsedToc, { id: "comments-section", title: "留言区", level: 1 }]);
         }
       });
   }, [slug]);
 
   return (
     <div className="flex-1 min-w-0">
+      {/* Inject article styles */}
+      {styles && <style dangerouslySetInnerHTML={{ __html: styles }} />}
+      
       <article
         id="article-content"
-        className="text-[#e8e6e3] leading-relaxed"
+        className="article-content"
         dangerouslySetInnerHTML={{ __html: html }}
       />
 
