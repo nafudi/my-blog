@@ -46,8 +46,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4">
-      <PageTransition>
+    <PageTransition>
+      <div className="min-h-[60vh] flex items-center justify-center">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="font-[family-name:var(--font-ma-shan)] text-4xl text-[#d4a853]">
@@ -130,7 +130,7 @@ export default function RegisterPage() {
             </Link>
           </p>
         </div>
-      </PageTransition>
-    </div>
+      </div>
+    </PageTransition>
   );
 }
