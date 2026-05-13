@@ -8,26 +8,60 @@ interface PostMeta {
   slug: string;
   title: string;
   icon?: string;
+  category?: string;
+}
+
+interface CategoryGroup {
+  name: string;
+  posts: PostMeta[];
 }
 
 export default function PostSidebar() {
   const [posts, setPosts] = useState<PostMeta[]>([]);
+  const [categories, setCategories] = useState<CategoryGroup[]>([]);
+  const [expandedCats, setExpandedCats] = useState<Set<string>>(new Set());
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    // 从API获取文章列表
     fetch("/api/posts")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
           setPosts(data);
+          // 按 category 分组
+          const groupMap: Record<string, PostMeta[]> = {};
+          for (const post of data) {
+            const cat = post.category || "未分类";
+            if (!groupMap[cat]) groupMap[cat] = [];
+            groupMap[cat].push(post);
+          }
+          const groups = Object.entries(groupMap).map(([name, posts]) => ({
+            name,
+            posts,
+          }));
+          setCategories(groups);
+          // 默认全部展开
+          setExpandedCats(new Set(Object.keys(groupMap)));
         }
       })
       .catch(console.error);
   }, []);
 
-  // 关闭侧边栏当点击链接或导航到新页面
+  // 切换分类展开/折叠
+  const toggleCat = (catName: string) => {
+    setExpandedCats((prev) => {
+      const next = new Set(prev);
+      if (next.has(catName)) {
+        next.delete(catName);
+      } else {
+        next.add(catName);
+      }
+      return next;
+    });
+  };
+
+  // 关闭侧边栏当导航到新页面
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
@@ -64,34 +98,75 @@ export default function PostSidebar() {
             📚 文章目录
           </h2>
 
-          {posts.length === 0 ? (
+          {categories.length === 0 && (
             <p className="text-sm text-[#555] px-2">暂无文章</p>
-          ) : (
-            <nav className="space-y-1">
-              {posts.map((post) => {
-                const isActive = pathname === `/posts/${post.slug}`;
-                return (
-                  <Link
-                    key={post.slug}
-                    href={`/posts/${post.slug}`}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
-                      isActive
-                        ? "bg-[rgba(212,168,83,0.15)] text-[#d4a853]"
-                        : "text-[#9a9590] hover:bg-[rgba(212,168,83,0.08)] hover:text-[#e8e6e3]"
+          )}
+
+          <div className="space-y-1">
+            {categories.map((cat) => {
+              const isExpanded = expandedCats.has(cat.name);
+              const isActiveCat = cat.posts.some(
+                (p) => pathname === `/posts/${p.slug}`
+              );
+              return (
+                <div key={cat.name}>
+                  {/* 分类标题 - 可点击展开/折叠 */}
+                  <button
+                    onClick={() => toggleCat(cat.name)}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${
+                      isActiveCat
+                        ? "text-[#d4a853] bg-[rgba(212,168,83,0.1)]"
+                        : "text-[#9a9590] hover:bg-[rgba(212,168,83,0.06)] hover:text-[#e8e6e3]"
                     }`}
                   >
-                    <span className="text-lg">{post.icon || "📄"}</span>
-                    <span className="text-sm font-medium truncate flex-1">
-                      {post.title}
+                    <span
+                      className={`text-xs transition-transform duration-200 ${
+                        isExpanded ? "rotate-90" : ""
+                      }`}
+                    >
+                      ▶
                     </span>
-                    {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#d4a853]" />
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
-          )}
+                    <span className="text-sm font-medium truncate flex-1">
+                      {cat.name}
+                    </span>
+                    <span className="text-xs text-[#555] bg-[rgba(212,168,83,0.08)] px-1.5 py-0.5 rounded-full">
+                      {cat.posts.length}
+                    </span>
+                  </button>
+
+                  {/* 分类下的文章列表 */}
+                  <div
+                    className={`overflow-hidden transition-all duration-200 ${
+                      isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <div className="pl-5 pr-1 py-1 space-y-0.5">
+                      {cat.posts.map((post) => {
+                        const isActive = pathname === `/posts/${post.slug}`;
+                        return (
+                          <Link
+                            key={post.slug}
+                            href={`/posts/${post.slug}`}
+                            className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-all text-sm ${
+                              isActive
+                                ? "bg-[rgba(212,168,83,0.12)] text-[#d4a853]"
+                                : "text-[#9a9590] hover:bg-[rgba(212,168,83,0.06)] hover:text-[#e8e6e3]"
+                            }`}
+                          >
+                            <span className="text-base">{post.icon || "📄"}</span>
+                            <span className="truncate flex-1">{post.title}</span>
+                            {isActive && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#d4a853]" />
+                            )}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
           {/* 分隔线 */}
           <div className="my-6 h-px bg-gradient-to-r from-transparent via-[rgba(212,168,83,0.2)] to-transparent" />
@@ -99,14 +174,14 @@ export default function PostSidebar() {
           {/* 首页链接 */}
           <Link
             href="/"
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm ${
               pathname === "/"
                 ? "bg-[rgba(212,168,83,0.15)] text-[#d4a853]"
                 : "text-[#9a9590] hover:bg-[rgba(212,168,83,0.08)] hover:text-[#e8e6e3]"
             }`}
           >
             <span className="text-lg">🏠</span>
-            <span className="text-sm font-medium">返回首页</span>
+            <span className="font-medium">返回首页</span>
           </Link>
         </div>
 
