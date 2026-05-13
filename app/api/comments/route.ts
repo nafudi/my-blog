@@ -26,15 +26,31 @@ export async function GET(req: NextRequest) {
     orderBy: { createdAt: "desc" },
   });
 
-  const topLevelComments = comments.filter((c) => c.parentId === null);
+  const topLevelComments = comments.filter((c: { parentId: string | null }) => c.parentId === null);
 
-  const result = topLevelComments.map((c) => ({
+  const result = topLevelComments.map((c: {
+    id: string;
+    content: string;
+    createdAt: Date;
+    author?: { name: string | null; email: string | null } | null;
+    replies: Array<{
+      id: string;
+      content: string;
+      createdAt: Date;
+      author?: { name: string | null; email: string | null } | null;
+    }>;
+  }) => ({
     id: c.id,
     content: c.content,
     createdAt: c.createdAt,
     authorName: c.author?.name || undefined,
     authorEmail: c.author?.email || undefined,
-    replies: c.replies.map((r) => ({
+    replies: c.replies.map((r: {
+      id: string;
+      content: string;
+      createdAt: Date;
+      author?: { name: string | null; email: string | null } | null;
+    }) => ({
       id: r.id,
       content: r.content,
       createdAt: r.createdAt,

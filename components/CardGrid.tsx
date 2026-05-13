@@ -12,6 +12,7 @@ export interface PostMeta {
   tags?: string[];
   coverColor?: string;
   icon?: string;
+  category?: string;
 }
 
 interface CardGridProps {
@@ -102,10 +103,44 @@ export default function CardGrid({ posts }: CardGridProps) {
     );
   }
 
+  // 按 category 分组
+  const grouped = posts.reduce<Record<string, PostMeta[]>>((acc, post) => {
+    const cat = post.category || "未分类";
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(post);
+    return acc;
+  }, {});
+
+  // 定义分类顺序（已有的按此顺序，未定义的放最后）
+  const categoryOrder = ["溯源", "杂谈"];
+  const sortedCategories = Object.keys(grouped).sort((a, b) => {
+    const ia = categoryOrder.indexOf(a);
+    const ib = categoryOrder.indexOf(b);
+    if (ia === -1 && ib === -1) return a.localeCompare(b);
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {posts.map((post, i) => (
-        <Card key={post.slug} post={post} index={i} />
+    <div className="space-y-12">
+      {sortedCategories.map((category) => (
+        <section key={category}>
+          <div className="flex items-center gap-3 mb-6">
+            <h3 className="font-[family-name:var(--font-ma-shan)] text-xl text-[#d4a853]">
+              {category}
+            </h3>
+            <span className="text-xs text-[#555] bg-[rgba(212,168,83,0.08)] px-2 py-0.5 rounded-full">
+              {grouped[category].length} 篇
+            </span>
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-[rgba(212,168,83,0.15)] to-transparent" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {grouped[category].map((post, i) => (
+              <Card key={post.slug} post={post} index={i} />
+            ))}
+          </div>
+        </section>
       ))}
     </div>
   );

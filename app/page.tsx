@@ -43,17 +43,6 @@ export default function HomePage() {
 
             {/* 文章列表 */}
             <section>
-              <div className="flex items-center gap-3 mb-8">
-                <h2
-                  className="font-[family-name:var(--font-ma-shan)] text-2xl text-[#d4a853]"
-                >
-                  文章
-                </h2>
-                <span className="text-xs text-[#555] bg-[rgba(212,168,83,0.08)] px-2 py-0.5 rounded-full">
-                  {posts.length} 篇
-                </span>
-              </div>
-
               <CardGrid posts={posts} />
             </section>
           </PageTransition>
