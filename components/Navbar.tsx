@@ -1,15 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { colors, fonts, fontSizes } from "@/lib/theme";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const { data: session, status } = useSession();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -40,10 +39,7 @@ export default function Navbar() {
   };
 
   return (
-    <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+    <nav
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b"
       style={{
         background: "rgba(10,10,15,0.85)",
@@ -71,7 +67,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* 导航链接 + 用户区域 */}
+          {/* Nav links + user */}
           <div className="flex items-center gap-1 sm:gap-4">
             <Link
               href="/"
@@ -84,7 +80,6 @@ export default function Navbar() {
               首页
             </Link>
 
-            {/* 分类导航（带下拉） */}
             {navItems.map((item) => (
               <div key={item.label} className="relative group">
                 <Link
@@ -100,7 +95,6 @@ export default function Navbar() {
                     <path d="M6 8L2 4h8z"/>
                   </svg>
                 </Link>
-                {/* 下拉菜单 */}
                 <div
                   className="absolute top-full left-0 mt-1 w-48 rounded-xl p-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
                   style={{
@@ -122,7 +116,6 @@ export default function Navbar() {
               </div>
             ))}
 
-            {/* 登录状态 */}
             {status === "loading" ? (
               <span className={fontSizes.caption} style={{ color: colors.textTertiary }}>...</span>
             ) : session?.user ? (
@@ -200,6 +193,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </motion.nav>
+    </nav>
   );
 }
