@@ -42,7 +42,7 @@ export default function PostClientWrapper({
 
       {/* 打赏栏 */}
       <div className="flex items-center justify-between mt-8 px-4 py-3 bg-[#12121a]/50 rounded-xl border border-[rgba(212,168,83,0.08)]">
-        <span className="text-sm text-[#555]">
+        <span className="text-sm text-[#aaaaaa]">
           如果觉得有帮助，可以打赏支持作者
         </span>
         <DonationModal postSlug={slug} postTitle={postTitle} />
