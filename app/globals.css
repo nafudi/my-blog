@@ -8,10 +8,10 @@
   --gold-primary: #d4a853;
   --gold-light: #e8c878;
   --gold-dark: #a67c3d;
-  --text-primary: #f0f0f0;
-  --text-secondary: #c0c0c0;
-  --text-tertiary: #909090;
-  --text-muted: #707070;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-tertiary: #e0e0e0;
+  --text-muted: #cccccc;
   --border-color: rgba(212, 168, 83, 0.15);
 }
 
