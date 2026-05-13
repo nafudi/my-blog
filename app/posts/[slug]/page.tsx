@@ -3,6 +3,7 @@ import { getPostBySlug } from "@/lib/posts";
 import Navbar from "@/components/Navbar";
 import PostContentClient from "@/components/PostClientWrapper";
 import PostSidebar from "@/components/PostSidebar";
+import StarBg from "@/components/StarBg";
 
 // 生成静态参数
 export function generateStaticParams() {
@@ -28,6 +29,9 @@ export default async function PostPage({
 
   return (
     <div className="min-h-screen relative">
+      {/* 星空背景 */}
+      <StarBg />
+
       {/* 侧边栏 */}
       <PostSidebar />
 

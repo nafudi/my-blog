@@ -24,11 +24,7 @@ html {
 
 body {
   background-color: transparent;
-  background-image: url('/m31-background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  background: #020205;
   color: var(--text-primary);
   font-family: "Noto Serif SC", "Songti SC", serif;
   -webkit-font-smoothing: antialiased;

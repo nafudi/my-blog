@@ -3,13 +3,15 @@ import Navbar from "@/components/Navbar";
 import CardGrid from "@/components/CardGrid";
 import PostSidebar from "@/components/PostSidebar";
 import PageTransition from "@/components/PageTransition";
+import StarBg from "@/components/StarBg";
 
 export default function HomePage() {
   const posts = getAllPosts();
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* 侧边栏 */}
+      {/* 星空背景 */}
+      <StarBg />
 
       {/* 侧边栏 */}
       <PostSidebar />
