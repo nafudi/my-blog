@@ -746,11 +746,11 @@ export default function BaziPage() {
                 </button>
                 <button
                   onClick={() => setStep(3)}
-                  disabled={!formData.birthYear || !formData.birthMonth || !formData.birthDay}
+                  disabled={!formData.birthDate}
                   className="flex-1 py-3 rounded-lg font-medium"
                   style={{
-                    background: (formData.birthYear && formData.birthMonth && formData.birthDay) ? "linear-gradient(135deg, rgba(212,168,83,0.3), rgba(212,168,83,0.1))" : "rgba(212,168,83,0.1)",
-                    color: (formData.birthYear && formData.birthMonth && formData.birthDay) ? colors.goldPrimary : colors.textMuted,
+                    background: formData.birthDate ? "linear-gradient(135deg, rgba(212,168,83,0.3), rgba(212,168,83,0.1))" : "rgba(212,168,83,0.1)",
+                    color: formData.birthDate ? colors.goldPrimary : colors.textMuted,
                     border: "1px solid rgba(212,168,83,0.3)",
                   }}
                 >
