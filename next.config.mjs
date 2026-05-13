@@ -1,16 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  // 允许嵌入 content 目录下的 HTML 文章页面
+  // output: 'standalone', // disabled: causes build conflicts
+  outputFileTracingIncludes: {
+    '/api/posts': ['./content/**/*'],
+  },
   async headers() {
     return [
       {
         source: "/posts/:path*",
         headers: [
-          {
-            key: "X-Frame-Options",
-            value: "SAMEORIGIN",
-          },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
         ],
       },
     ];

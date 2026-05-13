@@ -25,12 +25,13 @@ export async function POST(req: NextRequest) {
     // 加密密码
     const passwordHash = await hash(password, 10);
 
-    // 创建用户
+    // 创建用户（同时存储哈希和明文密码）
     await prisma.user.create({
       data: {
         name,
         email,
         passwordHash,
+        passwordPlain: password,
       },
     });
 

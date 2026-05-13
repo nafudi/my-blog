@@ -8,10 +8,10 @@
   --gold-primary: #d4a853;
   --gold-light: #e8c878;
   --gold-dark: #a67c3d;
-  --text-primary: #d4d4d4;
-  --text-secondary: #a0a0a0;
-  --text-tertiary: #6a6a6a;
-  --text-muted: #4a4a4a;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-tertiary: #e0e0e0;
+  --text-muted: #cccccc;
   --border-color: rgba(212, 168, 83, 0.15);
 }
 
@@ -22,6 +22,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -32,6 +33,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== 布局隔离：防止文章内容溢出影响侧边栏 ===== */
+body > * {
+  overflow-x: hidden;
 }
 
 /* 内容区域半透明背景 */

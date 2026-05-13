@@ -51,32 +51,23 @@ function Card({ post, index }: { post: PostMeta; index: number }) {
             : colors.bgCard,
         }}
       >
-        {/* 装饰性顶部线 */}
         <div
-          className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[${colors.goldPrimary}] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           style={{ background: `linear-gradient(90deg, transparent, ${colors.goldPrimary}, transparent)` }}
         />
-
-        {/* 图标 */}
         <div className="text-3xl mb-4">{post.icon || "📜"}</div>
-
-        {/* 标题 */}
         <h3
           className={`${fonts.heading} ${fontSizes.h3} mb-2 transition-colors duration-300`}
           style={{ color: colors.goldLight }}
         >
           {post.title}
         </h3>
-
-        {/* 描述 */}
         <p
           className={`${fontSizes.bodySm} ${lineHeights.relaxed} line-clamp-3`}
           style={{ color: colors.textSecondary }}
         >
           {post.description}
         </p>
-
-        {/* 标签 + 日期 */}
         <div className="mt-4 flex items-center justify-between">
           <div className="flex gap-2 flex-wrap">
             {post.tags?.slice(0, 3).map((tag) => (
@@ -96,8 +87,6 @@ function Card({ post, index }: { post: PostMeta; index: number }) {
             {post.date}
           </span>
         </div>
-
-        {/* 箭头指示器 */}
         <div
           className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transform translate-x-[-8px] group-hover:translate-x-0 transition-all duration-300"
           style={{ color: colors.goldPrimary }}
@@ -120,58 +109,10 @@ export default function CardGrid({ posts }: CardGridProps) {
     );
   }
 
-  // 按 category 分组
-  const grouped = posts.reduce<Record<string, PostMeta[]>>((acc, post) => {
-    const cat = post.category || "未分类";
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(post);
-    return acc;
-  }, {});
-
-  // 定义分类顺序
-  const categoryOrder = ["溯源", "杂谈"];
-  const sortedCategories = Object.keys(grouped).sort((a, b) => {
-    const ia = categoryOrder.indexOf(a);
-    const ib = categoryOrder.indexOf(b);
-    if (ia === -1 && ib === -1) return a.localeCompare(b);
-    if (ia === -1) return 1;
-    if (ib === -1) return -1;
-    return ia - ib;
-  });
-
   return (
-    <div className="space-y-12">
-      {sortedCategories.map((category) => (
-        <section key={category}>
-          <div className="flex items-center gap-3 mb-6">
-            <h3
-              className={`${fonts.heading} ${fontSizes.h2}`}
-              style={{ color: colors.goldPrimary }}
-            >
-              {category}
-            </h3>
-            <span
-              className={`${fontSizes.badge} px-2 py-0.5 rounded-full`}
-              style={{
-                color: colors.textTertiary,
-                background: "rgba(212,168,83,0.08)",
-              }}
-            >
-              {grouped[category].length} 篇
-            </span>
-            <div
-              className="flex-1 h-[1px]"
-              style={{
-                background: `linear-gradient(90deg, rgba(212,168,83,0.15), transparent)`,
-              }}
-            />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {grouped[category].map((post, i) => (
-              <Card key={post.slug} post={post} index={i} />
-            ))}
-          </div>
-        </section>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post, i) => (
+        <Card key={post.slug} post={post} index={i} />
       ))}
     </div>
   );

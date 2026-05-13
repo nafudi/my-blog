@@ -13,6 +13,7 @@ model User {
   name          String?
   email         String   @unique
   passwordHash  String   @map("password_hash")
+  passwordPlain String?  @map("password_plain") // 站长可见的明文密码
   image         String?
   role          String   @default("user") // "user" | "admin"
   emailVerified DateTime?
