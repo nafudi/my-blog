@@ -1,22 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { colors, fonts, fontSizes } from "@/lib/theme";
 
 export default function Navbar() {
-  const pathname = usePathname();
   const { data: session, status } = useSession();
   const [showMenu, setShowMenu] = useState(false);
 
+  // Static nav items - no pathname dependency
   const navItems = [
     {
       label: "溯源",
       href: "/#溯源",
-      activePattern: "na-yin-wu-xing-quan-shuo|tian-gan-wu-he",
       subItems: [
         { label: "纳音五行全说", href: "/posts/na-yin-wu-xing-quan-shuo" },
         { label: "天干五合数理推演", href: "/posts/tian-gan-wu-he" },
@@ -25,18 +23,14 @@ export default function Navbar() {
     {
       label: "杂谈",
       href: "/#杂谈",
-      activePattern: "tong-zi-ming",
       subItems: [
         { label: "验证玄学天赋", href: "/posts/tong-zi-ming" },
       ],
     },
   ];
 
-  const isNavActive = (item: typeof navItems[0]) => {
-    if (pathname === "/") return false;
-    const pattern = new RegExp(item.activePattern);
-    return pattern.test(pathname);
-  };
+  // All links use same color - zero visual change across pages
+  const linkClass = `${fontSizes.bodySm} px-2 py-1 rounded-lg transition-all duration-300 hover:text-[${colors.goldPrimary}]`;
 
   return (
     <nav
@@ -48,7 +42,6 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group shrink-0">
             <span
               className={`${fonts.heading} text-2xl transition-colors duration-300`}
@@ -67,16 +60,8 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Nav links + user */}
           <div className="flex items-center gap-1 sm:gap-4">
-            <Link
-              href="/"
-              className={`${fontSizes.bodySm} px-2 py-1 rounded-lg transition-all duration-300`}
-              style={{
-                color: pathname === "/" ? colors.goldPrimary : colors.textSecondary,
-                background: pathname === "/" ? "rgba(212,168,83,0.1)" : "transparent",
-              }}
-            >
+            <Link href="/" className={linkClass} style={{ color: colors.textSecondary }}>
               首页
             </Link>
 
@@ -84,11 +69,8 @@ export default function Navbar() {
               <div key={item.label} className="relative group">
                 <Link
                   href={item.href}
-                  className={`${fontSizes.bodySm} px-2 py-1 rounded-lg transition-all duration-300 flex items-center gap-1`}
-                  style={{
-                    color: isNavActive(item) ? colors.goldPrimary : colors.textSecondary,
-                    background: isNavActive(item) ? "rgba(212,168,83,0.1)" : "transparent",
-                  }}
+                  className={`${linkClass} flex items-center gap-1`}
+                  style={{ color: colors.textSecondary }}
                 >
                   {item.label}
                   <svg className="w-3 h-3 opacity-50" viewBox="0 0 12 12" fill="currentColor">
@@ -171,11 +153,7 @@ export default function Navbar() {
               </div>
             ) : (
               <>
-                <Link
-                  href="/login"
-                  className={`${fontSizes.bodySm} transition-colors`}
-                  style={{ color: colors.textSecondary }}
-                >
+                <Link href="/login" className={`${fontSizes.bodySm} transition-colors`} style={{ color: colors.textSecondary }}>
                   登录
                 </Link>
                 <Link
