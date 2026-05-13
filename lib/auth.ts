@@ -73,5 +73,6 @@ const authConfig: NextAuthConfig = {
   },
 };
 
-// NextAuth v5: 导出 handlers
-export const { handlers } = NextAuth(authConfig);
+// NextAuth v5: 导出 handlers 和 auth
+const { handlers, auth } = NextAuth(authConfig);
+export { handlers, auth };
