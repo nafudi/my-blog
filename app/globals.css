@@ -6,10 +6,12 @@
   --bg-secondary: #12121a;
   --bg-card: #1a1a2e;
   --gold-primary: #d4a853;
-  --gold-light: #c9a84c;
+  --gold-light: #e8c878;
   --gold-dark: #a67c3d;
-  --text-primary: #c8c8c8;
-  --text-secondary: #7a7a7a;
+  --text-primary: #d4d4d4;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #6a6a6a;
+  --text-muted: #4a4a4a;
   --border-color: rgba(212, 168, 83, 0.15);
 }
 

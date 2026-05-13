@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
+import { colors, fonts, fontSizes, lineHeights } from "@/lib/theme";
 
 export interface PostMeta {
   slug: string;
@@ -43,28 +44,35 @@ function Card({ post, index }: { post: PostMeta; index: number }) {
         initial={{ opacity: 0, y: 30 }}
         animate={isVisible ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="card-hover group relative overflow-hidden rounded-2xl bg-[#1a1a2e] p-6 h-full"
+        className="card-hover group relative overflow-hidden rounded-2xl p-6 h-full"
         style={{
           background: post.coverColor
-            ? `linear-gradient(135deg, ${post.coverColor}22 0%, #1a1a2e 100%)`
-            : undefined,
+            ? `linear-gradient(135deg, ${post.coverColor}22 0%, ${colors.bgCard} 100%)`
+            : colors.bgCard,
         }}
       >
         {/* 装饰性顶部线 */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#d4a853] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div
+          className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[${colors.goldPrimary}] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{ background: `linear-gradient(90deg, transparent, ${colors.goldPrimary}, transparent)` }}
+        />
 
         {/* 图标 */}
         <div className="text-3xl mb-4">{post.icon || "📜"}</div>
 
         {/* 标题 */}
         <h3
-          className="font-[family-name:var(--font-ma-shan)] text-xl text-[#c9a84c] mb-2 group-hover:text-[#b8943f] transition-colors duration-300"
+          className={`${fonts.heading} ${fontSizes.h3} mb-2 transition-colors duration-300`}
+          style={{ color: colors.goldLight }}
         >
           {post.title}
         </h3>
 
         {/* 描述 */}
-        <p className="text-sm text-[#8a8a8a] leading-relaxed line-clamp-3">
+        <p
+          className={`${fontSizes.bodySm} ${lineHeights.relaxed} line-clamp-3`}
+          style={{ color: colors.textSecondary }}
+        >
           {post.description}
         </p>
 
@@ -74,17 +82,26 @@ function Card({ post, index }: { post: PostMeta; index: number }) {
             {post.tags?.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="text-xs px-2 py-0.5 rounded-full bg-[rgba(212,168,83,0.12)] text-[#d4a853]"
+                className={`${fontSizes.tag} px-2 py-0.5 rounded-full`}
+                style={{
+                  background: "rgba(212,168,83,0.12)",
+                  color: colors.goldPrimary,
+                }}
               >
                 {tag}
               </span>
             ))}
           </div>
-          <span className="text-xs text-[#5a5a5a]">{post.date}</span>
+          <span className={fontSizes.caption} style={{ color: colors.textTertiary }}>
+            {post.date}
+          </span>
         </div>
 
         {/* 箭头指示器 */}
-        <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transform translate-x-[-8px] group-hover:translate-x-0 transition-all duration-300 text-[#d4a853]">
+        <div
+          className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transform translate-x-[-8px] group-hover:translate-x-0 transition-all duration-300"
+          style={{ color: colors.goldPrimary }}
+        >
           →
         </div>
       </motion.div>
@@ -95,10 +112,10 @@ function Card({ post, index }: { post: PostMeta; index: number }) {
 export default function CardGrid({ posts }: CardGridProps) {
   if (posts.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-[#5a5a5a]">
+      <div className="flex flex-col items-center justify-center py-20" style={{ color: colors.textTertiary }}>
         <span className="text-5xl mb-4">🏗️</span>
-        <p className="font-[family-name:var(--font-ma-shan)] text-lg">还没有文章</p>
-        <p className="text-sm mt-2">快让 AI 帮你创建第一篇炫酷文章吧</p>
+        <p className={`${fonts.heading} ${fontSizes.h4}`}>还没有文章</p>
+        <p className={`${fontSizes.bodySm} mt-2`}>快让 AI 帮你创建第一篇炫酷文章吧</p>
       </div>
     );
   }
@@ -111,7 +128,7 @@ export default function CardGrid({ posts }: CardGridProps) {
     return acc;
   }, {});
 
-  // 定义分类顺序（已有的按此顺序，未定义的放最后）
+  // 定义分类顺序
   const categoryOrder = ["溯源", "杂谈"];
   const sortedCategories = Object.keys(grouped).sort((a, b) => {
     const ia = categoryOrder.indexOf(a);
@@ -127,13 +144,27 @@ export default function CardGrid({ posts }: CardGridProps) {
       {sortedCategories.map((category) => (
         <section key={category}>
           <div className="flex items-center gap-3 mb-6">
-            <h3 className="font-[family-name:var(--font-ma-shan)] text-xl text-[#d4a853]">
+            <h3
+              className={`${fonts.heading} ${fontSizes.h2}`}
+              style={{ color: colors.goldPrimary }}
+            >
               {category}
             </h3>
-            <span className="text-xs text-[#5a5a5a] bg-[rgba(212,168,83,0.08)] px-2 py-0.5 rounded-full">
+            <span
+              className={`${fontSizes.badge} px-2 py-0.5 rounded-full`}
+              style={{
+                color: colors.textTertiary,
+                background: "rgba(212,168,83,0.08)",
+              }}
+            >
               {grouped[category].length} 篇
             </span>
-            <div className="flex-1 h-[1px] bg-gradient-to-r from-[rgba(212,168,83,0.15)] to-transparent" />
+            <div
+              className="flex-1 h-[1px]"
+              style={{
+                background: `linear-gradient(90deg, rgba(212,168,83,0.15), transparent)`,
+              }}
+            />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {grouped[category].map((post, i) => (

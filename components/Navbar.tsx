@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { colors, fonts, fontSizes } from "@/lib/theme";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -16,16 +18,26 @@ export default function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-transparent border-b border-[rgba(212,168,83,0.1)]"
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-transparent border-b"
+      style={{ borderColor: "rgba(212,168,83,0.1)" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <span className="font-[family-name:var(--font-ma-shan)] text-2xl text-[#d4a853] group-hover:text-[#f0d78c] transition-colors duration-300">
+            <span
+              className={`${fonts.heading} text-2xl transition-colors duration-300`}
+              style={{ color: colors.goldPrimary }}
+            >
               易理
             </span>
-            <span className="hidden sm:block text-xs text-[#7a7a7a] border-l border-[rgba(212,168,83,0.2)] pl-3">
+            <span
+              className="hidden sm:block text-xs border-l pl-3"
+              style={{
+                color: colors.textSecondary,
+                borderColor: "rgba(212,168,83,0.2)",
+              }}
+            >
               个人学习博客
             </span>
           </Link>
@@ -35,27 +47,40 @@ export default function Navbar() {
             {/* 首页链接 */}
             <Link
               href="/"
-              className={`text-sm transition-colors duration-300 hover:text-[#d4a853] ${
-                pathname === "/" ? "text-[#d4a853]" : "text-[#7a7a7a]"
-              }`}
+              className={`${fontSizes.bodySm} transition-colors duration-300 hover:text-[${colors.goldPrimary}]`}
+              style={{
+                color: pathname === "/" ? colors.goldPrimary : colors.textSecondary,
+              }}
             >
               首页
             </Link>
 
             {/* 登录状态 */}
             {status === "loading" ? (
-              <span className="text-xs text-[#5a5a5a]">...</span>
+              <span className={fontSizes.caption} style={{ color: colors.textTertiary }}>...</span>
             ) : session?.user ? (
               <div className="relative flex items-center gap-2">
                 {/* 头像 + 名字 */}
                 <button
                   onClick={() => setShowMenu(!showMenu)}
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[rgba(212,168,83,0.12)] hover:bg-[rgba(212,168,83,0.18)] transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors"
+                  style={{
+                    background: "rgba(212,168,83,0.12)",
+                  }}
                 >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4a853] to-[#a67c3d] flex items-center justify-center text-xs text-white font-semibold">
+                  <div
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold"
+                    style={{
+                      background: `linear-gradient(135deg, ${colors.goldPrimary}, ${colors.goldDark})`,
+                      color: "#fff",
+                    }}
+                  >
                     {(session.user.name || session.user.email || "?")[0].toUpperCase()}
                   </div>
-                  <span className="hidden sm:block text-sm text-[#c8c8c8] max-w-[100px] truncate">
+                  <span
+                    className={`hidden sm:block ${fontSizes.bodySm} max-w-[100px] truncate`}
+                    style={{ color: colors.textPrimary }}
+                  >
                     {session.user.name || session.user.email}
                   </span>
                 </button>
@@ -68,14 +93,21 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full right-0 mt-2 w-40 bg-[#12121a] border border-[rgba(212,168,83,0.12)] rounded-xl p-2 shadow-xl"
+                      className="absolute top-full right-0 mt-2 w-40 rounded-xl p-2 shadow-xl"
+                      style={{
+                        background: colors.bgSecondary,
+                        border: "1px solid rgba(212,168,83,0.12)",
+                      }}
                     >
                       <button
                         onClick={() => {
                           signOut({ callbackUrl: "/" });
                           setShowMenu(false);
                         }}
-                        className="w-full text-left text-sm text-[#7a7a7a] hover:text-[#c8c8c8] px-3 py-2 rounded-lg hover:bg-[rgba(255,255,255,0.04)] transition-colors"
+                        className={`w-full text-left ${fontSizes.bodySm} px-3 py-2 rounded-lg transition-colors`}
+                        style={{
+                          color: colors.textSecondary,
+                        }}
                       >
                         退出登录
                       </button>
@@ -87,13 +119,18 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="text-sm text-[#7a7a7a] hover:text-[#d4a853] transition-colors"
+                  className={`${fontSizes.bodySm} transition-colors`}
+                  style={{ color: colors.textSecondary }}
                 >
                   登录
                 </Link>
                 <Link
                   href="/register"
-                  className="text-sm px-3 py-1 rounded-full bg-gradient-to-r from-[#d4a853] to-[#a67c3d] text-[#0a0a0f] hover:opacity-90 transition-opacity"
+                  className={`${fontSizes.bodySm} px-3 py-1 rounded-full transition-opacity hover:opacity-90`}
+                  style={{
+                    background: `linear-gradient(90deg, ${colors.goldPrimary}, ${colors.goldDark})`,
+                    color: colors.bgPrimary,
+                  }}
                 >
                   注册
                 </Link>
@@ -105,5 +142,3 @@ export default function Navbar() {
     </motion.nav>
   );
 }
-
-import { useState } from "react";

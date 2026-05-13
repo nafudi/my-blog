@@ -4,6 +4,7 @@ import CardGrid from "@/components/CardGrid";
 import PostSidebar from "@/components/PostSidebar";
 import PageTransition from "@/components/PageTransition";
 import StarBg from "@/components/StarBg";
+import { colors, fonts, fontSizes, lineHeights } from "@/lib/theme";
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -27,17 +28,26 @@ export default function HomePage() {
             {/* Hero 区域 */}
             <section className="text-center mb-16">
               <h1
-                className="font-[family-name:var(--font-ma-shan)] text-5xl sm:text-7xl mb-4 glow-text"
+                className={`${fonts.heading} ${fontSizes.hero} mb-4 glow-text`}
               >
                 易理
               </h1>
-              <p className="text-[#9a9590] text-lg max-w-xl mx-auto leading-relaxed">
+              <p
+                className={`${fontSizes.body} max-w-xl mx-auto ${lineHeights.relaxed}`}
+                style={{ color: colors.textSecondary }}
+              >
                 探索传统文化的现代表达，用交互与可视化让知识生动起来
               </p>
-              <div className="mt-6 flex items-center justify-center gap-2 text-sm text-[#555]">
-                <span className="w-8 h-[1px] bg-[rgba(212,168,83,0.3)]" />
-                <span>学习 · 分享 · 探索</span>
-                <span className="w-8 h-[1px] bg-[rgba(212,168,83,0.3)]" />
+              <div className="mt-6 flex items-center justify-center gap-2" style={{ color: colors.textMuted }}>
+                <span
+                  className="w-8 h-[1px]"
+                  style={{ background: "rgba(212,168,83,0.3)" }}
+                />
+                <span className={fontSizes.bodySm}>学习 · 分享 · 探索</span>
+                <span
+                  className="w-8 h-[1px]"
+                  style={{ background: "rgba(212,168,83,0.3)" }}
+                />
               </div>
             </section>
 
@@ -48,8 +58,8 @@ export default function HomePage() {
           </PageTransition>
 
           {/* 页脚 */}
-          <footer className="relative z-10 mt-20 pt-8 border-t border-[rgba(212,168,83,0.08)] text-center">
-            <p className="text-xs text-[#444]">
+          <footer className="relative z-10 mt-20 pt-8 border-t text-center" style={{ borderColor: "rgba(212,168,83,0.08)" }}>
+            <p className={fontSizes.caption} style={{ color: colors.textMuted }}>
               Powered by Next.js & Crafted with ✨
             </p>
           </footer>

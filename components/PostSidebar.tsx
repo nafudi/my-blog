@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { colors, fonts, fontSizes } from "@/lib/theme";
 
 interface PostMeta {
   slug: string;
@@ -71,8 +72,13 @@ export default function PostSidebar() {
       {/* 移动端切换按钮 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-1/2 -translate-y-1/2 left-0 z-50 lg:hidden w-8 h-16 bg-[#12121a]/90 backdrop-blur-sm border border-[rgba(212,168,83,0.15)] border-l-0 rounded-r-xl flex items-center justify-center text-[#d4a853] hover:bg-[#1a1a2e] transition-all"
-        style={{ boxShadow: "2px 0 10px rgba(0,0,0,0.3)" }}
+        className="fixed top-1/2 -translate-y-1/2 left-0 z-50 lg:hidden w-8 h-16 backdrop-blur-sm border border-l-0 rounded-r-xl flex items-center justify-center transition-all"
+        style={{
+          background: "rgba(18,18,26,0.9)",
+          borderColor: "rgba(212,168,83,0.15)",
+          color: colors.goldPrimary,
+          boxShadow: "2px 0 10px rgba(0,0,0,0.3)",
+        }}
       >
         <span className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
           {isOpen ? "✕" : "☰"}
@@ -89,17 +95,26 @@ export default function PostSidebar() {
 
       {/* 侧边栏 */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-[#0d0d15]/30 backdrop-blur-md border-r border-[rgba(212,168,83,0.1)] z-40 transition-transform duration-300 overflow-y-auto scrollbar-thin scrollbar-thumb-[rgba(212,168,83,0.3)] scrollbar-track-transparent pt-20 ${
+        className={`fixed top-0 left-0 h-full w-64 backdrop-blur-md border-r z-40 transition-transform duration-300 overflow-y-auto pt-20 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
+        style={{
+          background: "rgba(13,13,21,0.3)",
+          borderColor: "rgba(212,168,83,0.1)",
+        }}
       >
         <div className="p-4">
-          <h2 className="font-[family-name:var(--font-ma-shan)] text-lg text-[#d4a853] mb-4 px-2">
+          <h2
+            className={`${fonts.heading} ${fontSizes.h4} mb-4 px-2`}
+            style={{ color: colors.goldPrimary }}
+          >
             📚 文章目录
           </h2>
 
           {categories.length === 0 && (
-            <p className="text-sm text-[#5a5a5a] px-2">暂无文章</p>
+            <p className={`${fontSizes.bodySm} px-2`} style={{ color: colors.textTertiary }}>
+              暂无文章
+            </p>
           )}
 
           <div className="space-y-1">
@@ -113,11 +128,11 @@ export default function PostSidebar() {
                   {/* 分类标题 - 可点击展开/折叠 */}
                   <button
                     onClick={() => toggleCat(cat.name)}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${
-                      isActiveCat
-                        ? "text-[#d4a853] bg-[rgba(212,168,83,0.1)]"
-                        : "text-[#7a7a7a] hover:bg-[rgba(212,168,83,0.06)] hover:text-[#c8c8c8]"
-                    }`}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${fontSizes.bodySm}`}
+                    style={{
+                      color: isActiveCat ? colors.goldPrimary : colors.textSecondary,
+                      background: isActiveCat ? "rgba(212,168,83,0.1)" : "transparent",
+                    }}
                   >
                     <span
                       className={`text-xs transition-transform duration-200 ${
@@ -126,10 +141,16 @@ export default function PostSidebar() {
                     >
                       ▶
                     </span>
-                    <span className="text-sm font-medium truncate flex-1">
+                    <span className="font-medium truncate flex-1">
                       {cat.name}
                     </span>
-                    <span className="text-xs text-[#5a5a5a] bg-[rgba(212,168,83,0.08)] px-1.5 py-0.5 rounded-full">
+                    <span
+                      className={`${fontSizes.caption} px-1.5 py-0.5 rounded-full`}
+                      style={{
+                        color: colors.textTertiary,
+                        background: "rgba(212,168,83,0.08)",
+                      }}
+                    >
                       {cat.posts.length}
                     </span>
                   </button>
@@ -147,16 +168,19 @@ export default function PostSidebar() {
                           <Link
                             key={post.slug}
                             href={`/posts/${post.slug}`}
-                            className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-all text-sm ${
-                              isActive
-                                ? "bg-[rgba(212,168,83,0.12)] text-[#d4a853]"
-                                : "text-[#7a7a7a] hover:bg-[rgba(212,168,83,0.06)] hover:text-[#c8c8c8]"
-                            }`}
+                            className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-all ${fontSizes.bodySm}`}
+                            style={{
+                              color: isActive ? colors.goldPrimary : colors.textSecondary,
+                              background: isActive ? "rgba(212,168,83,0.12)" : "transparent",
+                            }}
                           >
                             <span className="text-base">{post.icon || "📄"}</span>
                             <span className="truncate flex-1">{post.title}</span>
                             {isActive && (
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#d4a853]" />
+                              <span
+                                className="w-1.5 h-1.5 rounded-full"
+                                style={{ background: colors.goldPrimary }}
+                              />
                             )}
                           </Link>
                         );
@@ -169,16 +193,21 @@ export default function PostSidebar() {
           </div>
 
           {/* 分隔线 */}
-          <div className="my-6 h-px bg-gradient-to-r from-transparent via-[rgba(212,168,83,0.2)] to-transparent" />
+          <div
+            className="my-6 h-px"
+            style={{
+              background: "linear-gradient(90deg, transparent, rgba(212,168,83,0.2), transparent)",
+            }}
+          />
 
           {/* 首页链接 */}
           <Link
             href="/"
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm ${
-              pathname === "/"
-                ? "bg-[rgba(212,168,83,0.15)] text-[#d4a853]"
-                : "text-[#7a7a7a] hover:bg-[rgba(212,168,83,0.08)] hover:text-[#c8c8c8]"
-            }`}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${fontSizes.bodySm}`}
+            style={{
+              color: pathname === "/" ? colors.goldPrimary : colors.textSecondary,
+              background: pathname === "/" ? "rgba(212,168,83,0.15)" : "transparent",
+            }}
           >
             <span className="text-lg">🏠</span>
             <span className="font-medium">返回首页</span>
@@ -187,8 +216,8 @@ export default function PostSidebar() {
 
         {/* 底部装饰 */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
-          <div className="text-center text-xs text-[#333]">
-            <p>✦ 探索传统文化</p>
+          <div className="text-center" style={{ color: colors.textMuted }}>
+            <p className={fontSizes.caption}>✦ 探索传统文化</p>
           </div>
         </div>
       </aside>
