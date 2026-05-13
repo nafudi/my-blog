@@ -45,7 +45,7 @@ export default async function PostPage({
             {post.tags?.map((tag) => (
               <span
                 key={tag}
-                className="text-xs px-3 py-1 rounded-full bg-[rgba(212,168,83,0.12)] text-[#d4a853]"
+                className="text-xs px-3 py-1 rounded-full bg-[rgba(212,168,83,0.12)] text-[#ffffff]"
               >
                 {tag}
               </span>
@@ -53,16 +53,16 @@ export default async function PostPage({
           </div>
 
           <h1
-            className="font-[family-name:var(--font-ma-shan)] text-3xl sm:text-5xl text-[#d4a853] mb-3"
+            className="font-[family-name:var(--font-ma-shan)] text-3xl sm:text-5xl text-[#ffffff] mb-3"
           >
             {post.title}
           </h1>
 
-          <p className="text-[#9a9590] text-lg max-w-2xl leading-relaxed">
+          <p className="text-[#cccccc] text-lg max-w-2xl leading-relaxed">
             {post.description}
           </p>
 
-          <div className="mt-4 text-xs text-[#555]">
+          <div className="mt-4 text-xs text-[#aaaaaa]">
             发布于 {post.date}
           </div>
         </header>
@@ -80,7 +80,7 @@ export default async function PostPage({
         <footer className="relative z-10 mt-8 pt-6 border-t border-[rgba(212,168,83,0.08)] text-center px-4 pb-8">
           <a
             href="/"
-            className="text-sm text-[#9a9590] hover:text-[#d4a853] transition-colors duration-300"
+            className="text-sm text-[#cccccc] hover:text-[#ffffff] transition-colors duration-300"
           >
             ← 返回首页
           </a>
