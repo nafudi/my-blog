@@ -1,3 +1,4 @@
+import NextAuth from "next-auth";
 import type { NextAuthConfig, DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
@@ -72,4 +73,5 @@ const authConfig: NextAuthConfig = {
   },
 };
 
-export default authConfig;
+// NextAuth v5: 导出 handlers
+export const { handlers } = NextAuth(authConfig);
