@@ -42,7 +42,7 @@ function Sidebar({ toc, activeId }: SidebarProps) {
           >
             <div className="mb-6">
               <h2
-                className="font-[family-name:var(--font-ma-shan)] text-lg text-[#d4a853] mb-1"
+                className="font-[family-name:var(--font-ma-shan)] text-lg text-[#ffffff] mb-1"
               >
                 目录
               </h2>
@@ -50,7 +50,7 @@ function Sidebar({ toc, activeId }: SidebarProps) {
             </div>
 
             {toc.length === 0 ? (
-              <p className="text-sm text-[#555]">暂无目录</p>
+              <p className="text-sm text-[#aaaaaa]">暂无目录</p>
             ) : (
               <nav>
                 <ul className="space-y-2">
@@ -63,8 +63,8 @@ function Sidebar({ toc, activeId }: SidebarProps) {
                         }}
                         className={`block text-sm py-1 px-3 rounded-lg transition-all duration-200 ${
                           activeId === item.id
-                            ? "bg-[rgba(212,168,83,0.15)] text-[#d4a853] border-l-2 border-[#d4a853]"
-                            : "text-[#9a9590] hover:text-[#e8e6e3] hover:bg-[rgba(255,255,255,0.03)]"
+                            ? "bg-[rgba(212,168,83,0.15)] text-[#ffffff] border-l-2 border-[#d4a853]"
+                            : "text-[#cccccc] hover:text-[#e8e6e3] hover:bg-[rgba(255,255,255,0.03)]"
                         }`}
                         style={{ paddingLeft: `${(item.level - 1) * 12 + 12}px` }}
                       >
