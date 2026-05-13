@@ -17,13 +17,149 @@ interface PostClientWrapperProps {
   postDescription?: string;
 }
 
+// ========== CSS 作用域隔离工具 ==========
+
+/**
+ * 将文章提取的 CSS 选择器限定在 .article-content 作用域内，
+ * 防止文章样式泄漏影响导航栏、侧边栏等全局组件。
+ */
+function scopeArticleStyles(rawCSS: string): string {
+  // 移除 CSS 注释
+  let css = rawCSS.replace(/\/\*[\s\S]*?\*\//g, "");
+  return scopeCSSBlock(css);
+}
+
+function scopeCSSBlock(css: string): string {
+  let result = "";
+  let i = 0;
+
+  while (i < css.length) {
+    // 保留空白字符
+    while (i < css.length && /\s/.test(css[i]) && css[i] !== "{") {
+      result += css[i];
+      i++;
+    }
+    if (i >= css.length) break;
+
+    // 处理 @-规则
+    if (css[i] === "@") {
+      const atMatch = css.substring(i).match(
+        /^(media|keyframes|supports|font-face|import|charset)\b/
+      );
+      if (atMatch) {
+        const ruleType = atMatch[1];
+        const ruleStart = i;
+
+        // 找到开括号
+        let j = i;
+        while (j < css.length && css[j] !== "{") j++;
+        const prelude = css.substring(i, j + 1);
+        j++;
+
+        // 找到匹配的闭括号
+        let depth = 1;
+        while (j < css.length && depth > 0) {
+          if (css[j] === "{") depth++;
+          if (css[j] === "}") depth--;
+          j++;
+        }
+
+        const innerContent = css.substring(ruleStart + prelude.length, j - 1);
+
+        if (ruleType === "keyframes") {
+          // keyframes 不需要作用域化
+          result += css.substring(ruleStart, j);
+        } else {
+          // @media 等块内部递归作用域化
+          const scopedInner = scopeCSSBlock(innerContent);
+          result += prelude + scopedInner + "}";
+        }
+        i = j;
+      } else {
+        result += css[i];
+        i++;
+      }
+    } else {
+      // 普通选择器块
+      let j = i;
+      while (j < css.length && css[j] !== "{") j++;
+
+      if (j >= css.length) {
+        result += css.substring(i);
+        break;
+      }
+
+      const selectorPart = css.substring(i, j).trim();
+      j++; // 跳过 {
+
+      // 找到匹配的闭括号
+      let depth = 1;
+      while (j < css.length && depth > 0) {
+        if (css[j] === "{") depth++;
+        if (css[j] === "}") depth--;
+        j++;
+      }
+
+      const declarations = css.substring(i + selectorPart.length + 1, j - 1);
+
+      // 检查是否为危险的全局选择器 —— 直接丢弃
+      const selectors = selectorPart.split(",").map((s) => s.trim());
+      const isDangerous = selectors.some((s) =>
+        /^(?:\*|body|html|#bg-canvas|\.container)$/.test(s)
+      );
+
+      if (isDangerous) {
+        // 跳过此规则
+      } else {
+        // 为每个选择器添加 .article-content 前缀
+        const scopedSelectors = selectors
+          .map((s) => {
+            if (!s) return s;
+            if (s.startsWith(".article-content")) return s;
+            return `.article-content ${s}`;
+          })
+          .join(", ");
+
+        result += scopedSelectors + "{" + declarations + "}";
+      }
+
+      i = j;
+    }
+  }
+
+  return result;
+}
+
+// ========== HTML 清理工具 ==========
+
+/**
+ * 清理文章 HTML 中的结构性元素：
+ * - 移除 <canvas> 元素（文章自带背景，博客已有 StarBg）
+ * - 移除 <script> 元素（防止脚本干扰博客）
+ * - 展开最外层 .container 包装（避免双层容器嵌套）
+ */
+function cleanArticleHTML(html: string): string {
+  // 移除 script 标签
+  let cleaned = html.replace(/<script[\s\S]*?<\/script>/gi, "");
+  // 移除 canvas 标签
+  cleaned = cleaned.replace(/<canvas[\s\S]*?<\/canvas>/gi, "");
+  // 展开最外层 .container
+  cleaned = cleaned.replace(
+    /<div\s+class\s*=\s*["'][^"']*\bcontainer\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i,
+    "$1"
+  );
+  return cleaned.trim();
+}
+
+// ========== 组件 ==========
+
 export default function PostClientWrapper({
   slug,
   postTitle,
   postDescription,
 }: PostClientWrapperProps) {
   const [html, setHtml] = useState<string>("");
-  const [styles, setStyles] = useState<string>("");
+  const [scopedStyles, setScopedStyles] = useState<string>("");
   const [toc, setToc] = useState<TocItem[]>([
     { id: "article-content", title: "正文内容", level: 1 },
     { id: "comments-section", title: "留言区", level: 1 },
@@ -34,16 +170,21 @@ export default function PostClientWrapper({
     fetch(`/content/${slug}/index.html`)
       .then((res) => res.text())
       .then((text) => {
+        // 提取文章样式并作用域化
         const styleMatch = text.match(/<style[^>]*>([\s\S]*)<\/style>/i);
         if (styleMatch) {
-          setStyles(styleMatch[1]);
+          const scoped = scopeArticleStyles(styleMatch[1]);
+          setScopedStyles(scoped);
         }
-        
+
+        // 提取 body 内容并清理
         const bodyMatch = text.match(/<body[^>]*>([\s\S]*)<\/body>/i);
         const bodyContent = bodyMatch ? bodyMatch[1] : text;
-        setHtml(bodyContent);
-        
-        const h2Matches = bodyContent.matchAll(/<h2[^>]*>(.*?)<\/h2>/gi);
+        const cleaned = cleanArticleHTML(bodyContent);
+        setHtml(cleaned);
+
+        // 解析目录
+        const h2Matches = cleaned.matchAll(/<h2[^>]*>(.*?)<\/h2>/gi);
         const parsedToc: TocItem[] = [];
         for (const match of h2Matches) {
           const title = match[1].replace(/<[^>]*>/g, "");
@@ -57,13 +198,13 @@ export default function PostClientWrapper({
   }, [slug]);
 
   return (
-    <div className="flex-1 min-w-0">
-      {/* 统一文章样式注入 */}
+    <div className="flex-1 min-w-0 overflow-x-hidden">
+      {/* 统一文章样式注入（已限定作用域） */}
       <style>{articleBaseCSS}</style>
-      
-      {/* 文章自定义样式（权重高于基础样式） */}
-      {styles && <style dangerouslySetInnerHTML={{ __html: styles }} />}
-      
+
+      {/* 文章自定义样式（经过作用域化处理，不会泄漏到外部组件） */}
+      {scopedStyles && <style dangerouslySetInnerHTML={{ __html: scopedStyles }} />}
+
       <article
         id="article-content"
         className="article-content"
@@ -92,6 +233,7 @@ const articleBaseCSS = `
   line-height: 1.9;
   font-size: 1.05rem;
   max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* 标题层级 */
@@ -176,8 +318,6 @@ const articleBaseCSS = `
   border-collapse: collapse;
   margin: 1.5em 0;
   font-size: 0.95em;
-  overflow-x: auto;
-  display: block;
 }
 .article-content thead {
   background: rgba(212,168,83,0.1);
