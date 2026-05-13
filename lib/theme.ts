@@ -6,10 +6,10 @@
 // ========== 文字颜色配置 ==========
 export const colors = {
   // 主文字（标题、重要内容）
-  textPrimary: "#d4d4d4",      // 主要文字 - 浅灰白，清晰但不刺眼
-  textSecondary: "#a0a0a0",    // 次要文字 - 中灰，描述、副标题
-  textTertiary: "#6a6a6a",     // 辅助文字 - 深灰，日期、徽章
-  textMuted: "#4a4a4a",        // 弱化文字 - 更深灰，装饰性文字
+  textPrimary: "#ffffff",      // 主要文字 - 纯白
+  textSecondary: "#ffffff",    // 次要文字 - 纯白
+  textTertiary: "#d0d0d0",     // 辅助文字 - 亮灰
+  textMuted: "#aaaaaa",        // 弱化文字 - 中灰
 
   // 金色系（品牌色）
   goldPrimary: "#d4a853",      // 主金色 - 标题、高亮
