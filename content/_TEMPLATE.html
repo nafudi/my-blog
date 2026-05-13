@@ -6,31 +6,22 @@
 <title>文章标题</title>
 <style>
 /* ========================================
-   博客文章统一样式 v2.0
-   用法：替换此 style 标签内容后，写文章正文
-   ======================================== */
+   博客文章统一样式 v3.0（安全版）
+   所有选择器限定在 .article-wrapper 内
+   ════════════════════════════════════════ */
 
-/* 全局 */
-body {
-  margin: 0;
-  padding: 0;
-  background: transparent; /* 博客框架提供背景 */
+.article-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
   color: #e8e6e3;
   font-family: "Noto Serif SC", "Source Han Serif CN", "STSong", serif;
   line-height: 1.9;
   font-size: 1.05rem;
 }
-* { box-sizing: border-box; }
-
-/* 内容容器 */
-.article-wrapper {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem 0;
-}
 
 /* ─── 标题层级 ─── */
-h1 {
+.article-wrapper h1 {
   font-family: "Ma Shan Zheng", cursive;
   font-size: 2.2em;
   font-weight: 700;
@@ -41,7 +32,7 @@ h1 {
   border-bottom: 2px solid rgba(212,168,83,0.2);
   line-height: 1.3;
 }
-h2 {
+.article-wrapper h2 {
   font-size: 1.5em;
   font-weight: 700;
   color: #d4a853;
@@ -50,14 +41,14 @@ h2 {
   border-left: 3px solid #d4a853;
   line-height: 1.4;
 }
-h3 {
+.article-wrapper h3 {
   font-size: 1.2em;
   font-weight: 600;
   color: #e0c878;
   margin: 1.5em 0 0.8em;
   line-height: 1.4;
 }
-h4 {
+.article-wrapper h4 {
   font-size: 1.05em;
   font-weight: 600;
   color: #cccccc;
@@ -65,31 +56,31 @@ h4 {
 }
 
 /* ─── 段落 ─── */
-p {
+.article-wrapper p {
   margin: 0.8em 0;
   text-align: justify;
 }
 
 /* ─── 链接 ─── */
-a {
+.article-wrapper a {
   color: #d4a853;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-a:hover { color: #e8c878; }
+.article-wrapper a:hover { color: #e8c878; }
 
 /* ─── 列表 ─── */
-ul, ol {
+.article-wrapper ul, .article-wrapper ol {
   padding-left: 1.5em;
   margin: 0.8em 0;
 }
-li {
+.article-wrapper li {
   margin: 0.3em 0;
   line-height: 1.7;
 }
 
 /* ─── 引用 ─── */
-blockquote {
+.article-wrapper blockquote {
   border-left: 3px solid rgba(212,168,83,0.3);
   margin: 1em 0;
   padding: 0.5em 1em;
@@ -99,14 +90,14 @@ blockquote {
 }
 
 /* ─── 表格 ─── */
-table {
+.article-wrapper table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5em 0;
   font-size: 0.95em;
 }
-thead { background: rgba(212,168,83,0.1); }
-th {
+.article-wrapper thead { background: rgba(212,168,83,0.1); }
+.article-wrapper th {
   padding: 0.7em 0.8em;
   text-align: left;
   color: #d4a853;
@@ -114,22 +105,22 @@ th {
   border-bottom: 2px solid rgba(212,168,83,0.3);
   white-space: nowrap;
 }
-td {
+.article-wrapper td {
   padding: 0.6em 0.8em;
   border-bottom: 1px solid rgba(212,168,83,0.08);
   vertical-align: top;
 }
-tr:hover td { background: rgba(212,168,83,0.03); }
+.article-wrapper tr:hover td { background: rgba(212,168,83,0.03); }
 
 /* ─── 代码 ─── */
-code {
+.article-wrapper code {
   background: rgba(212,168,83,0.1);
   padding: 0.15em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;
   color: #e8c878;
 }
-pre {
+.article-wrapper pre {
   background: rgba(10,10,15,0.8);
   border: 1px solid rgba(212,168,83,0.15);
   border-radius: 12px;
@@ -137,14 +128,14 @@ pre {
   overflow-x: auto;
   margin: 1em 0;
 }
-pre code {
+.article-wrapper pre code {
   background: none;
   padding: 0;
   color: #e8e6e3;
 }
 
 /* ─── 分割线 ─── */
-hr {
+.article-wrapper hr {
   border: none;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(212,168,83,0.2), transparent);
@@ -152,7 +143,7 @@ hr {
 }
 
 /* ─── 图片 ─── */
-img {
+.article-wrapper img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
@@ -160,14 +151,14 @@ img {
 }
 
 /* ─── 强调 ─── */
-strong { color: #ffffff; font-weight: 600; }
+.article-wrapper strong { color: #ffffff; font-weight: 600; }
 
 /* ─── 移动端适配 ─── */
 @media (max-width: 640px) {
-  body { font-size: 1rem; }
-  h1 { font-size: 1.6em; }
-  h2 { font-size: 1.3em; }
-  h3 { font-size: 1.1em; }
+  .article-wrapper { font-size: 1rem; }
+  .article-wrapper h1 { font-size: 1.6em; }
+  .article-wrapper h2 { font-size: 1.3em; }
+  .article-wrapper h3 { font-size: 1.1em; }
 }
 </style>
 </head>
@@ -178,18 +169,18 @@ strong { color: #ffffff; font-weight: 600; }
   ═══════════════════════════════════
   文章正文从这里开始写
   ═══════════════════════════════════
-  
+
   标题层级规范：
   <h1> = 文章主标题（每个文件只有 1 个）
   <h2> = 一级章节（如："一、太玄数"）
   <h3> = 二级章节（如："1. 海中金"）
   <h4> = 三级章节（几乎不用）
-  
+
   编号风格统一：
   h2 → "一、章节名" / "二、章节名"
   h3 → "1. 子节名" / "（一）子节名"
   -->
-  
+
   <h1>文章主标题</h1>
 
   <!-- 导读/摘要 -->
