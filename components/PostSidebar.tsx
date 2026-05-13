@@ -30,7 +30,6 @@ export default function PostSidebar() {
       .then((data) => {
         if (Array.isArray(data)) {
           setPosts(data);
-          // 按 category 分组
           const groupMap: Record<string, PostMeta[]> = {};
           for (const post of data) {
             const cat = post.category || "未分类";
@@ -42,27 +41,21 @@ export default function PostSidebar() {
             posts,
           }));
           setCategories(groups);
-          // 默认全部展开
           setExpandedCats(new Set(Object.keys(groupMap)));
         }
       })
       .catch(console.error);
   }, []);
 
-  // 切换分类展开/折叠
   const toggleCat = (catName: string) => {
     setExpandedCats((prev) => {
       const next = new Set(prev);
-      if (next.has(catName)) {
-        next.delete(catName);
-      } else {
-        next.add(catName);
-      }
+      if (next.has(catName)) next.delete(catName);
+      else next.add(catName);
       return next;
     });
   };
 
-  // 关闭侧边栏当导航到新页面
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
@@ -72,7 +65,7 @@ export default function PostSidebar() {
       {/* 移动端切换按钮 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-1/2 -translate-y-1/2 left-0 z-50 lg:hidden w-8 h-16 backdrop-blur-sm border border-l-0 rounded-r-xl flex items-center justify-center transition-all"
+        className="fixed top-20 left-0 z-50 lg:hidden w-8 h-16 backdrop-blur-sm border border-l-0 rounded-r-xl flex items-center justify-center transition-all"
         style={{
           background: "rgba(18,18,26,0.9)",
           borderColor: "rgba(212,168,83,0.15)",
@@ -93,17 +86,17 @@ export default function PostSidebar() {
         />
       )}
 
-      {/* 侧边栏 */}
+      {/* 侧边栏 - 从导航栏下方开始，不再重叠 */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 backdrop-blur-md border-r z-40 transition-transform duration-300 overflow-y-auto pt-20 ${
+        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 backdrop-blur-xl border-r z-40 transition-transform duration-300 overflow-y-auto ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
         style={{
-          background: "rgba(13,13,21,0.3)",
+          background: "rgba(13,13,21,0.85)",
           borderColor: "rgba(212,168,83,0.1)",
         }}
       >
-        <div className="p-4">
+        <div className="p-4 pt-4">
           <h2
             className={`${fonts.heading} ${fontSizes.h4} mb-4 px-2`}
             style={{ color: colors.goldPrimary }}
@@ -125,7 +118,6 @@ export default function PostSidebar() {
               );
               return (
                 <div key={cat.name}>
-                  {/* 分类标题 - 可点击展开/折叠 */}
                   <button
                     onClick={() => toggleCat(cat.name)}
                     className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${fontSizes.bodySm}`}
@@ -155,7 +147,6 @@ export default function PostSidebar() {
                     </span>
                   </button>
 
-                  {/* 分类下的文章列表 */}
                   <div
                     className={`overflow-hidden transition-all duration-200 ${
                       isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
@@ -192,7 +183,6 @@ export default function PostSidebar() {
             })}
           </div>
 
-          {/* 分隔线 */}
           <div
             className="my-6 h-px"
             style={{
@@ -200,7 +190,6 @@ export default function PostSidebar() {
             }}
           />
 
-          {/* 首页链接 */}
           <Link
             href="/"
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${fontSizes.bodySm}`}
@@ -214,7 +203,6 @@ export default function PostSidebar() {
           </Link>
         </div>
 
-        {/* 底部装饰 */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <div className="text-center" style={{ color: colors.textMuted }}>
             <p className={fontSizes.caption}>✦ 探索传统文化</p>
