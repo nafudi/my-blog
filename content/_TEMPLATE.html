@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文章标题</title>
+<style>
+/* ========================================
+   博客文章统一样式 v2.0
+   用法：替换此 style 标签内容后，写文章正文
+   ======================================== */
+
+/* 全局 */
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent; /* 博客框架提供背景 */
+  color: #e8e6e3;
+  font-family: "Noto Serif SC", "Source Han Serif CN", "STSong", serif;
+  line-height: 1.9;
+  font-size: 1.05rem;
+}
+* { box-sizing: border-box; }
+
+/* 内容容器 */
+.article-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+/* ─── 标题层级 ─── */
+h1 {
+  font-family: "Ma Shan Zheng", cursive;
+  font-size: 2.2em;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 0 0.8em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid rgba(212,168,83,0.2);
+  line-height: 1.3;
+}
+h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #d4a853;
+  margin: 2em 0 1em;
+  padding-left: 0.6em;
+  border-left: 3px solid #d4a853;
+  line-height: 1.4;
+}
+h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #e0c878;
+  margin: 1.5em 0 0.8em;
+  line-height: 1.4;
+}
+h4 {
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #cccccc;
+  margin: 1.2em 0 0.6em;
+}
+
+/* ─── 段落 ─── */
+p {
+  margin: 0.8em 0;
+  text-align: justify;
+}
+
+/* ─── 链接 ─── */
+a {
+  color: #d4a853;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:hover { color: #e8c878; }
+
+/* ─── 列表 ─── */
+ul, ol {
+  padding-left: 1.5em;
+  margin: 0.8em 0;
+}
+li {
+  margin: 0.3em 0;
+  line-height: 1.7;
+}
+
+/* ─── 引用 ─── */
+blockquote {
+  border-left: 3px solid rgba(212,168,83,0.3);
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  background: rgba(212,168,83,0.05);
+  border-radius: 0 8px 8px 0;
+  color: #cccccc;
+}
+
+/* ─── 表格 ─── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95em;
+}
+thead { background: rgba(212,168,83,0.1); }
+th {
+  padding: 0.7em 0.8em;
+  text-align: left;
+  color: #d4a853;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(212,168,83,0.3);
+  white-space: nowrap;
+}
+td {
+  padding: 0.6em 0.8em;
+  border-bottom: 1px solid rgba(212,168,83,0.08);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(212,168,83,0.03); }
+
+/* ─── 代码 ─── */
+code {
+  background: rgba(212,168,83,0.1);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #e8c878;
+}
+pre {
+  background: rgba(10,10,15,0.8);
+  border: 1px solid rgba(212,168,83,0.15);
+  border-radius: 12px;
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+pre code {
+  background: none;
+  padding: 0;
+  color: #e8e6e3;
+}
+
+/* ─── 分割线 ─── */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,83,0.2), transparent);
+  margin: 2em 0;
+}
+
+/* ─── 图片 ─── */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+
+/* ─── 强调 ─── */
+strong { color: #ffffff; font-weight: 600; }
+
+/* ─── 移动端适配 ─── */
+@media (max-width: 640px) {
+  body { font-size: 1rem; }
+  h1 { font-size: 1.6em; }
+  h2 { font-size: 1.3em; }
+  h3 { font-size: 1.1em; }
+}
+</style>
+</head>
+<body>
+<article class="article-wrapper">
+
+  <!--
+  ═══════════════════════════════════
+  文章正文从这里开始写
+  ═══════════════════════════════════
+  
+  标题层级规范：
+  <h1> = 文章主标题（每个文件只有 1 个）
+  <h2> = 一级章节（如："一、太玄数"）
+  <h3> = 二级章节（如："1. 海中金"）
+  <h4> = 三级章节（几乎不用）
+  
+  编号风格统一：
+  h2 → "一、章节名" / "二、章节名"
+  h3 → "1. 子节名" / "（一）子节名"
+  -->
+  
+  <h1>文章主标题</h1>
+
+  <!-- 导读/摘要 -->
+  <p>文章摘要或导读段落...</p>
+
+  <hr>
+
+  <!-- 第一章 -->
+  <h2>一、章节标题</h2>
+  <p>章节正文内容...</p>
+
+  <!-- 子节 -->
+  <h3>1. 子节标题</h3>
+  <p>子节内容...</p>
+
+  <!-- 表格示例 -->
+  <table>
+    <thead>
+      <tr>
+        <th>列1</th>
+        <th>列2</th>
+        <th>列3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>数据</td>
+        <td>数据</td>
+        <td>数据</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 引用示例 -->
+  <blockquote>
+    引用文字内容...
+  </blockquote>
+
+  <hr>
+
+  <!-- 第二章 -->
+  <h2>二、章节标题</h2>
+  <p>章节正文内容...</p>
+
+  <!-- 代码示例 -->
+  <pre><code>// 代码块
+console.log("hello");</code></pre>
+
+  <hr>
+
+  <!-- 结尾 -->
+  <h2>结语</h2>
+  <p>总结内容...</p>
+
+</article>
+</body>
+</html>
