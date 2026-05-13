@@ -40,7 +40,7 @@ export default async function PostPage({
         <Navbar />
 
         {/* 页面头部 */}
-        <header className="relative z-10 pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+        <header className="relative z-10 pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           <div className="mb-2 flex gap-2 flex-wrap">
             {post.tags?.map((tag) => (
               <span
@@ -68,7 +68,7 @@ export default async function PostPage({
         </header>
 
         {/* 主内容区 */}
-        <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pb-16">
+        <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16">
           <PostContentClient
             slug={slug}
             postTitle={post.title}
