@@ -15,32 +15,23 @@ interface Star {
   twinkleOffset: number;
 }
 
-interface ShootingStar {
-  x: number;
-  y: number;
-  length: number;
-  speed: number;
-  opacity: number;
-  angle: number;
-}
-
 export default function StarBg({ className = "" }: StarBgProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
   const starsRef = useRef<Star[]>([]);
-  const shootingStarsRef = useRef<ShootingStar[]>([]);
   const animFrameRef = useRef<number>(0);
-  const lastShootingStarRef = useRef<number>(0);
 
   const initStars = useCallback((width: number, height: number) => {
-    const count = Math.floor((width * height) / 3000); // 根据屏幕大小调整星星数量
+    // 减少星星数量，约每3000像素一个星星
+    const count = Math.floor((width * height) / 8000);
     const arr: Star[] = [];
     for (let i = 0; i < count; i++) {
       arr.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.3,
-        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.4 + 0.2,
+        twinkleSpeed: Math.random() * 0.015 + 0.003,
         twinkleOffset: Math.random() * Math.PI * 2,
       });
     }
@@ -53,6 +44,15 @@ export default function StarBg({ className = "" }: StarBgProps) {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
+    // 加载背景图片
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      imageRef.current = img;
+    };
+    // 使用深色宇宙背景图
+    img.src = "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=1920&q=80";
 
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -69,110 +69,78 @@ export default function StarBg({ className = "" }: StarBgProps) {
     let width = canvas.getBoundingClientRect().width;
     let height = canvas.getBoundingClientRect().height;
 
-    const createShootingStar = () => {
-      if (Math.random() > 0.98) { // 约2%的概率生成流星
-        shootingStarsRef.current.push({
-          x: Math.random() * width * 1.5,
-          y: Math.random() * height * 0.3,
-          length: Math.random() * 80 + 40,
-          speed: Math.random() * 8 + 6,
-          opacity: Math.random() * 0.6 + 0.4,
-          angle: Math.PI / 4 + Math.random() * 0.3,
-        });
-      }
-    };
-
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // 深空渐变背景
-      const gradient = ctx.createRadialGradient(
-        width * 0.3, height * 0.2, 0,
-        width * 0.5, height * 0.5, width * 0.8
-      );
-      gradient.addColorStop(0, "#0d1b2a");
-      gradient.addColorStop(0.5, "#0a0a12");
-      gradient.addColorStop(1, "#050508");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
+      // 绘制背景图片
+      if (imageRef.current) {
+        // 计算缩放以覆盖整个画布
+        const imgRatio = imageRef.current.width / imageRef.current.height;
+        const canvasRatio = width / height;
 
-      // 绘制星星
+        let drawWidth, drawHeight, offsetX, offsetY;
+
+        if (canvasRatio > imgRatio) {
+          drawWidth = width;
+          drawHeight = width / imgRatio;
+          offsetX = 0;
+          offsetY = (height - drawHeight) / 2;
+        } else {
+          drawHeight = height;
+          drawWidth = height * imgRatio;
+          offsetX = (width - drawWidth) / 2;
+          offsetY = 0;
+        }
+
+        // 添加暗色叠加层
+        ctx.fillStyle = "rgba(5, 5, 10, 0.3)";
+        ctx.fillRect(0, 0, width, height);
+
+        // 绘制图片
+        ctx.globalAlpha = 0.7;
+        ctx.drawImage(imageRef.current, offsetX, offsetY, drawWidth, drawHeight);
+        ctx.globalAlpha = 1;
+      } else {
+        // 如果图片未加载，使用深色渐变
+        const gradient = ctx.createRadialGradient(
+          width * 0.4, height * 0.3, 0,
+          width * 0.5, height * 0.5, Math.max(width, height) * 0.8
+        );
+        gradient.addColorStop(0, "#0d1b2a");
+        gradient.addColorStop(0.4, "#0a0a15");
+        gradient.addColorStop(1, "#050508");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+      }
+
+      // 绘制稀疏的星星
       const time = Date.now() * 0.001;
       for (const star of starsRef.current) {
-        // 闪烁效果
         const twinkle = Math.sin(time * star.twinkleSpeed * 100 + star.twinkleOffset);
-        const currentOpacity = star.opacity + twinkle * 0.2;
+        const currentOpacity = star.opacity + twinkle * 0.15;
 
-        // 星星本体
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
 
-        // 根据大小选择不同颜色
-        if (star.size > 2) {
-          // 大星星带光芒
-          ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
-          ctx.fill();
-
-          // 光芒效果
+        if (star.size > 1.2) {
+          // 稍大的星星带淡淡光芒
           const glow = ctx.createRadialGradient(
             star.x, star.y, 0,
-            star.x, star.y, star.size * 4
+            star.x, star.y, star.size * 3
           );
-          glow.addColorStop(0, `rgba(200, 220, 255, ${currentOpacity * 0.3})`);
+          glow.addColorStop(0, `rgba(200, 220, 255, ${currentOpacity * 0.2})`);
           glow.addColorStop(1, "rgba(200, 220, 255, 0)");
           ctx.beginPath();
-          ctx.arc(star.x, star.y, star.size * 4, 0, Math.PI * 2);
+          ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
           ctx.fillStyle = glow;
           ctx.fill();
-        } else if (star.size > 1.5) {
-          // 中等星星 - 淡蓝色
-          ctx.fillStyle = `rgba(200, 210, 255, ${currentOpacity})`;
-          ctx.fill();
-        } else {
-          // 小星星 - 白色
-          ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
-          ctx.fill();
         }
-      }
-
-      // 绘制流星
-      const now = Date.now();
-      if (now - lastShootingStarRef.current > 500) {
-        createShootingStar();
-        lastShootingStarRef.current = now;
-      }
-
-      // 更新和绘制流星
-      shootingStarsRef.current = shootingStarsRef.current.filter((star) => {
-        star.x -= star.speed * Math.cos(star.angle);
-        star.y += star.speed * Math.sin(star.angle);
-        star.opacity -= 0.01;
-
-        if (star.opacity <= 0 || star.x < -100 || star.y > height + 100) {
-          return false;
-        }
-
-        // 绘制流星
-        const gradient = ctx.createLinearGradient(
-          star.x, star.y,
-          star.x + star.length * Math.cos(star.angle),
-          star.y - star.length * Math.sin(star.angle)
-        );
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`);
-        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
 
         ctx.beginPath();
-        ctx.moveTo(star.x, star.y);
-        ctx.lineTo(
-          star.x + star.length * Math.cos(star.angle),
-          star.y - star.length * Math.sin(star.angle)
-        );
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        return true;
-      });
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
+        ctx.fill();
+      }
 
       animFrameRef.current = requestAnimationFrame(animate);
     };
