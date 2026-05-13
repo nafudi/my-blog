@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { colors, fonts, fontSizes } from "@/lib/theme";
@@ -17,19 +17,26 @@ interface CategoryGroup {
   posts: PostMeta[];
 }
 
+// Module-level cache so data persists across navigations
+let cachedPosts: PostMeta[] | null = null;
+let cachedCategories: CategoryGroup[] | null = null;
+
 export default function PostSidebar() {
-  const [posts, setPosts] = useState<PostMeta[]>([]);
-  const [categories, setCategories] = useState<CategoryGroup[]>([]);
+  const [posts, setPosts] = useState<PostMeta[]>(cachedPosts || []);
+  const [categories, setCategories] = useState<CategoryGroup[]>(cachedCategories || []);
   const [expandedCats, setExpandedCats] = useState<Set<string>>(new Set());
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const hasFetched = useRef(false);
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
     fetch("/api/posts")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setPosts(data);
           const groupMap: Record<string, PostMeta[]> = {};
           for (const post of data) {
             const cat = post.category || "未分类";
@@ -40,6 +47,11 @@ export default function PostSidebar() {
             name,
             posts,
           }));
+
+          cachedPosts = data;
+          cachedCategories = groups;
+
+          setPosts(data);
           setCategories(groups);
           setExpandedCats(new Set(Object.keys(groupMap)));
         }
@@ -56,13 +68,30 @@ export default function PostSidebar() {
     });
   };
 
+  // Close sidebar on navigation
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
+  // Expand the category containing the current article
+  useEffect(() => {
+    if (categories.length === 0) return;
+    const currentCat = categories.find((cat) =>
+      cat.posts.some((p) => pathname === `/posts/${p.slug}`)
+    );
+    if (currentCat) {
+      setExpandedCats((prev) => {
+        if (prev.has(currentCat.name)) return prev;
+        const next = new Set(prev);
+        next.add(currentCat.name);
+        return next;
+      });
+    }
+  }, [pathname, categories]);
+
   return (
     <>
-      {/* 移动端切换按钮 */}
+      {/* Mobile toggle */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed top-20 left-0 z-50 lg:hidden w-8 h-16 backdrop-blur-sm border border-l-0 rounded-r-xl flex items-center justify-center transition-all"
@@ -78,7 +107,6 @@ export default function PostSidebar() {
         </span>
       </button>
 
-      {/* 遮罩层 */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
@@ -86,7 +114,6 @@ export default function PostSidebar() {
         />
       )}
 
-      {/* 侧边栏 - 从导航栏下方开始，不再重叠 */}
       <aside
         className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 backdrop-blur-xl border-r z-40 transition-transform duration-300 overflow-y-auto ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -104,84 +131,84 @@ export default function PostSidebar() {
             📚 文章目录
           </h2>
 
-          {categories.length === 0 && (
+          {categories.length === 0 ? (
             <p className={`${fontSizes.bodySm} px-2`} style={{ color: colors.textTertiary }}>
-              暂无文章
+              {hasFetched.current ? "暂无文章" : "加载中..."}
             </p>
-          )}
-
-          <div className="space-y-1">
-            {categories.map((cat) => {
-              const isExpanded = expandedCats.has(cat.name);
-              const isActiveCat = cat.posts.some(
-                (p) => pathname === `/posts/${p.slug}`
-              );
-              return (
-                <div key={cat.name}>
-                  <button
-                    onClick={() => toggleCat(cat.name)}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${fontSizes.bodySm}`}
-                    style={{
-                      color: isActiveCat ? colors.goldPrimary : colors.textSecondary,
-                      background: isActiveCat ? "rgba(212,168,83,0.1)" : "transparent",
-                    }}
-                  >
-                    <span
-                      className={`text-xs transition-transform duration-200 ${
-                        isExpanded ? "rotate-90" : ""
-                      }`}
-                    >
-                      ▶
-                    </span>
-                    <span className="font-medium truncate flex-1">
-                      {cat.name}
-                    </span>
-                    <span
-                      className={`${fontSizes.caption} px-1.5 py-0.5 rounded-full`}
+          ) : (
+            <div className="space-y-1">
+              {categories.map((cat) => {
+                const isExpanded = expandedCats.has(cat.name);
+                const isActiveCat = cat.posts.some(
+                  (p) => pathname === `/posts/${p.slug}`
+                );
+                return (
+                  <div key={cat.name}>
+                    <button
+                      onClick={() => toggleCat(cat.name)}
+                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${fontSizes.bodySm}`}
                       style={{
-                        color: colors.textTertiary,
-                        background: "rgba(212,168,83,0.08)",
+                        color: isActiveCat ? colors.goldPrimary : colors.textSecondary,
+                        background: isActiveCat ? "rgba(212,168,83,0.1)" : "transparent",
                       }}
                     >
-                      {cat.posts.length}
-                    </span>
-                  </button>
+                      <span
+                        className={`text-xs transition-transform duration-200 ${
+                          isExpanded ? "rotate-90" : ""
+                        }`}
+                      >
+                        ▶
+                      </span>
+                      <span className="font-medium truncate flex-1">
+                        {cat.name}
+                      </span>
+                      <span
+                        className={`${fontSizes.caption} px-1.5 py-0.5 rounded-full`}
+                        style={{
+                          color: colors.textTertiary,
+                          background: "rgba(212,168,83,0.08)",
+                        }}
+                      >
+                        {cat.posts.length}
+                      </span>
+                    </button>
 
-                  <div
-                    className={`overflow-hidden transition-all duration-200 ${
-                      isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-                    }`}
-                  >
-                    <div className="pl-5 pr-1 py-1 space-y-0.5">
-                      {cat.posts.map((post) => {
-                        const isActive = pathname === `/posts/${post.slug}`;
-                        return (
-                          <Link
-                            key={post.slug}
-                            href={`/posts/${post.slug}`}
-                            className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-all ${fontSizes.bodySm}`}
-                            style={{
-                              color: isActive ? colors.goldPrimary : colors.textSecondary,
-                              background: isActive ? "rgba(212,168,83,0.12)" : "transparent",
-                            }}
-                          >
-                            <span className="text-base">{post.icon || "📄"}</span>
-                            <span className="truncate flex-1">{post.title}</span>
-                            {isActive && (
-                              <span
-                                className="w-1.5 h-1.5 rounded-full"
-                                style={{ background: colors.goldPrimary }}
-                              />
-                            )}
-                          </Link>
-                        );
-                      })}
+                    <div
+                      className={`overflow-hidden transition-all duration-200 ${
+                        isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <div className="pl-5 pr-1 py-1 space-y-0.5">
+                        {cat.posts.map((post) => {
+                          const isActive = pathname === `/posts/${post.slug}`;
+                          return (
+                            <Link
+                              key={post.slug}
+                              href={`/posts/${post.slug}`}
+                              className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-all ${fontSizes.bodySm}`}
+                              style={{
+                                color: isActive ? colors.goldPrimary : colors.textSecondary,
+                                background: isActive ? "rgba(212,168,83,0.12)" : "transparent",
+                              }}
+                            >
+                              <span className="text-base">{post.icon || "📄"}</span>
+                              <span className="truncate flex-1">{post.title}</span>
+                              {isActive && (
+                                <span
+                                  className="w-1.5 h-1.5 rounded-full"
+                                  style={{ background: colors.goldPrimary }}
+                                />
+                              )}
+                            </Link>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
 
           <div
             className="my-6 h-px"
