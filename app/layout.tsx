@@ -41,9 +41,9 @@ export default function RootLayout({
           <div className="relative min-h-screen overflow-hidden">
             <StarBg />
             <PostSidebar />
-            <div className="lg:ml-64">
+            <div className="lg:ml-64 min-w-0 overflow-x-hidden">
               <Navbar />
-              <main className="relative z-10 pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+              <main className="relative z-10 pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto min-w-0 overflow-x-hidden">
                 {children}
               </main>
               <footer
