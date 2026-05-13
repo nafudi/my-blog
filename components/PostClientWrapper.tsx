@@ -182,13 +182,13 @@ export default function PostClientWrapper({
         const bodyContent = bodyMatch ? bodyMatch[1] : text;
         const cleaned = cleanArticleHTML(bodyContent);
 
-        // 给 h2 标签添加 id，以便 TOC 锚点跳转
+        // 给 h2、h3 标签添加 id，以便 TOC 锚点跳转
         const parser = new DOMParser();
         const doc = parser.parseFromString(cleaned, "text/html");
-        doc.querySelectorAll("h2").forEach((h2) => {
-          const title = h2.textContent || "";
+        doc.querySelectorAll("h2, h3").forEach((heading) => {
+          const title = heading.textContent || "";
           const id = title.replace(/\s+/g, "-").toLowerCase();
-          h2.id = id;
+          heading.id = id;
         });
         setHtml(doc.body.innerHTML);
 
