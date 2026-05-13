@@ -58,13 +58,13 @@ function Card({ post, index }: { post: PostMeta; index: number }) {
 
         {/* 标题 */}
         <h3
-          className="font-[family-name:var(--font-ma-shan)] text-xl text-[#f0d78c] mb-2 group-hover:text-[#d4a853] transition-colors duration-300"
+          className="font-[family-name:var(--font-ma-shan)] text-xl text-[#c9a84c] mb-2 group-hover:text-[#b8943f] transition-colors duration-300"
         >
           {post.title}
         </h3>
 
         {/* 描述 */}
-        <p className="text-sm text-[#9a9590] leading-relaxed line-clamp-3">
+        <p className="text-sm text-[#8a8a8a] leading-relaxed line-clamp-3">
           {post.description}
         </p>
 
@@ -80,7 +80,7 @@ function Card({ post, index }: { post: PostMeta; index: number }) {
               </span>
             ))}
           </div>
-          <span className="text-xs text-[#555]">{post.date}</span>
+          <span className="text-xs text-[#5a5a5a]">{post.date}</span>
         </div>
 
         {/* 箭头指示器 */}
@@ -95,7 +95,7 @@ function Card({ post, index }: { post: PostMeta; index: number }) {
 export default function CardGrid({ posts }: CardGridProps) {
   if (posts.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-[#555]">
+      <div className="flex flex-col items-center justify-center py-20 text-[#5a5a5a]">
         <span className="text-5xl mb-4">🏗️</span>
         <p className="font-[family-name:var(--font-ma-shan)] text-lg">还没有文章</p>
         <p className="text-sm mt-2">快让 AI 帮你创建第一篇炫酷文章吧</p>
@@ -130,7 +130,7 @@ export default function CardGrid({ posts }: CardGridProps) {
             <h3 className="font-[family-name:var(--font-ma-shan)] text-xl text-[#d4a853]">
               {category}
             </h3>
-            <span className="text-xs text-[#555] bg-[rgba(212,168,83,0.08)] px-2 py-0.5 rounded-full">
+            <span className="text-xs text-[#5a5a5a] bg-[rgba(212,168,83,0.08)] px-2 py-0.5 rounded-full">
               {grouped[category].length} 篇
             </span>
             <div className="flex-1 h-[1px] bg-gradient-to-r from-[rgba(212,168,83,0.15)] to-transparent" />

@@ -99,7 +99,7 @@ export default function PostSidebar() {
           </h2>
 
           {categories.length === 0 && (
-            <p className="text-sm text-[#555] px-2">暂无文章</p>
+            <p className="text-sm text-[#5a5a5a] px-2">暂无文章</p>
           )}
 
           <div className="space-y-1">
@@ -116,7 +116,7 @@ export default function PostSidebar() {
                     className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${
                       isActiveCat
                         ? "text-[#d4a853] bg-[rgba(212,168,83,0.1)]"
-                        : "text-[#9a9590] hover:bg-[rgba(212,168,83,0.06)] hover:text-[#e8e6e3]"
+                        : "text-[#7a7a7a] hover:bg-[rgba(212,168,83,0.06)] hover:text-[#c8c8c8]"
                     }`}
                   >
                     <span
@@ -129,7 +129,7 @@ export default function PostSidebar() {
                     <span className="text-sm font-medium truncate flex-1">
                       {cat.name}
                     </span>
-                    <span className="text-xs text-[#555] bg-[rgba(212,168,83,0.08)] px-1.5 py-0.5 rounded-full">
+                    <span className="text-xs text-[#5a5a5a] bg-[rgba(212,168,83,0.08)] px-1.5 py-0.5 rounded-full">
                       {cat.posts.length}
                     </span>
                   </button>
@@ -150,7 +150,7 @@ export default function PostSidebar() {
                             className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-all text-sm ${
                               isActive
                                 ? "bg-[rgba(212,168,83,0.12)] text-[#d4a853]"
-                                : "text-[#9a9590] hover:bg-[rgba(212,168,83,0.06)] hover:text-[#e8e6e3]"
+                                : "text-[#7a7a7a] hover:bg-[rgba(212,168,83,0.06)] hover:text-[#c8c8c8]"
                             }`}
                           >
                             <span className="text-base">{post.icon || "📄"}</span>
@@ -177,7 +177,7 @@ export default function PostSidebar() {
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm ${
               pathname === "/"
                 ? "bg-[rgba(212,168,83,0.15)] text-[#d4a853]"
-                : "text-[#9a9590] hover:bg-[rgba(212,168,83,0.08)] hover:text-[#e8e6e3]"
+                : "text-[#7a7a7a] hover:bg-[rgba(212,168,83,0.08)] hover:text-[#c8c8c8]"
             }`}
           >
             <span className="text-lg">🏠</span>

@@ -25,7 +25,7 @@ export default function Navbar() {
             <span className="font-[family-name:var(--font-ma-shan)] text-2xl text-[#d4a853] group-hover:text-[#f0d78c] transition-colors duration-300">
               易理
             </span>
-            <span className="hidden sm:block text-xs text-[#9a9590] border-l border-[rgba(212,168,83,0.2)] pl-3">
+            <span className="hidden sm:block text-xs text-[#7a7a7a] border-l border-[rgba(212,168,83,0.2)] pl-3">
               个人学习博客
             </span>
           </Link>
@@ -36,7 +36,7 @@ export default function Navbar() {
             <Link
               href="/"
               className={`text-sm transition-colors duration-300 hover:text-[#d4a853] ${
-                pathname === "/" ? "text-[#d4a853]" : "text-[#9a9590]"
+                pathname === "/" ? "text-[#d4a853]" : "text-[#7a7a7a]"
               }`}
             >
               首页
@@ -44,7 +44,7 @@ export default function Navbar() {
 
             {/* 登录状态 */}
             {status === "loading" ? (
-              <span className="text-xs text-[#555]">...</span>
+              <span className="text-xs text-[#5a5a5a]">...</span>
             ) : session?.user ? (
               <div className="relative flex items-center gap-2">
                 {/* 头像 + 名字 */}
@@ -55,7 +55,7 @@ export default function Navbar() {
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4a853] to-[#a67c3d] flex items-center justify-center text-xs text-white font-semibold">
                     {(session.user.name || session.user.email || "?")[0].toUpperCase()}
                   </div>
-                  <span className="hidden sm:block text-sm text-[#e8e6e3] max-w-[100px] truncate">
+                  <span className="hidden sm:block text-sm text-[#c8c8c8] max-w-[100px] truncate">
                     {session.user.name || session.user.email}
                   </span>
                 </button>
@@ -75,7 +75,7 @@ export default function Navbar() {
                           signOut({ callbackUrl: "/" });
                           setShowMenu(false);
                         }}
-                        className="w-full text-left text-sm text-[#9a9590] hover:text-[#e8e6e3] px-3 py-2 rounded-lg hover:bg-[rgba(255,255,255,0.04)] transition-colors"
+                        className="w-full text-left text-sm text-[#7a7a7a] hover:text-[#c8c8c8] px-3 py-2 rounded-lg hover:bg-[rgba(255,255,255,0.04)] transition-colors"
                       >
                         退出登录
                       </button>
@@ -87,7 +87,7 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="text-sm text-[#9a9590] hover:text-[#d4a853] transition-colors"
+                  className="text-sm text-[#7a7a7a] hover:text-[#d4a853] transition-colors"
                 >
                   登录
                 </Link>
