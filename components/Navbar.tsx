@@ -13,18 +13,47 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const [showMenu, setShowMenu] = useState(false);
 
+  const navItems = [
+    {
+      label: "溯源",
+      href: "/#溯源",
+      activePattern: "na-yin-wu-xing-quan-shuo|tian-gan-wu-he",
+      subItems: [
+        { label: "纳音五行全说", href: "/posts/na-yin-wu-xing-quan-shuo" },
+        { label: "天干五合数理推演", href: "/posts/tian-gan-wu-he" },
+      ],
+    },
+    {
+      label: "杂谈",
+      href: "/#杂谈",
+      activePattern: "tong-zi-ming",
+      subItems: [
+        { label: "验证玄学天赋", href: "/posts/tong-zi-ming" },
+      ],
+    },
+  ];
+
+  const isNavActive = (item: typeof navItems[0]) => {
+    if (pathname === "/") return false;
+    const pattern = new RegExp(item.activePattern);
+    return pattern.test(pathname);
+  };
+
   return (
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-transparent border-b"
-      style={{ borderColor: "rgba(212,168,83,0.1)" }}
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b"
+      style={{
+        background: "rgba(10,10,15,0.85)",
+        borderColor: "rgba(212,168,83,0.1)",
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group shrink-0">
             <span
               className={`${fonts.heading} text-2xl transition-colors duration-300`}
               style={{ color: colors.goldPrimary }}
@@ -43,30 +72,65 @@ export default function Navbar() {
           </Link>
 
           {/* 导航链接 + 用户区域 */}
-          <div className="flex items-center gap-4">
-            {/* 首页链接 */}
+          <div className="flex items-center gap-1 sm:gap-4">
             <Link
               href="/"
-              className={`${fontSizes.bodySm} transition-colors duration-300 hover:text-[${colors.goldPrimary}]`}
+              className={`${fontSizes.bodySm} px-2 py-1 rounded-lg transition-all duration-300`}
               style={{
                 color: pathname === "/" ? colors.goldPrimary : colors.textSecondary,
+                background: pathname === "/" ? "rgba(212,168,83,0.1)" : "transparent",
               }}
             >
               首页
             </Link>
+
+            {/* 分类导航（带下拉） */}
+            {navItems.map((item) => (
+              <div key={item.label} className="relative group">
+                <Link
+                  href={item.href}
+                  className={`${fontSizes.bodySm} px-2 py-1 rounded-lg transition-all duration-300 flex items-center gap-1`}
+                  style={{
+                    color: isNavActive(item) ? colors.goldPrimary : colors.textSecondary,
+                    background: isNavActive(item) ? "rgba(212,168,83,0.1)" : "transparent",
+                  }}
+                >
+                  {item.label}
+                  <svg className="w-3 h-3 opacity-50" viewBox="0 0 12 12" fill="currentColor">
+                    <path d="M6 8L2 4h8z"/>
+                  </svg>
+                </Link>
+                {/* 下拉菜单 */}
+                <div
+                  className="absolute top-full left-0 mt-1 w-48 rounded-xl p-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+                  style={{
+                    background: colors.bgSecondary,
+                    border: "1px solid rgba(212,168,83,0.12)",
+                  }}
+                >
+                  {item.subItems.map((sub) => (
+                    <Link
+                      key={sub.href}
+                      href={sub.href}
+                      className={`block ${fontSizes.bodySm} px-3 py-2 rounded-lg transition-colors hover:bg-[rgba(212,168,83,0.1)]`}
+                      style={{ color: colors.textSecondary }}
+                    >
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
 
             {/* 登录状态 */}
             {status === "loading" ? (
               <span className={fontSizes.caption} style={{ color: colors.textTertiary }}>...</span>
             ) : session?.user ? (
               <div className="relative flex items-center gap-2">
-                {/* 头像 + 名字 */}
                 <button
                   onClick={() => setShowMenu(!showMenu)}
                   className="flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors"
-                  style={{
-                    background: "rgba(212,168,83,0.12)",
-                  }}
+                  style={{ background: "rgba(212,168,83,0.12)" }}
                 >
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold"
@@ -85,7 +149,6 @@ export default function Navbar() {
                   </span>
                 </button>
 
-                {/* 下拉菜单 */}
                 <AnimatePresence>
                   {showMenu && (
                     <motion.div
@@ -105,9 +168,7 @@ export default function Navbar() {
                           setShowMenu(false);
                         }}
                         className={`w-full text-left ${fontSizes.bodySm} px-3 py-2 rounded-lg transition-colors`}
-                        style={{
-                          color: colors.textSecondary,
-                        }}
+                        style={{ color: colors.textSecondary }}
                       >
                         退出登录
                       </button>
