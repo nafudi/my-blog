@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Ma_Shan_Zheng, Noto_Serif_SC } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
+import Navbar from "@/components/Navbar";
+import PostSidebar from "@/components/PostSidebar";
+import StarBg from "@/components/StarBg";
 
 const maShanZheng = Ma_Shan_Zheng({
   subsets: ["latin"],
@@ -34,7 +37,25 @@ export default function RootLayout({
         className={`${maShanZheng.variable} ${notoSerif.variable} font-[family-name:var(--font-noto-serif)] min-h-screen antialiased`}
       >
         <SessionProvider>
-          {children}
+          {/* ===== 全局外壳：背景 + 侧边栏 + 导航栏 + 页脚 ===== */}
+          <div className="relative min-h-screen overflow-hidden">
+            <StarBg />
+            <PostSidebar />
+            <div className="lg:ml-64">
+              <Navbar />
+              <main className="relative z-10 pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+                {children}
+              </main>
+              <footer
+                className="relative z-10 mt-8 pt-6 border-t text-center pb-8"
+                style={{ borderColor: "rgba(212,168,83,0.08)" }}
+              >
+                <p className="text-xs" style={{ color: "#aaaaaa" }}>
+                  Powered by Next.js & Crafted with ✨
+                </p>
+              </footer>
+            </div>
+          </div>
         </SessionProvider>
       </body>
     </html>
