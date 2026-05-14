@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { fonts, fontSizes, lineHeights, colors, textStyles } from "@/lib/theme";
+import { fonts, fontSizes, lineHeights, colors, textStyles, tw } from "@/lib/theme";
 
 interface PillarData {
   stem: string;
@@ -116,7 +116,7 @@ export default function BaziPage() {
   function renderPillar(title: string, p: PillarData) {
     return (
       <div key={title} className="min-w-[220px] flex-1">
-        <div className={`${fontSizes.h4} ${textStyles.goldPrimary} mb-2 text-center`}>{title}</div>
+        <div className={`${fontSizes.h4} ${tw.goldPrimary} mb-2 text-center`}>{title}</div>
         <table className="w-full text-sm">
           <tbody>
             <tr className="border-b border-[rgba(212,168,83,0.15)]">
@@ -130,7 +130,7 @@ export default function BaziPage() {
             {p.tenGod && (
               <tr className="border-b border-[rgba(212,168,83,0.15)]">
                 <td className={`${textStyles.muted} py-1`}>十神</td>
-                <td className={`${textStyles.goldLight} text-center`}>{p.tenGod}</td>
+                <td className={`${tw.goldLight} text-center`}>{p.tenGod}</td>
               </tr>
             )}
             <tr className="border-b border-[rgba(212,168,83,0.15)]">
@@ -147,7 +147,7 @@ export default function BaziPage() {
                 {p.hiddenStems.map((h, i) => (
                   <div key={i} className="flex justify-between gap-2 text-xs">
                     <span className={textStyles.textPrimary}>{h.stem}</span>
-                    <span className={textStyles.goldLight}>{h.tenGod}</span>
+                    <span className={tw.goldLight}>{h.tenGod}</span>
                   </div>
                 ))}
               </td>
@@ -158,7 +158,7 @@ export default function BaziPage() {
                 <td className="py-1">
                   <div className="flex flex-wrap gap-1">
                     {p.shenSha.map((s, i) => (
-                      <span key={i} className={`${fontSizes.caption} px-1.5 py-0.5 rounded bg-[rgba(212,168,83,0.12)] ${textStyles.goldPrimary}`}>{s}</span>
+                      <span key={i} className={`${fontSizes.caption} px-1.5 py-0.5 rounded bg-[rgba(212,168,83,0.12)] ${tw.goldPrimary}`}>{s}</span>
                     ))}
                   </div>
                 </td>
@@ -173,7 +173,7 @@ export default function BaziPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* 标题 */}
-      <h1 className={`${fonts.heading} ${fontSizes.h1} ${textStyles.goldPrimary} text-center mb-2`}>八字排盘</h1>
+      <h1 className={`${fonts.heading} ${fontSizes.h1} ${tw.goldPrimary} text-center mb-2`}>八字排盘</h1>
       <p className={`${textStyles.subtitle} text-center mb-8`}>输入出生信息，获取八字排盘与 AI 解读</p>
 
       {/* 输入表单 */}
@@ -241,16 +241,16 @@ export default function BaziPage() {
           {/* 基本信息 */}
           <div className="mb-6 text-center">
             <span className={`${fontSizes.bodySm} ${textStyles.muted}`}>
-              日主：<span className={textStyles.goldPrimary}>{baziResult.dayMaster}</span>
+              日主：<span className={tw.goldPrimary}>{baziResult.dayMaster}</span>
               ｜ 空亡：{baziResult.kongWang.xun}（{baziResult.kongWang.kongZhi.join("、")}）
-              {baziResult.taiYuan && <> ｜ 胎元：<span className={textStyles.goldLight}>{baziResult.taiYuan}</span></>}
-              {baziResult.mingGong && <> ｜ 命宫：<span className={textStyles.goldLight}>{baziResult.mingGong}</span></>}
+              {baziResult.taiYuan && <> ｜ 胎元：<span className={tw.goldLight}>{baziResult.taiYuan}</span></>}
+              {baziResult.mingGong && <> ｜ 命宫：<span className={tw.goldLight}>{baziResult.mingGong}</span></>}
             </span>
           </div>
 
           {/* 四柱表格 */}
           <div className="bg-[#1a1a2e] rounded-xl p-6 mb-6 border border-[rgba(212,168,83,0.15)]">
-            <h2 className={`${fonts.heading} ${fontSizes.h2} ${textStyles.goldPrimary} mb-4`}>四柱</h2>
+            <h2 className={`${fonts.heading} ${fontSizes.h2} ${tw.goldPrimary} mb-4`}>四柱</h2>
             <div className="flex flex-wrap gap-4">
               {renderPillar("年柱", baziResult.fourPillars.year)}
               {renderPillar("月柱", baziResult.fourPillars.month)}
@@ -278,7 +278,7 @@ export default function BaziPage() {
                 <div className={`${fontSizes.bodySm} ${textStyles.muted} mb-2`}>天干冲克</div>
                 <div className="flex flex-wrap gap-2">
                   {baziResult.tianGanChongKe.map((c, i) => (
-                    <span key={i} className={`${fontSizes.caption} px-2 py-1 rounded bg-red-900/20 text-red-300`}>
+                    <span key={i} className={`${fontSizes.caption} px-2 py-1 rounded bg-red-900/20 ${textStyles.textSecondary}`}>
                       {c.stemA} 冲 {c.stemB}
                     </span>
                   ))}
@@ -290,7 +290,7 @@ export default function BaziPage() {
           {/* 大运 */}
           {dayunList.length > 0 && (
             <div className="bg-[#1a1a2e] rounded-xl p-6 mb-6 border border-[rgba(212,168,83,0.15)]">
-              <h2 className={`${fonts.heading} ${fontSizes.h2} ${textStyles.goldPrimary} mb-4`}>大运</h2>
+              <h2 className={`${fonts.heading} ${fontSizes.h2} ${tw.goldPrimary} mb-4`}>大运</h2>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -308,13 +308,13 @@ export default function BaziPage() {
                       <tr key={i} className="border-b border-[rgba(212,168,83,0.08)]">
                         <td className={`${textStyles.textSecondary} py-2`}>{d.startAge}岁（{d.startYear}）</td>
                         <td className={`${textStyles.textPrimary} font-bold py-2`}>{d.ganZhi}</td>
-                        <td className={`${textStyles.goldLight} py-2`}>{d.tenGod}</td>
+                        <td className={`${tw.goldLight} py-2`}>{d.tenGod}</td>
                         <td className={`${textStyles.textSecondary} text-xs py-2`}>{d.naYin}</td>
                         <td className={`${textStyles.textSecondary} py-2`}>{d.diShi}</td>
                         <td className="py-2">
                           <div className="flex flex-wrap gap-1">
                             {d.shenSha.map((s, j) => (
-                              <span key={j} className={`${fontSizes.caption} px-1 py-0.5 rounded bg-[rgba(212,168,83,0.12)] ${textStyles.goldPrimary}`}>{s}</span>
+                              <span key={j} className={`${fontSizes.caption} px-1 py-0.5 rounded bg-[rgba(212,168,83,0.12)] ${tw.goldPrimary}`}>{s}</span>
                             ))}
                           </div>
                         </td>
@@ -331,7 +331,7 @@ export default function BaziPage() {
       {/* AI 对话窗口（放在排盘结果下面） */}
       {baziResult && (
         <div className="bg-[#1a1a2e] rounded-xl p-6 border border-[rgba(212,168,83,0.15)]">
-          <h2 className={`${fonts.heading} ${fontSizes.h2} ${textStyles.goldPrimary} mb-4`}>AI 命理对话</h2>
+          <h2 className={`${fonts.heading} ${fontSizes.h2} ${tw.goldPrimary} mb-4`}>AI 命理对话</h2>
 
           {/* 对话记录 */}
           <div className="min-h-[200px] max-h-[400px] overflow-y-auto mb-4 space-y-3 pr-2">
