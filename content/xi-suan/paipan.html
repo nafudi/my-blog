@@ -134,53 +134,142 @@
 <script>
 const TianGan=["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
 const DiZhi=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+
 function ganWuxing(g){return{"甲":"木","乙":"木","丙":"火","丁":"火","戊":"土","己":"土","庚":"金","辛":"金","壬":"水","癸":"水"}[g]||""}
 function zhiWuxing(z){return{"子":"水","丑":"土","寅":"木","卯":"木","辰":"土","巳":"火","午":"火","未":"土","申":"金","酉":"金","戌":"土","亥":"水"}[z]||""}
 function gC(g){return{"甲":"gan-jia","乙":"gan-yi","丙":"gan-bing","丁":"gan-ding","戊":"gan-wu","己":"gan-ji","庚":"gan-geng","辛":"gan-xin","壬":"gan-ren","癸":"gan-gui"}[g]||""}
 function zC(z){return{"子":"zhi-zi","丑":"zhi-chou","寅":"zhi-yin","卯":"zhi-mao","辰":"zhi-chen","巳":"zhi-si","午":"zhi-wu","未":"zhi-wei","申":"zhi-shen","酉":"zhi-you","戌":"zhi-xu","亥":"zhi-hai"}[z]||""}
 function wC(n){return{"木":"wx-wood","火":"wx-fire","土":"wx-earth","金":"wx-metal","水":"wx-water"}[n]||""}
-function fmtGZ(gz){var g=gz.charAt(0),z=gz.charAt(1);return'<span class="'+gC(g)+'">'+g+'</span><span class="'+zC(z)+'">'+z+'</span><span class="wuxing-tag '+wC(ganWuxing(g))+'">'+ganWuxing(g)+'</span>'}
 
-var sTermInfo_1900=[0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758];
-function getSolarTerm(y,n){var bt=new Date(1900,0,6,2,5,0).getTime();var yo=(y-1900)*365.2422*24*60*60*1000;return new Date(bt+yo+sTermInfo_1900[n]*60000)}
-function getDayGZ(y,m,d){var bd=new Date(2000,0,1),td=new Date(y,m-1,d),dd=Math.floor((td-bd)/86400000);return TianGan[(dd%10+10)%10]+DiZhi[((10+dd)%12+12)%12]}
-function getMonthGZ(y,m,d){
- var mzArr=[2,3,4,5,6,7,8,9,10,11,0,1],mzIdx=mzArr[m-1];
- var tiMap=[2,4,6,8,10,12,14,16,18,20,22,0],ti=tiMap[m-1],ty=y;
- if(m===12)ty=y+1;
- var td=getSolarTerm(ty,ti),bd=new Date(y,m-1,d);
- if(bd<td){m--;if(m<1){m=12;y--}mzIdx=mzArr[m-1]}
- var ygI=((y-4)%10+10)%10,bG;
- if(ygI===0||ygI===5)bG=2;else if(ygI===1||ygI===6)bG=4;
- else if(ygI===2||ygI===7)bG=6;else if(ygI===3||ygI===8)bG=8;else bG=0;
- var off=mzIdx-2;if(off<0)off+=12;
- return TianGan[(bG+off)%10]+DiZhi[mzIdx]
-}
-function getYearGZ(y,m,d){var lc=getSolarTerm(y,2),cy=y;if(new Date(y,m-1,d)<lc)cy--;return TianGan[((cy-4)%10+10)%10]+DiZhi[((cy-4)%12+12)%12]}
-function getHourGZ(dg,h){
- var zi=h===23?0:Math.floor((h+1)/2)%12,dgi=TianGan.indexOf(dg),bG;
- if(dgi===0||dgi===5)bG=0;else if(dgi===1||dgi===6)bG=2;
- else if(dgi===2||dgi===7)bG=4;else if(dgi===3||dgi===8)bG=6;else bG=8;
- return TianGan[(bG+zi)%10]+DiZhi[zi]
+function fmtGZ(gz){
+  var g=gz.charAt(0), z=gz.charAt(1);
+  return '<span class="'+gC(g)+'">'+g+'</span><span class="'+zC(z)+'">'+z+'</span>'
+    + '<span class="wuxing-tag '+wC(ganWuxing(g))+'">'+ganWuxing(g)+'</span>';
 }
 
+/* ========== 节气计算（寿星万年历算法核心） ========== */
+var sTermInfo_1900=[0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,
+  263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758];
+
+function getSolarTerm(y, n){
+  var baseTime = new Date(1900, 0, 6, 2, 5, 0).getTime();
+  var yearOffset = (y - 1900) * 365.2422 * 24 * 3600 * 1000;
+  return new Date(baseTime + yearOffset + sTermInfo_1900[n] * 60000);
+}
+
+/* ========== 日柱计算（锚点日期偏移法） ========== */
+function getDayGZ(y, m, d){
+  var baseDate = new Date(2000, 0, 1);
+  var targetDate = new Date(y, m - 1, d);
+  var diffDays = Math.floor((targetDate - baseDate) / 86400000);
+  return TianGan[(diffDays % 10 + 10) % 10] + DiZhi[((10 + diffDays) % 12 + 12) % 12];
+}
+
+/* ========== 月柱计算（五虎遁） ========== */
+function getMonthGZ(y, m, d){
+  /* 月支数组：公历月m -> 月支索引(0=寅,1=卯,...11=丑) */
+  var mzArr=[2,3,4,5,6,7,8,9,10,11,0,1];
+  var mzIdx=mzArr[m-1];
+  /* 节气索引数组：对应每个月的"节"在 sTermInfo_1900 中的位置 */
+  /* 立春=2 惊蛰=4 清明=6 立夏=8 芒种=10 小暑=12 立秋=14 白露=16 寒露=18 霜降=20 小雪=22 小寒=0 */
+  var tiMap=[2,4,6,8,10,12,14,16,18,20,22,0], ti=tiMap[m-1], ty=y;
+  if(m===12) ty=y+1;
+  var termDate=getSolarTerm(ty, ti), birth=new Date(y, m-1, d);
+  if(birth < termDate){
+    m--;
+    if(m<1){m=12;y--}
+    mzIdx=mzArr[m-1];
+  }
+  /* 五虎遁：年干定寅月天干 */
+  var ygI=((y-4)%10+10)%10, bG;
+  if(ygI===0||ygI===5)bG=2;        /* 甲己->丙(2) */
+  else if(ygI===1||ygI===6)bG=4;   /* 乙庚->戊(4) */
+  else if(ygI===2||ygI===7)bG=6;   /* 丙辛->庚(6) */
+  else if(ygI===3||ygI===8)bG=8;   /* 丁壬->壬(8) */
+  else bG=0;                        /* 戊癸->甲(0) */
+  var off=mzIdx-2;
+  if(off<0)off+=12;
+  return TianGan[(bG+off)%10]+DiZhi[mzIdx];
+}
+
+/* ========== 年柱计算（立春分界） ========== */
+function getYearGZ(y, m, d){
+  var liChun=getSolarTerm(y, 2);
+  var cy=y;
+  if(new Date(y, m-1, d) < liChun) cy--;
+  return TianGan[((cy-4)%10+10)%10]+DiZhi[((cy-4)%12+12)%12];
+}
+
+/* ========== 时柱计算（五鼠遁） ========== */
+function getHourGZ(dg, h){
+  /* 子时的特殊处理：23点算早子时(zi=0)，其他按(h+1)/2取整 */
+  var zi=(h===23)?0:Math.floor((h+1)/2)%12;
+  var dgi=TianGan.indexOf(dg), bG;
+  if(dgi===0||dgi===5)bG=0;         /* 甲己->甲(0) */
+  else if(dgi===1||dgi===6)bG=2;   /* 乙庚->丙(2) */
+  else if(dgi===2||dgi===7)bG=4;   /* 丙辛->戊(4) */
+  else if(dgi===3||dgi===8)bG=6;   /* 丁壬->庚(6) */
+  else bG=8;                        /* 戊癸->壬(8) */
+  return TianGan[(bG+zi)%10]+DiZhi[zi];
+}
+
+/* ========== 主计算入口 ========== */
 function calculateBaZi(){
- var y=parseInt(document.getElementById("paipan-year").value);
- var m=parseInt(document.getElementById("paipan-month").value);
- var d=parseInt(document.getElementById("paipan-day").value);
- var h=parseInt(document.getElementById("paipan-hour").value);
- if(!y||!m||d<1||d>31||m<1||m>12){alert("请输入合法的日期");return}
- var yGZ=getYearGZ(y,m,d),mGZ=getMonthGZ(y,m,d),dGZ=getDayGZ(y,m,d),rD=dGZ,rY=y,rM=m;
- if(h>=23){var nd=new Date(y,m-1,d+1);rY=nd.getFullYear();rM=nd.getMonth()+1;rD=nd.getDate();rD=getDayGZ(rY,rM,nd.getDate());yGZ=getYearGZ(rY,rM,nd.getDate());mGZ=getMonthGZ(rY,rM,nd.getDate())}
- var hGZ=getHourGZ(rD.charAt(0),h);
- document.getElementById("sizhu-year").innerHTML=fmtGZ(yGZ);
- document.getElementById("sizhu-month").innerHTML=fmtGZ(mGZ);
- document.getElementById("sizhu-day").innerHTML=fmtGZ(rD);
- document.getElementById("sizhu-hour").innerHTML=fmtGZ(hGZ);
- document.getElementById("paipan-result").style.display="block";
- var de=document.getElementById("paipan-debug");de.style.display="block";
- var lc=getSolarTerm(y,2),sh=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"][Math.floor((h+1)/2)%12];
- de.innerHTML="【调试信息】<br>输入："+y+"年"+m+"月"+d+"日 "+sh+"时<br>"+(h>=23?"⚠ 夜子时跨日至："+rY+"年"+rM+"月"+nd.getDate()+"日<br>":"")+"该年立春："+lc.toLocaleString("zh-CN",{timeZone:"Asia/Shanghai"})+"<br>四柱："+yGZ+" | "+mGZ+" | "+rD+" | "+hGZ
+  var y=parseInt(document.getElementById("paipan-year").value);
+  var m=parseInt(document.getElementById("paipan-month").value);
+  var d=parseInt(document.getElementById("paipan-day").value);
+  var h=parseInt(document.getElementById("paipan-hour").value);
+
+  if(!y||!m||d<1||d>31||m<1||m>12){alert("请输入合法的日期");return}
+
+  var yGZ=getYearGZ(y,m,d);
+  var mGZ=getMonthGZ(y,m,d);
+  var dGZ=getDayGZ(y,m,d);
+  var rD=dGZ, rY=y, rM=m;
+
+  /* 夜子时跨日处理：23:00后归入次日子时 */
+  if(h>=23){
+    var nd=new Date(y, m-1, d+1);
+    rY=nd.getFullYear();
+    rM=nd.getMonth()+1;
+    rD=getDayGZ(rY,rM,nd.getDate());
+    yGZ=getYearGZ(rY,rM,nd.getDate());
+    mGZ=getMonthGZ(rY,rM,nd.getDate());
+  }
+
+  var hGZ=getHourGZ(rD.charAt(0), h);
+
+  /* 渲染结果 */
+  document.getElementById("sizhu-year").innerHTML=fmtGZ(yGZ);
+  document.getElementById("sizhu-month").innerHTML=fmtGZ(mGZ);
+  document.getElementById("sizhu-day").innerHTML=fmtGZ(rD);
+  document.getElementById("sizhu-hour").innerHTML=fmtGZ(hGZ);
+  document.getElementById("paipan-result").style.display="block";
+
+  /* 调试信息面板 */
+  var de=document.getElementById("paipan-debug");
+  de.style.display="block";
+  var lc=getSolarTerm(y,2);
+  var shNames=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+  var sh=shNames[Math.floor((h+1)/2)%12];
+
+  var debugHtml="【调试信息】<br>";
+  debugHtml+="输入："+y+"年"+m+"月"+d+"日 "+sh+"时<br>";
+  if(h>=23){
+    debugHtml+="* 夜子时跨日至："+rY+"年"+rM+"月"+nd.getDate()+"日<br>";
+  }
+  debugHtml+="该年立春："+lc.toLocaleString("zh-CN",{timeZone:"Asia/Shanghai"})+"<br>";
+  debugHtml+="四柱结果："+yGZ+" | "+mGZ+" | "+rD+" | "+hGZ;
+
+  /* 用你的八字做验证基准：1998年1月22日寅时 => 丁丑 癸丑 己巳 丙寅 */
+  if(y===1998 && m===1 && d===22 && (h===3 || h===4)){
+    debugHtml+="<br><br>[验证] 你的八字应为：丁丑 / 癸丑 / 己巳 / 丙寅";
+    debugHtml+="<br>当前计算： "+yGZ+" / "+mGZ+" / "+rD+" / "+hGZ;
+    var ok=(yGZ==="丁丑" && mGZ==="癸丑" && rD==="己巳" && hGZ==="丙寅");
+    debugHtml+=ok ? " -- 验证通过!" : " -- 验证失败!";
+  }
+
+  de.innerHTML=debugHtml;
 }
 </script>
 </body>
