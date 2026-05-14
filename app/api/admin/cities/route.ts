@@ -383,15 +383,20 @@ export async function POST(req: NextRequest) {
 
   if (action === "init") {
     // 批量初始化所有城市数据
-    const result = await prisma.city.createMany({
-      data: DEFAULT_CITIES.map((c) => ({
-        province: c.province,
-        city: c.city,
-        longitude: c.longitude,
-        timezone: "Asia/Shanghai",
-      })),
-      skipDuplicates: true,
-    });
+    // 逐条插入，跳过已存在的城市（SQLite 不支持 createMany skipDuplicates）
+    let count = 0;
+    for (const c of DEFAULT_CITIES) {
+      const exists = await prisma.city.findFirst({
+        where: { province: c.province, city: c.city },
+      });
+      if (!exists) {
+        await prisma.city.create({
+          data: { province: c.province, city: c.city, longitude: c.longitude, timezone: "Asia/Shanghai" },
+        });
+        count++;
+      }
+    }
+    const result = { count };
     return NextResponse.json({ ok: true, count: result.count });
   }
 
