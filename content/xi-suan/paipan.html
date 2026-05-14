@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八字排盘</title>
+<style>
+.article-wrapper{max-width:900px;margin:0 auto;padding:1rem 0;color:#e8e6e3;font-family:"Noto Serif SC","Source Han Serif CN","STSong",serif;line-height:1.9;font-size:1.05rem}
+.article-wrapper h1{font-family:"Ma Shan Zheng",cursive;font-size:2.2em;font-weight:700;color:#fff;text-align:center;margin:0 0 .8em;padding-bottom:.3em;border-bottom:2px solid rgba(212,168,83,.2);line-height:1.3}
+.article-wrapper h2{font-size:1.5em;font-weight:700;color:#d4a853;margin:2em 0 1em;padding-left:.6em;border-left:3px solid #d4a853;line-height:1.4}
+.article-wrapper h3{font-size:1.2em;font-weight:600;color:#e0c878;margin:1.5em 0 .8em;line-height:1.4}
+.article-wrapper h4{font-size:1.05em;font-weight:600;color:#ccc;margin:1.2em 0 .6em}
+.article-wrapper p{margin:.8em 0;text-align:justify}
+.article-wrapper a{color:#d4a853;text-decoration:underline;text-underline-offset:2px}
+.article-wrapper a:hover{color:#e8c878}
+.article-wrapper ul,.article-wrapper ol{padding-left:1.5em;margin:.8em 0}
+.article-wrapper li{margin:.3em 0;line-height:1.7}
+.article-wrapper table{width:100%;border-collapse:collapse;margin:1em 0}
+.article-wrapper th,.article-wrapper td{border:1px solid rgba(212,168,83,.3);padding:.6em 1em;text-align:center}
+.article-wrapper th{background:rgba(212,168,83,.15);color:#d4a853;font-weight:600}
+.article-wrapper tr:nth-child(even) td{background:rgba(255,255,255,.03)}
+.article-wrapper blockquote{border-left:3px solid #d4a853;margin:1em 0;padding:.5em 1.5em;background:rgba(212,168,83,.06);color:#b8b0a0}
+.article-wrapper hr{border:none;height:1px;background:rgba(212,168,83,.25);margin:2.5em 0}
+.article-wrapper code{background:rgba(255,255,255,.08);padding:.15em .4em;border-radius:3px;font-size:.9em;color:#e0c878}
+/* 排盘交互样式 */
+.paipan-input-area{background:linear-gradient(135deg,rgba(30,20,50,.9),rgba(20,15,35,.95));border:1px solid rgba(212,168,83,.3);border-radius:12px;padding:2rem;margin:1.5rem auto;max-width:600px;box-shadow:0 4px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.05)}
+.input-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.input-row label{min-width:70px;color:#d4a853;font-weight:600;font-size:.95rem}
+.input-row input,.input-row select{flex:1;min-width:120px;padding:.6rem .8rem;background:rgba(0,0,0,.35);border:1px solid rgba(212,168,83,.3);border-radius:8px;color:#e8e6e3;font-size:1rem;font-family:inherit;outline:none;transition:border-color .3s,box-shadow .3s}
+.input-row input:focus,.input-row select:focus{border-color:#d4a853;box-shadow:0 0 0 3px rgba(212,168,83,.15)}
+.input-row select option{background:#1a1525;color:#e8e6e3}
+.btn-paipan{display:block;width:100%;max-width:300px;margin:1.5rem auto 0;padding:.85rem 2rem;background:linear-gradient(135deg,#b8860b,#d4a853,#b8860b);color:#1a1025;border:none;border-radius:10px;font-size:1.15rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:transform .2s,box-shadow .2s;box-shadow:0 3px 12px rgba(184,134,11,.3)}
+.btn-paipan:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(184,134,11,.45)}
+.paipan-result{display:none;margin-top:2rem;animation:fadeInUp .5s ease-out}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.sizhu-table{width:100%;max-width:500px;margin:0 auto;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.sizhu-table thead th{background:linear-gradient(135deg,rgba(184,134,11,.25),rgba(212,168,83,.15));color:#d4a853;font-size:1.1em;padding:.9em;letter-spacing:.2em;border:none}
+.sizhu-table tbody td{padding:.9em .5em;font-size:1.15em;border:1px solid rgba(212,168,83,.2);background:rgba(20,15,35,.6);transition:background .3s}
+.sizhu-table tbody tr:hover td{background:rgba(40,30,60,.8)}
+.sizhu-table .col-label{color:#999;font-size:.9em;width:60px;text-align:center}
+.sizhu-table .col-ganzhi{font-size:1.4em;font-weight:700;color:#fff;letter-spacing:.3em;text-align:center}
+.gan-jia{color:#4ade80}.gan-yi{color:#86efac}.gan-bing{color:#f87171}.gan-ding{color:#fca5a5}
+.gan-wu{color:#facc15}.gan-ji{color:#fde047}.gan-geng{color:#e2e8f0}.gan-xin{color:#f1f5f9}
+.gan-ren{color:#60a5fa}.gan-gui{color:#93c5fd}
+.zhi-zi{color:#c084fc}.zhi-chou{color:#a78bfa}.zhi-yin{color:#34d399}.zhi-mao{color:#6ee7b7}
+.zhi-chen{color:#fb923c}.zhi-si{color:#fdba74}.zhi-wu{color:#ef4444}.zhi-wei{color:#f87171}
+.zhi-shen{color:#eab308}.zhi-you{color:#facc15}.zhi-xu{color:#c2410c}.zhi-hai{color:#ea580c}
+.wuxing-tag{display:inline-block;font-size:.65em;padding:.1em .4em;border-radius:4px;vertical-align:middle;margin-left:.3em;font-weight:normal;letter-spacing:0}
+.wx-metal{background:rgba(226,232,240,.2);color:#e2e8f0}.wx-wood{background:rgba(74,222,128,.2);color:#4ade80}
+.wx-water{background:rgba(96,165,250,.2);color:#60a5fa}.wx-fire{background:rgba(248,113,113,.2);color:#f87171}
+.wx-earth{background:rgba(250,204,21,.2);color:#facc15}
+.paipan-debug{margin-top:1rem;padding:.8rem 1rem;background:rgba(0,0,0,.25);border-radius:8px;font-size:.82rem;color:#888;font-family:"Courier New",monospace;line-height:1.5;display:none}
+@media(max-width:600px){.paipan-input-area{padding:1.2rem}.input-row{flex-direction:column;align-items:stretch;gap:.4rem}.input-row label{min-width:auto}}
+</style>
+</head>
+<body>
+<div class="article-wrapper">
+
+<h1>八字排盘</h1>
+<p>输入公历出生年月日时辰，即可自动排出四柱八字（年柱、月柱、日柱、时柱）。算法基于传统历法规则：以<strong>立春</strong>为年柱分界、<strong>节气</strong>为月柱分界、<strong>五鼠遁元</strong>定时干。</p>
+
+<div class="paipan-input-area">
+  <div class="input-row">
+    <label for="paipan-year">公历年</label>
+    <input type="number" id="paipan-year" value="1998" min="1900" max="2100">
+  </div>
+  <div class="input-row">
+    <label for="paipan-month">月份</label>
+    <input type="number" id="paipan-month" value="1" min="1" max="12">
+    <label for="paipan-day">日期</label>
+    <input type="number" id="paipan-day" value="22" min="1" max="31">
+  </div>
+  <div class="input-row">
+    <label for="paipan-hour">时辰</label>
+    <select id="paipan-hour">
+      <option value="0">子时（23:00–01:00）</option>
+      <option value="1">丑时（01:00–03:00）</option>
+      <option value="3" selected>寅时（03:00–05:00）</option>
+      <option value="5">卯时（05:00–07:00）</option>
+      <option value="7">辰时（07:00–09:00）</option>
+      <option value="9">巳时（09:00–11:00）</option>
+      <option value="11">午时（11:00–13:00）</option>
+      <option value="13">未时（13:00–15:00）</option>
+      <option value="15">申时（15:00–17:00）</option>
+      <option value="17">酉时（17:00–19:00）</option>
+      <option value="19">戌时（19:00–21:00）</option>
+      <option value="21">亥时（21:00–23:00）</option>
+    </select>
+  </div>
+  <button class="btn-paipan" onclick="calculateBaZi()">开始排盘</button>
+</div>
+
+<div class="paipan-result" id="paipan-result">
+  <h2 style="text-align:center;margin-top:0;">四柱命盘</h2>
+  <table class="sizhu-table"><thead><tr><th>柱</th><th>干支</th></tr></thead><tbody>
+    <tr><td class="col-label">年柱</td><td class="col-ganzhi" id="sizhu-year"></td></tr>
+    <tr><td class="col-label">月柱</td><td class="col-ganzhi" id="sizhu-month"></td></tr>
+    <tr><td class="col-label">日柱</td><td class="col-ganzhi" id="sizhu-day"></td></tr>
+    <tr><td class="col-label">时柱</td><td class="col-ganzhi" id="sizhu-hour"></td></tr>
+  </tbody></table>
+  <div class="paipan-debug" id="paipan-debug"></div>
+</div>
+
+<hr>
+<h2>排盘算法说明</h2>
+<h3>一、四柱的确定方法</h3>
+<h4>年柱——以立春为界</h4>
+<p>立春节气交节之前出生的人，年柱归属上一农历年。例如1998年1月22日在立春之前，年柱仍属丁丑年。</p>
+<h4>月柱——以十二节气为界</h4>
+<p>每月对应一个地支（正月建寅、二月建卯……），但必须过了该月的「节」才算进入当月。天干由年干通过<strong>五虎遁</strong>口诀推得：</p>
+<ul>
+<li>甲己之年丙作首——丙寅月起</li><li>乙庚之年戊为头——戊寅月起</li>
+<li>丙辛之年寻庚起——庚寅月起</li><li>丁壬壬位顺行流——壬寅月起</li>
+<li>戊癸之年甲寅求——甲寅月起</li>
+</ul>
+<h4>日柱——循环推演</h4>
+<p>日柱由公历日期通过公式法直接计算，六十甲子每60天一个完整循环。采用基于已知锚点日的偏移量算法。</p>
+<h4>时柱——五鼠遁元法</h4>
+<p>时辰的地支固定，天干由当日天干通过<strong>五鼠遁</strong>推得：</p>
+<ul>
+<li>甲己还加甲——甲子时起</li><li>乙庚丙作初——丙子时起</li>
+<li>丙辛从戊起——戊子时起</li><li>丁壬庚子居——庚子时起</li>
+<li>戊癸何方发，壬子是真途——壬子时起</li>
+</ul>
+<p>注意：23:00后属次日早子时，日柱和年/月柱均需顺延一日重算。</p>
+<h3>二、使用提示</h3>
+<ul>
+<li>若出生时间在节气交节前后两小时内，建议确认精确的交节时刻后再排盘</li>
+<li>真太阳时的精确校正需要结合出生地经度偏差，后续版本将加入经度选择功能</li>
+<li>当前算法适用于公元1900年至2100年范围</li>
+</ul>
+</div>
+
+<script>
+const TianGan=["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
+const DiZhi=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+function ganWuxing(g){return{"甲":"木","乙":"木","丙":"火","丁":"火","戊":"土","己":"土","庚":"金","辛":"金","壬":"水","癸":"水"}[g]||""}
+function zhiWuxing(z){return{"子":"水","丑":"土","寅":"木","卯":"木","辰":"土","巳":"火","午":"火","未":"土","申":"金","酉":"金","戌":"土","亥":"水"}[z]||""}
+function gC(g){return{"甲":"gan-jia","乙":"gan-yi","丙":"gan-bing","丁":"gan-ding","戊":"gan-wu","己":"gan-ji","庚":"gan-geng","辛":"gan-xin","壬":"gan-ren","癸":"gan-gui"}[g]||""}
+function zC(z){return{"子":"zhi-zi","丑":"zhi-chou","寅":"zhi-yin","卯":"zhi-mao","辰":"zhi-chen","巳":"zhi-si","午":"zhi-wu","未":"zhi-wei","申":"zhi-shen","酉":"zhi-you","戌":"zhi-xu","亥":"zhi-hai"}[z]||""}
+function wC(n){return{"木":"wx-wood","火":"wx-fire","土":"wx-earth","金":"wx-metal","水":"wx-water"}[n]||""}
+function fmtGZ(gz){var g=gz.charAt(0),z=gz.charAt(1);return'<span class="'+gC(g)+'">'+g+'</span><span class="'+zC(z)+'">'+z+'</span><span class="wuxing-tag '+wC(ganWuxing(g))+'">'+ganWuxing(g)+'</span>'}
+
+var sTermInfo_1900=[0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758];
+function getSolarTerm(y,n){var bt=new Date(1900,0,6,2,5,0).getTime();var yo=(y-1900)*365.2422*24*60*60*1000;return new Date(bt+yo+sTermInfo_1900[n]*60000)}
+function getDayGZ(y,m,d){var bd=new Date(2000,0,1),td=new Date(y,m-1,d),dd=Math.floor((td-bd)/86400000);return TianGan[(dd%10+10)%10]+DiZhi[((10+dd)%12+12)%12]}
+function getMonthGZ(y,m,d){
+ var mzArr=[2,3,4,5,6,7,8,9,10,11,0,1],mzIdx=mzArr[m-1];
+ var tiMap=[2,4,6,8,10,12,14,16,18,20,22,0],ti=tiMap[m-1],ty=y;
+ if(m===12)ty=y+1;
+ var td=getSolarTerm(ty,ti),bd=new Date(y,m-1,d);
+ if(bd<td){m--;if(m<1){m=12;y--}mzIdx=mzArr[m-1]}
+ var ygI=((y-4)%10+10)%10,bG;
+ if(ygI===0||ygI===5)bG=2;else if(ygI===1||ygI===6)bG=4;
+ else if(ygI===2||ygI===7)bG=6;else if(ygI===3||ygI===8)bG=8;else bG=0;
+ var off=mzIdx-2;if(off<0)off+=12;
+ return TianGan[(bG+off)%10]+DiZhi[mzIdx]
+}
+function getYearGZ(y,m,d){var lc=getSolarTerm(y,2),cy=y;if(new Date(y,m-1,d)<lc)cy--;return TianGan[((cy-4)%10+10)%10]+DiZhi[((cy-4)%12+12)%12]}
+function getHourGZ(dg,h){
+ var zi=h===23?0:Math.floor((h+1)/2)%12,dgi=TianGan.indexOf(dg),bG;
+ if(dgi===0||dgi===5)bG=0;else if(dgi===1||dgi===6)bG=2;
+ else if(dgi===2||dgi===7)bG=4;else if(dgi===3||dgi===8)bG=6;else bG=8;
+ return TianGan[(bG+zi)%10]+DiZhi[zi]
+}
+
+function calculateBaZi(){
+ var y=parseInt(document.getElementById("paipan-year").value);
+ var m=parseInt(document.getElementById("paipan-month").value);
+ var d=parseInt(document.getElementById("paipan-day").value);
+ var h=parseInt(document.getElementById("paipan-hour").value);
+ if(!y||!m||d<1||d>31||m<1||m>12){alert("请输入合法的日期");return}
+ var yGZ=getYearGZ(y,m,d),mGZ=getMonthGZ(y,m,d),dGZ=getDayGZ(y,m,d),rD=dGZ,rY=y,rM=m;
+ if(h>=23){var nd=new Date(y,m-1,d+1);rY=nd.getFullYear();rM=nd.getMonth()+1;rD=nd.getDate();rD=getDayGZ(rY,rM,nd.getDate());yGZ=getYearGZ(rY,rM,nd.getDate());mGZ=getMonthGZ(rY,rM,nd.getDate())}
+ var hGZ=getHourGZ(rD.charAt(0),h);
+ document.getElementById("sizhu-year").innerHTML=fmtGZ(yGZ);
+ document.getElementById("sizhu-month").innerHTML=fmtGZ(mGZ);
+ document.getElementById("sizhu-day").innerHTML=fmtGZ(rD);
+ document.getElementById("sizhu-hour").innerHTML=fmtGZ(hGZ);
+ document.getElementById("paipan-result").style.display="block";
+ var de=document.getElementById("paipan-debug");de.style.display="block";
+ var lc=getSolarTerm(y,2),sh=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"][Math.floor((h+1)/2)%12];
+ de.innerHTML="【调试信息】<br>输入："+y+"年"+m+"月"+d+"日 "+sh+"时<br>"+(h>=23?"⚠ 夜子时跨日至："+rY+"年"+rM+"月"+nd.getDate()+"日<br>":"")+"该年立春："+lc.toLocaleString("zh-CN",{timeZone:"Asia/Shanghai"})+"<br>四柱："+yGZ+" | "+mGZ+" | "+rD+" | "+hGZ
+}
+</script>
+</body>
+</html>
