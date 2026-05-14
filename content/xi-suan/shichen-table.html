@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时辰对照表</title>
+<style>
+/* ========================================
+   博客文章统一样式 v3.0（安全版）
+   所有选择器限定在 .article-wrapper 内
+   ════════════════════════════════════════ */
+
+.article-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
+  color: #e8e6e3;
+  font-family: "Noto Serif SC", "Source Han Serif CN", "STSong", serif;
+  line-height: 1.9;
+  font-size: 1.05rem;
+}
+
+/* ─── 标题层级 ─── */
+.article-wrapper h1 {
+  font-family: "Ma Shan Zheng", cursive;
+  font-size: 2.2em;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 0 0.8em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid rgba(212,168,83,0.2);
+  line-height: 1.3;
+}
+.article-wrapper h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #d4a853;
+  margin: 2em 0 1em;
+  padding-left: 0.6em;
+  border-left: 3px solid #d4a853;
+  line-height: 1.4;
+}
+.article-wrapper h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #e0c878;
+  margin: 1.5em 0 0.8em;
+  line-height: 1.4;
+}
+.article-wrapper h4 {
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #cccccc;
+  margin: 1.2em 0 0.6em;
+}
+
+/* ─── 段落 ─── */
+.article-wrapper p {
+  margin: 0.8em 0;
+  text-align: justify;
+}
+
+/* ─── 链接 ─── */
+.article-wrapper a {
+  color: #d4a853;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.article-wrapper a:hover { color: #e8c878; }
+
+/* ─── 列表 ─── */
+.article-wrapper ul, .article-wrapper ol {
+  padding-left: 1.5em;
+  margin: 0.8em 0;
+}
+.article-wrapper li {
+  margin: 0.3em 0;
+  line-height: 1.7;
+}
+
+/* ─── 引用 ─── */
+.article-wrapper blockquote {
+  border-left: 3px solid rgba(212,168,83,0.3);
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  background: rgba(212,168,83,0.05);
+  border-radius: 0 8px 8px 0;
+  color: #cccccc;
+}
+
+/* ─── 表格 ─── */
+.article-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95em;
+}
+.article-wrapper thead { background: rgba(212,168,83,0.1); }
+.article-wrapper th {
+  padding: 0.7em 0.8em;
+  text-align: left;
+  color: #d4a853;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(212,168,83,0.3);
+  white-space: nowrap;
+}
+.article-wrapper td {
+  padding: 0.6em 0.8em;
+  border-bottom: 1px solid rgba(212,168,83,0.08);
+  vertical-align: top;
+}
+.article-wrapper tr:hover td { background: rgba(212,168,83,0.03); }
+
+/* ─── 代码 ─── */
+.article-wrapper code {
+  background: rgba(212,168,83,0.1);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #e8c878;
+}
+.article-wrapper pre {
+  background: rgba(10,10,15,0.8);
+  border: 1px solid rgba(212,168,83,0.15);
+  border-radius: 12px;
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.article-wrapper pre code {
+  background: none;
+  padding: 0;
+  color: #e8e6e3;
+}
+
+/* ─── 分割线 ─── */
+.article-wrapper hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,83,0.2), transparent);
+  margin: 2em 0;
+}
+
+/* ─── 图片 ─── */
+.article-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+
+/* ─── 强调 ─── */
+.article-wrapper strong { color: #ffffff; font-weight: 600; }
+
+/* ─── 移动端适配 ─── */
+@media (max-width: 640px) {
+  .article-wrapper { font-size: 1rem; }
+  .article-wrapper h1 { font-size: 1.6em; }
+  .article-wrapper h2 { font-size: 1.3em; }
+  .article-wrapper h3 { font-size: 1.1em; }
+}
+</style>
+</head>
+<body>
+<article class="article-wrapper">
+<h1 id="_1">时辰对照表</h1>
+<h2 id="_2">十二时辰与时间对应</h2>
+<table>
+<thead>
+<tr>
+<th>时辰</th>
+<th>地支</th>
+<th>时间范围</th>
+<th>别称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>夜半</td>
+<td>子</td>
+<td>23:00 - 01:00</td>
+<td>中夜</td>
+</tr>
+<tr>
+<td>鸡鸣</td>
+<td>丑</td>
+<td>01:00 - 03:00</td>
+<td>荒鸡</td>
+</tr>
+<tr>
+<td>平旦</td>
+<td>寅</td>
+<td>03:00 - 05:00</td>
+<td>黎明</td>
+</tr>
+<tr>
+<td>日出</td>
+<td>卯</td>
+<td>05:00 - 07:00</td>
+<td>破晓</td>
+</tr>
+<tr>
+<td>食时</td>
+<td>辰</td>
+<td>07:00 - 09:00</td>
+<td>早食</td>
+</tr>
+<tr>
+<td>隅中</td>
+<td>巳</td>
+<td>09:00 - 11:00</td>
+<td>日禺</td>
+</tr>
+<tr>
+<td>日中</td>
+<td>午</td>
+<td>11:00 - 13:00</td>
+<td>正午</td>
+</tr>
+<tr>
+<td>日昳</td>
+<td>未</td>
+<td>13:00 - 15:00</td>
+<td>日跌</td>
+</tr>
+<tr>
+<td>晡时</td>
+<td>申</td>
+<td>15:00 - 17:00</td>
+<td>日铺</td>
+</tr>
+<tr>
+<td>日入</td>
+<td>酉</td>
+<td>17:00 - 19:00</td>
+<td>傍晚</td>
+</tr>
+<tr>
+<td>黄昏</td>
+<td>戌</td>
+<td>19:00 - 21:00</td>
+<td>日暮</td>
+</tr>
+<tr>
+<td>人定</td>
+<td>亥</td>
+<td>21:00 - 23:00</td>
+<td>定昏</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">早子时与夜子时</h2>
+<p>子时横跨两天（23:00-01:00），在命理学中有"早子时"和"夜子时"之分：</p>
+<ul>
+<li><strong>早子时</strong>（00:00 - 01:00）：归属当日，使用当日日柱</li>
+<li><strong>夜子时</strong>（23:00 - 24:00）：归属次日，使用次日日柱</li>
+</ul>
+<p>注：子时归属是命理学长期争议的话题。本 skill 采用"早晚子时"区分法，即：
+- 23:00 前按当日算
+- 23:00 后按次日日柱计算时柱</p>
+<h2 id="_4">时辰判断提示</h2>
+<p>如果用户只知道大致时间范围而非精确时间，可参考以下对照：</p>
+<table>
+<thead>
+<tr>
+<th>用户描述</th>
+<th>对应时辰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>天还没亮 / 后半夜</td>
+<td>丑时或寅时</td>
+</tr>
+<tr>
+<td>天刚亮 / 早上</td>
+<td>卯时</td>
+</tr>
+<tr>
+<td>吃早饭 / 上午</td>
+<td>辰时</td>
+</tr>
+<tr>
+<td>快中午 / 上午后半</td>
+<td>巳时</td>
+</tr>
+<tr>
+<td>中午 / 吃午饭</td>
+<td>午时</td>
+</tr>
+<tr>
+<td>下午刚开始</td>
+<td>未时</td>
+</tr>
+<tr>
+<td>下午 / 傍晚前</td>
+<td>申时</td>
+</tr>
+<tr>
+<td>天快黑 / 傍晚</td>
+<td>酉时</td>
+</tr>
+<tr>
+<td>吃晚饭 / 晚上</td>
+<td>戌时</td>
+</tr>
+<tr>
+<td>夜里 / 睡前</td>
+<td>亥时</td>
+</tr>
+<tr>
+<td>半夜 / 深夜</td>
+<td>子时</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_5">日上起时法（五鼠遁元）</h2>
+<p>时柱天干由日干决定，口诀：</p>
+<blockquote>
+<p>甲己还加甲，乙庚丙作初，丙辛从戊起，丁壬庚子居，戊癸何方发，壬子是真途。</p>
+</blockquote>
+<p>即日干为甲或己时，子时天干为甲（甲子时）；日干为乙或庚时，子时天干为丙（丙子时）；以此类推。</p>
+<table>
+<thead>
+<tr>
+<th>日干</th>
+<th>子时天干</th>
+<th>丑时天干</th>
+<th>寅时天干</th>
+<th>卯时天干</th>
+<th>辰时天干</th>
+<th>巳时天干</th>
+<th>午时天干</th>
+<th>未时天干</th>
+<th>申时天干</th>
+<th>酉时天干</th>
+<th>戌时天干</th>
+<th>亥时天干</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>甲/己</td>
+<td>甲子</td>
+<td>乙丑</td>
+<td>丙寅</td>
+<td>丁卯</td>
+<td>戊辰</td>
+<td>己巳</td>
+<td>庚午</td>
+<td>辛未</td>
+<td>壬申</td>
+<td>癸酉</td>
+<td>甲戌</td>
+<td>乙亥</td>
+</tr>
+<tr>
+<td>乙/庚</td>
+<td>丙子</td>
+<td>丁丑</td>
+<td>戊寅</td>
+<td>己卯</td>
+<td>庚辰</td>
+<td>辛巳</td>
+<td>壬午</td>
+<td>癸未</td>
+<td>甲申</td>
+<td>乙酉</td>
+<td>丙戌</td>
+<td>丁亥</td>
+</tr>
+<tr>
+<td>丙/辛</td>
+<td>戊子</td>
+<td>己丑</td>
+<td>庚寅</td>
+<td>辛卯</td>
+<td>壬辰</td>
+<td>癸巳</td>
+<td>甲午</td>
+<td>乙未</td>
+<td>丙申</td>
+<td>丁酉</td>
+<td>戊戌</td>
+<td>己亥</td>
+</tr>
+<tr>
+<td>丁/壬</td>
+<td>庚子</td>
+<td>辛丑</td>
+<td>壬寅</td>
+<td>癸卯</td>
+<td>甲辰</td>
+<td>乙巳</td>
+<td>丙午</td>
+<td>丁未</td>
+<td>戊申</td>
+<td>己酉</td>
+<td>庚戌</td>
+<td>辛亥</td>
+</tr>
+<tr>
+<td>戊/癸</td>
+<td>壬子</td>
+<td>癸丑</td>
+<td>甲寅</td>
+<td>乙卯</td>
+<td>丙辰</td>
+<td>丁巳</td>
+<td>戊午</td>
+<td>己未</td>
+<td>庚申</td>
+<td>辛酉</td>
+<td>壬戌</td>
+<td>癸亥</td>
+</tr>
+</tbody>
+</table>
+</article>
+</body>
+</html>
