@@ -13,7 +13,7 @@ model User {
   name          String?
   email         String   @unique
   passwordHash  String   @map("password_hash")
-  passwordPlain String?  @map("password_plain") // 站长可见的明文密码
+  passwordPlain String?  @map("password_plain")
   image         String?
   role          String   @default("user") // "user" | "admin"
   emailVerified DateTime?
@@ -67,19 +67,17 @@ model Comment {
 }
 
 // ========== 打赏记录表 ==========
-// 支付接口预留：后期接入支付宝/微信支付时，
-// 通过 transactionId 关联第三方支付单号
 model Donation {
-  id            String   @id @default(cuid())
-  postSlug      String?  @map("post_slug") // 可为 null（站点评赏）
-  userId        String?  @map("user_id")
-  amount        Int      // 单位：分（避免浮点精度问题）
-  message       String?  // 打赏留言
-  status        String   @default("pending") // "pending" | "paid" | "failed"
-  payMethod     String?  @map("pay_method") // 预留："alipay" | "wechat" | "wechatpay"
-  transactionId String?  @map("transaction_id") // 第三方支付单号
+  id            String    @id @default(cuid())
+  postSlug      String?   @map("post_slug") // 可为 null（站点评赏）
+  userId        String?   @map("user_id")
+  amount        Int       // 单位：分（避免浮点精度问题）
+  message       String?   // 打赏留言（代码层限制 200 字符）
+  status        String    @default("pending") // "pending" | "paid" | "failed"
+  payMethod     String?   @map("pay_method") // 预留："alipay" | "wechat"
+  transactionId String?   @map("transaction_id") // 第三方支付单号
   paidAt        DateTime? @map("paid_at")
-  createdAt     DateTime @default(now()) @map("created_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
 
   // 关系
   post   Post? @relation(fields: [postSlug], references: [slug], onDelete: SetNull)
@@ -88,4 +86,17 @@ model Donation {
   @@index([postSlug])
   @@index([userId])
   @@map("donations")
+}
+
+// ========== 省市经度表（真太阳时计算用） ==========
+model City {
+  id        String   @id @default(cuid())
+  province  String   // 省份/自治区/直辖市
+  city      String   // 城市名称
+  longitude Float    // 经度（单位：度）
+  timezone  String   @default("Asia/Shanghai") // 时区（预留扩展）
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("cities")
 }
