@@ -24,7 +24,6 @@ export async function POST(request: NextRequest) {
       birthMonth,
       birthDay,
       birthHour,
-      timezone,
     } = body;
 
     // 参数校验
@@ -48,7 +47,6 @@ export async function POST(request: NextRequest) {
       birthMonth: Number(birthMonth),
       birthDay: Number(birthDay),
       birthHour: Number(birthHour),
-      timezone: timezone || 'Asia/Shanghai',
     };
 
     const result = calcBazi(input);

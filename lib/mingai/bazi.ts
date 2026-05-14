@@ -19,7 +19,6 @@ export interface BaziCalcInput {
   birthMonth: number;
   birthDay: number;
   birthHour: number;
-  timezone?: string;
 }
 
 export interface BaziCalcResult {
@@ -32,7 +31,7 @@ export interface BaziCalcResult {
  * 计算八字排盘 + 大运流年
  */
 export function calcBazi(input: BaziCalcInput): BaziCalcResult {
-  const { gender, birthYear, birthMonth, birthDay, birthHour, timezone = 'Asia/Shanghai' } = input;
+  const { gender, birthYear, birthMonth, birthDay, birthHour } = input;
 
   const baziResult = calculateBazi({
     gender,
@@ -40,7 +39,6 @@ export function calcBazi(input: BaziCalcInput): BaziCalcResult {
     birthMonth,
     birthDay,
     birthHour,
-    timezone,
   });
 
   const dayunResult = calculateBaziDayun({
@@ -49,7 +47,6 @@ export function calcBazi(input: BaziCalcInput): BaziCalcResult {
     birthMonth,
     birthDay,
     birthHour,
-    timezone,
   });
 
   return {
