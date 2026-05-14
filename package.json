@@ -17,6 +17,7 @@
     "@mingai/core": "^3.4.0",
     "@prisma/client": "^6.0.0",
     "bcryptjs": "^3.0.0",
+    "chinese-lunar-calendar": "^1.0.1",
     "framer-motion": "^12.4.0",
     "next": "^15.2.0",
     "next-auth": "^5.0.0-beta.25",
