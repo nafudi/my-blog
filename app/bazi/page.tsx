@@ -38,7 +38,7 @@ interface DayunItem {
   naYin: string;
   diShi: string;
   shenSha: string[];
-  liunianList?: { year: number; ganZhi: string; tenGod: string; nayin: string; shenSha: string[] }[];
+  liunianList?: { year: number; ganZhi: string; tenGod: string; naYin: string; shenSha: string[] }[];
 }
 
 export default function BaziPage() {
@@ -121,11 +121,11 @@ export default function BaziPage() {
           <tbody>
             <tr className="border-b border-[rgba(212,168,83,0.15)]">
               <td className={`${textStyles.muted} w-16 py-1`}>天干</td>
-              <td className={`${textStyles.textPrimary} text-center font-bold text-lg`}>{p.stem}</td>
+              <td className={`${tw.textPrimary} text-center font-bold text-lg`}>{p.stem}</td>
             </tr>
             <tr className="border-b border-[rgba(212,168,83,0.15)]">
               <td className={`${textStyles.muted} py-1`}>地支</td>
-              <td className={`${textStyles.textPrimary} text-center font-bold text-lg`}>{p.branch}</td>
+              <td className={`${tw.textPrimary} text-center font-bold text-lg`}>{p.branch}</td>
             </tr>
             {p.tenGod && (
               <tr className="border-b border-[rgba(212,168,83,0.15)]">
@@ -135,18 +135,18 @@ export default function BaziPage() {
             )}
             <tr className="border-b border-[rgba(212,168,83,0.15)]">
               <td className={`${textStyles.muted} py-1`}>地势</td>
-              <td className={`${textStyles.textSecondary} text-center`}>{p.diShi || "-"}</td>
+              <td className={`${tw.textSecondary} text-center`}>{p.diShi || "-"}</td>
             </tr>
             <tr className="border-b border-[rgba(212,168,83,0.15)]">
               <td className={`${textStyles.muted} py-1`}>纳音</td>
-              <td className={`${textStyles.textSecondary} text-center text-xs`}>{p.naYin || "-"}</td>
+              <td className={`${tw.textSecondary} text-center text-xs`}>{p.naYin || "-"}</td>
             </tr>
             <tr>
               <td className={`${textStyles.muted} py-1 align-top`}>藏干</td>
               <td className="py-1">
                 {p.hiddenStems.map((h, i) => (
                   <div key={i} className="flex justify-between gap-2 text-xs">
-                    <span className={textStyles.textPrimary}>{h.stem}</span>
+                    <span className={tw.textPrimary}>{h.stem}</span>
                     <span className={tw.goldLight}>{h.tenGod}</span>
                   </div>
                 ))}
@@ -181,7 +181,7 @@ export default function BaziPage() {
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-4">
           {/* 性别 */}
           <div>
-            <label className={`${fontSizes.bodySm} ${textStyles.textSecondary} block mb-1`}>性别</label>
+            <label className={`${fontSizes.bodySm} ${tw.textSecondary} block mb-1`}>性别</label>
             <select
               value={gender}
               onChange={e => setGender(e.target.value as "male" | "female")}
@@ -193,25 +193,25 @@ export default function BaziPage() {
           </div>
           {/* 年 */}
           <div>
-            <label className={`${fontSizes.bodySm} ${textStyles.textSecondary} block mb-1`}>年</label>
+            <label className={`${fontSizes.bodySm} ${tw.textSecondary} block mb-1`}>年</label>
             <input type="number" value={birthYear} onChange={e => setBirthYear(Number(e.target.value))}
               className="w-full bg-[#0a0a0f] border border-[rgba(212,168,83,0.15)] rounded px-2 py-1.5 text-sm text-white" />
           </div>
           {/* 月 */}
           <div>
-            <label className={`${fontSizes.bodySm} ${textStyles.textSecondary} block mb-1`}>月</label>
+            <label className={`${fontSizes.bodySm} ${tw.textSecondary} block mb-1`}>月</label>
             <input type="number" min={1} max={12} value={birthMonth} onChange={e => setBirthMonth(Number(e.target.value))}
               className="w-full bg-[#0a0a0f] border border-[rgba(212,168,83,0.15)] rounded px-2 py-1.5 text-sm text-white" />
           </div>
           {/* 日 */}
           <div>
-            <label className={`${fontSizes.bodySm} ${textStyles.textSecondary} block mb-1`}>日</label>
+            <label className={`${fontSizes.bodySm} ${tw.textSecondary} block mb-1`}>日</label>
             <input type="number" min={1} max={31} value={birthDay} onChange={e => setBirthDay(Number(e.target.value))}
               className="w-full bg-[#0a0a0f] border border-[rgba(212,168,83,0.15)] rounded px-2 py-1.5 text-sm text-white" />
           </div>
           {/* 时 */}
           <div>
-            <label className={`${fontSizes.bodySm} ${textStyles.textSecondary} block mb-1`}>时（0-23）</label>
+            <label className={`${fontSizes.bodySm} ${tw.textSecondary} block mb-1`}>时（0-23）</label>
             <input type="number" min={0} max={23} value={birthHour} onChange={e => setBirthHour(Number(e.target.value))}
               className="w-full bg-[#0a0a0f] border border-[rgba(212,168,83,0.15)] rounded px-2 py-1.5 text-sm text-white" />
           </div>
@@ -264,7 +264,7 @@ export default function BaziPage() {
                 <div className={`${fontSizes.bodySm} ${textStyles.muted} mb-2`}>地支关系</div>
                 <div className="flex flex-wrap gap-2">
                   {baziResult.relations.map((r, i) => (
-                    <span key={i} className={`${fontSizes.caption} px-2 py-1 rounded bg-[rgba(212,168,83,0.08)] ${textStyles.textSecondary}`}>
+                    <span key={i} className={`${fontSizes.caption} px-2 py-1 rounded bg-[rgba(212,168,83,0.08)] ${tw.textSecondary}`}>
                       {r.description}
                     </span>
                   ))}
@@ -278,7 +278,7 @@ export default function BaziPage() {
                 <div className={`${fontSizes.bodySm} ${textStyles.muted} mb-2`}>天干冲克</div>
                 <div className="flex flex-wrap gap-2">
                   {baziResult.tianGanChongKe.map((c, i) => (
-                    <span key={i} className={`${fontSizes.caption} px-2 py-1 rounded bg-red-900/20 ${textStyles.textSecondary}`}>
+                    <span key={i} className={`${fontSizes.caption} px-2 py-1 rounded bg-red-900/20 ${tw.textSecondary}`}>
                       {c.stemA} 冲 {c.stemB}
                     </span>
                   ))}
@@ -306,11 +306,11 @@ export default function BaziPage() {
                   <tbody>
                     {dayunList.map((d, i) => (
                       <tr key={i} className="border-b border-[rgba(212,168,83,0.08)]">
-                        <td className={`${textStyles.textSecondary} py-2`}>{d.startAge}岁（{d.startYear}）</td>
-                        <td className={`${textStyles.textPrimary} font-bold py-2`}>{d.ganZhi}</td>
+                        <td className={`${tw.textSecondary} py-2`}>{d.startAge}岁（{d.startYear}）</td>
+                        <td className={`${tw.textPrimary} font-bold py-2`}>{d.ganZhi}</td>
                         <td className={`${tw.goldLight} py-2`}>{d.tenGod}</td>
-                        <td className={`${textStyles.textSecondary} text-xs py-2`}>{d.naYin}</td>
-                        <td className={`${textStyles.textSecondary} py-2`}>{d.diShi}</td>
+                        <td className={`${tw.textSecondary} text-xs py-2`}>{d.naYin}</td>
+                        <td className={`${tw.textSecondary} py-2`}>{d.diShi}</td>
                         <td className="py-2">
                           <div className="flex flex-wrap gap-1">
                             {d.shenSha.map((s, j) => (
