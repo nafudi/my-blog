@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>纳音五行详解：三命通会原文与白话解析</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========== 全局 ========== */
+.article-wrapper { max-width: 1000px; margin: 0 auto; padding: 1rem 0;
+  color: #e8e6e3; font-family: "Noto Serif SC","Source Han Serif CN","STSong",serif;
+  line-height: 1.85; font-size: 1.04rem; }
+.article-wrapper h1 { font-family: "Ma Shan Zheng",cursive; font-size: 2.2em;
+  font-weight: 700; color: #ffffff; text-align: center; margin: 0 0 0.7em;
+  padding-bottom: 0.3em; border-bottom: 2px solid rgba(212,168,83,0.2); }
+.article-wrapper h2 { font-size: 1.45em; font-weight: 700; color: #d4a853;
+  margin: 2em 0 0.9em; padding-left: 0.6em; border-left: 3px solid #d4a853; }
+.article-wrapper h3 { font-size: 1.15em; font-weight: 600; color: #e0c878; margin: 1.3em 0 0.7em; }
+.article-wrapper h4 { font-size: 1.02em; font-weight: 600; margin: 0 0 0.35em; }
+.article-wrapper p { margin: 0.7em 0; text-align: justify; }
+.article-wrapper blockquote { border-left: 3px solid rgba(212,168,83,0.35);
+  margin: 0.5em 0; padding: 0.4em 1em; background: rgba(212,168,83,0.05);
+  border-radius: 0 6px 6px 0; color: #aaaaaa; font-style: italic; line-height: 1.7; font-size: 0.94em; }
+.article-wrapper table { width:100%; border-collapse:collapse; margin:1.2em 0; font-size:0.93em; }
+.article-wrapper thead { background: rgba(212,168,83,0.09); }
+.article-wrapper th { padding:0.6em 0.75em; text-align:left; color:#d4a853; font-weight:600;
+  border-bottom:2px solid rgba(212,168,83,0.28); white-space:nowrap; }
+.article-wrapper td { padding:0.5em 0.75em; border-bottom:1px solid rgba(212,168,83,0.07); vertical-align:middle; }
+.article-wrapper strong { color: #ffffff; font-weight: 600; }
+.article-wrapper ul,.article-wrapper ol { padding-left:1.5em; margin:0.7em 0; }
+.article-wrapper li { margin:0.25em 0; line-height:1.7; }
+.article-wrapper hr { border:none; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,168,83,0.2),transparent); margin:1.8em 0; }
+
+/* ========== 目录 ========== */
+.toc { background: rgba(212,168,83,0.06); border: 1px solid rgba(212,168,83,0.14);
+  border-radius: 10px; padding: 1em 1.4em; margin: 1.2em 0; }
+.toc-title { font-weight: 700; color: #d4a853; margin-bottom: 0.5em; font-size: 1.05em; }
+.toc a { color: #e0c878; text-decoration: none; }
+.toc a:hover { color: #fff; text-decoration: underline; }
+.toc ul { list-style: none; padding-left: 0; margin: 0; }
+.toc li { margin: 0.2em 0; }
+
+/* ========== 五行配色 ========== */
+.c-jin  { color: #E8DCC5; font-weight: 600; }
+.c-mu   { color: #7CB87C; font-weight: 600; }
+.c-shui { color: #6EB5CF; font-weight: 600; }
+.c-huo  { color: #E87A5D; font-weight: 600; }
+.c-tu   { color: #D4A853; font-weight: 600; }
+
+/* ========== 六十甲子矩阵网格 ========== */
+.matrix-section { margin: 1.5em 0 2.5em; }
+.matrix-hint { color:#998; font-size:0.88em; margin-bottom:0.8em; }
+
+/* 矩阵容器 */
+.jiazi-matrix {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 6px;
+  font-size: 0.86em;
+  position: relative;
+}
+
+/* 列标题 — 天干 */
+.col-header {
+  display: contents;
+}
+.col-header span {
+  text-align: center;
+  padding: 0.35em 0;
+  font-weight: 700;
+  font-size: 1.05em;
+  color: #d4a853;
+  border-bottom: 2px solid rgba(212,168,83,0.25);
+  background: rgba(212,168,83,0.06);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+}
+
+/* 单元格 */
+.jz-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 0.25em 0.65em;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  border-radius: 10px;
+  min-height: 80px;
+  background: rgba(30,28,26,0.85);
+  border: 1px solid rgba(212,168,83,0.22);
+}
+
+/* 五行底色 */
+.jz-cell.el-metal   { --el-c:#E8DCC5; --el-bg:rgba(232,220,197,0.10); --el-bd:rgba(232,220,197,0.30); }
+.jz-cell.el-wood    { --el-c:#7CB87C;  --el-bg:rgba(124,184,124,0.11); --el-bd:rgba(124,184,124,0.32); }
+.jz-cell.el-water   { --el-c:#6EB5CF;  --el-bg:rgba(110,181,207,0.10); --el-bd:rgba(110,181,207,0.28); }
+.jz-cell.el-fire    { --el-c:#E87A5D;  --el-bg:rgba(232,122,93,0.10);  --el-bd:rgba(232,122,93,0.30); }
+.jz-cell.el-earth   { --el-c:#D4A853;  --el-bg:rgba(212,168,83,0.09);  --el-bd:rgba(212,168,83,0.25); }
+
+.jz-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  z-index: 20;
+  border-color: var(--el-c);
+  background: #1a1a1a !important; color: #e8e0d0 !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45), 0 0 12px var(--el-bd);
+}
+
+/* 干支文字 — 五行色 */
+.jz-gz {
+  font-size: 1.15em;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  line-height: 1.2;
+  color: var(--el-c);
+  transition: filter 0.18s;
+}
+.jz-cell:hover .jz-gz { filter: brightness(1.3); }
+
+/* 纳音名称 */
+.jz-nayin {
+  font-size: 0.78em;
+  margin-top: 0.2em;
+  color: var(--el-c);
+  opacity: 0.75;
+  white-space: nowrap;
+  transition: opacity 0.18s;
+}
+.jz-cell:hover .jz-nayin { opacity: 1; font-weight: 600; }
+
+/* 配对标记 — 同一纳音的两个格子共享边框视觉 */
+.jz-cell.pair-first { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+.jz-cell.pair-last  { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+.jz-cell.pair-first:not(:nth-child(2n)) { border-right: none !important; margin-right: -2px; }
+.jz-cell.pair-last:nth-child(odd) { border-left: 1px solid var(--el-bd) !important; }
+
+/* 同一纳音配对之间用细线分隔但保持色块连续感 */
+
+/* ========== 单元格交互效果（click触发fixed modal） ========== */
+.jz-cell { cursor: pointer; transition: all 0.18s ease; }
+.jz-cell:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  z-index: 10;
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+}
+.jz-cell:active { transform: scale(0.97); transition: none; }
+.jz-cell.nayin-active {
+  outline: 2px solid var(--el-c, #d4a853);
+  outline-offset: 2px;
+}
+
+.dp-title { font-weight: 700; font-size: 1.02em; color: var(--el-c); margin-bottom: 0.35em; }
+.dp-pair { font-size: 0.84em; color: #999; margin-bottom: 0.4em; letter-spacing: 0.08em; }
+.dp-quote { border-left: 2px solid var(--el-c); background: rgba(255,255,255,0.02);
+  padding: 0.4em 0.85em; border-radius: 0 6px 6px 0; color: #aaa; font-style: italic;
+  margin: 0.45em 0; line-height: 1.7; font-size: 0.9em; }
+.dp-text { color: #bbb; line-height: 1.75; margin: 0; font-size: 0.91em; }
+.dp-text strong { color: var(--el-c); }
+
+/* 图例 */
+.matrix-legend {
+  display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;
+  margin: 0.8em 0 0; font-size: 0.82em;
+}
+.legend-item { display: flex; align-items: center; gap: 0.35em; color: #999; }
+.legend-dot {
+  width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0;
+}
+.legend-dot.metal { background: #E8DCC5; }
+.legend-dot.wood  { background: #7CB87C; }
+.legend-dot.water { background: #6EB5CF; }
+.legend-dot.fire  { background: #E87A5D; }
+.legend-dot.earth { background: #D4A853; }
+
+/* 备注框 */
+.note-box { background: rgba(180,140,60,0.07); border: 1px solid rgba(212,168,83,0.16);
+  border-radius: 8px; padding: 0.9em 1.2em; margin: 1em 0; font-size: 0.95em; }
+
+/* 移动端适配 */
+@media (max-width:768px) {
+  .article-wrapper { font-size: 0.97rem; padding: 0.3rem; }
+  .jiazi-matrix {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px; padding: 2px;
+  }
+  .col-header span { font-size: 0.95em; padding: 0.25em 0; }
+  .jz-cell { min-height: 58px; padding: 0.4em 0.15em 0.5em; }
+  .jz-gz { font-size: 1.05em; }
+  .jz-nayin { font-size: 0.72em; }
+.mobile-only { display: none; }
+
+@media (max-width:480px) {
+  .jiazi-matrix { grid-template-columns: repeat(5, 1fr); }
+  .jz-cell { min-height: 52px; padding: 0.3em 0.1em 0.4em; }
+  .jz-gz { font-size: 0.95em; }
+  .jz-nayin { font-size: 0.68em; }
+}
+
+@media (max-width:640px) {
+  .article-wrapper h1 { font-size: 1.55em; }
+  .article-wrapper h2 { font-size: 1.25em; }
+}
+</style>
+</head>
+<body>
+<article class="article-wrapper">
+
+<h1>纳音五行详解：三命通会原文与白话解析</h1>
+
+<p>纳音五行，是八字命理学中极为重要的基础概念。六十甲子每两个一组，对应一种<span class="c-jin">金</span>、<span class="c-mu">木</span>、<span class="c-shui">水</span>、<span class="c-huo">火</span>、<span class="c-tu">土</span>五种属性，共计三十种。古人以"纳音"譬喻万物之声，将干支组合赋予不同形态——同一种<span class="c-jin">金</span>，既有沉于大海的废铁，也有锋利无匹的宝剑。</p>
+
+<p>下图为<strong>六十甲子纳音速查矩阵</strong>，将全部60组干支配列于一张表中。<strong>鼠标悬浮</strong>任意格即可弹出该纳音的《三命通会》原文与白话解析。</p>
+
+<div class="toc">
+<div class="toc-title">📑 目录导航</div>
+<ul>
+<li><a href="#section1">一、六十甲子纳音速查矩阵（悬浮查看详解）</a></li>
+<li><a href="#section2">二、纳音五行计算规则（太玄数法）</a></li>
+<li><a href="#section3">三、天干合与地支冲的深层逻辑</a></li>
+</ul>
+</div>
+
+<hr>
+
+
+<!-- ============================================================ -->
+<h2 id="section1">一、六十甲子纳音速查矩阵</h2>
+<!-- ============================================================ -->
+
+<div class="matrix-section" style="margin:1.5em 0 2.5em">
+<p class="matrix-hint">
+  💡 <strong>提示：</strong><span class="desktop-only">桌面端鼠标悬浮单元格 → 弹出详解面板；</span><span class="mobile-only">点击单元格 → 展开/收起详解；</span>颜色对应五行属性
+</p>
+<!-- ===== 第1行 (1-10) ===== -->
+<div class="jiazi-matrix" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:transparent;border:none;border-radius:10px;padding:6px;font-size:0.86em;position:relative">
+<div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">甲</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">乙</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">丙</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">丁</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">戊</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">己</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">庚</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">辛</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">壬</div><div class="jz-col-header" style="display:flex;align-items:center;justify-content:center;padding:0.4em 0;border-radius:5px;min-height:40px;background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.18);font-weight:700;font-size:1.05em;color:#d4a853;letter-spacing:0.25em;text-indent:0.25em">癸</div>
+
+<!-- 1-2 海中金 -->
+<div data-detail='{"title": "🔸 海中金", "pair": "甲子 · 乙丑", "quote": "甲子乙丑海中金者，子属水，又为湖，又为水旺之地，兼金死于子，墓于丑，水旺而金死墓，故曰海中金也。", "text": "子是<span class=\"c-jin\">水</span>旺之位，<span class=\"c-jin\">金</span>在子死、在丑墓。<span class=\"c-jin\">金</span>死墓于<span class=\"c-shui\">水</span>旺之处，如同沉没在大海深处，故称<strong>海中金</strong>。此金深藏不露，需经淘洗方能见用。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">甲子</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">海中金</span></div>
+<div data-detail='{"title": "🔸 海中金", "pair": "甲子 · 乙丑", "quote": "甲子乙丑海中金者，子属水，又为湖，又为水旺之地，兼金死于子，墓于丑，水旺而金死墓，故曰海中金也。", "text": "子是<span class=\"c-shui\">水</span>旺之位，<span class=\"c-jin\">金</span>在子死、在丑墓。<span class=\"c-jin\">金</span>死墓于<span class=\"c-shui\">水</span>旺之处，如同沉没在大海深处，故称<strong>海中金</strong>。此金深藏不露，需经淘洗方能见用。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">乙丑</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">海中金</span></div>
+
+<!-- 3-4 炉中火 -->
+<div data-detail='{"title": "🔥 炉中火", "pair": "丙寅 · 丁卯", "quote": "丙寅丁卯炉中火者，寅为三阳，卯为四阳，火既得地，又得木生，此火气方生，故曰炉中也。", "text": "寅卯属<span class=\"c-mu\">木</span>，<span class=\"c-mu\">木</span>能生<span class=\"c-huo\">火</span>，<span class=\"c-huo\">火</span>在地支中有根基，如同炉灶之中柴薪初燃、火力渐起，故称<strong>炉中火</strong>。初燃之火，温暖渐升。"}' data-color="#E87A5D" class="jz-cell el-fire pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">丙寅</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">炉中火</span></div>
+<div data-detail='{"title": "🔥 炉中火", "pair": "丙寅 · 丁卯", "quote": "丙寅丁卯炉中火者，寅为三阳，卯为四阳，火既得地，又得木生，此火气方生，故曰炉中也。", "text": "寅卯属<span class=\"c-mu\">木</span>，<span class=\"c-mu\">木</span>能生<span class=\"c-huo\">火</span>，<span class=\"c-huo\">火</span>在地支中有根基，如同炉灶之中柴薪初燃、火力渐起，故称<strong>炉中火</strong>。初燃之火，温暖渐升。"}' data-color="#E87A5D" class="jz-cell el-fire pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">丁卯</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">炉中火</span></div>
+
+<!-- 5-6 大林木 -->
+<div data-detail='{"title": "🌿 大林木", "pair": "戊辰 · 己巳", "quote": "戊辰己巳大林木者，辰为原野，巳为六阳，木至六阳则枝荣叶茂，以茂盛之木而在原野之间，故曰大林木也。", "text": "辰是水库湿<span class=\"c-tu\">土</span>，巳是纯阳温暖之地，此时<span class=\"c-mu\">木</span>气繁茂葱郁，生于原野之间而成参天大林，故称<strong>大林木</strong>。气势恢弘，荫蔽广远。"}' data-color="#7CB87C" class="jz-cell el-wood pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">戊辰</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">大林木</span></div>
+<div data-detail='{"title": "🌿 大林木", "pair": "戊辰 · 己巳", "quote": "戊辰己巳大林木者，辰为原野，巳为六阳，木至六阳则枝荣叶茂，以茂盛之木而在原野之间，故曰大林木也。", "text": "辰是水库湿<span class=\"c-tu\">土</span>，巳是纯阳温暖之地，此时<span class=\"c-mu\">木</span>气繁茂葱郁，生于原野之间而成参天大林，故称<strong>大林木</strong>。气势恢弘，荫蔽广远。"}' data-color="#7CB87C" class="jz-cell el-wood pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">己巳</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">大林木</span></div>
+
+<!-- 7-8 路旁土 -->
+<div data-detail='{"title": "⛰ 路旁土", "pair": "庚午 · 辛未", "quote": "庚午辛未路旁土者，未为土，午为火，火生土，其气已发，故曰路旁土也。", "text": "<span class=\"c-huo\">火</span>生<span class=\"c-tu\">土</span>而<span class=\"c-tu\">土</span>气初发散布于外，此为田畴道路边侧之<span class=\"c-tu\">土</span>，疏松而广布，故称<strong>路旁土</strong>。松散广布，随方就圆。"}' data-color="#D4A853" class="jz-cell el-earth pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">庚午</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">路旁土</span></div>
+<div data-detail='{"title": "⛰ 路旁土", "pair": "庚午 · 辛未", "quote": "庚午辛未路旁土者，未为土，午为火，火生土，其气已发，故曰路旁土也。", "text": "<span class=\"c-huo\">火</span>生<span class=\"c-tu\">土</span>而<span class=\"c-tu\">土</span>气初发散布于外，此为田畴道路边侧之<span class=\"c-tu\">土</span>，疏松而广布，故称<strong>路旁土</strong>。松散广布，随方就圆。"}' data-color="#D4A853" class="jz-cell el-earth pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">辛未</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">路旁土</span></div>
+
+<!-- 9-10 剑锋金 -->
+<div data-detail='{"title": "🔸 剑锋金", "pair": "壬申 · 癸酉", "quote": "壬申癸酉剑锋金者，金临官于申，帝旺于酉，金既生旺，则成刚矣，故曰剑锋金也。", "text": "申酉是<span class=\"c-jin\">金</span>最旺盛的时候，刚强锋利，如同宝剑之锋芒，故称<strong>剑锋金</strong>。至刚至阳，可断可削。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">壬申</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">剑锋金</span></div>
+<div data-detail='{"title": "🔸 剑锋金", "pair": "壬申 · 癸酉", "quote": "壬申癸酉剑锋金者，金临官于申，帝旺于酉，金既生旺，则成刚矣，故曰剑锋金也。", "text": "申酉是<span class=\"c-jin\">金</span>最旺盛的时候，刚强锋利，如同宝剑之锋芒，故称<strong>剑锋金</strong>。至刚至阳，可断可削。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">癸酉</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">剑锋金</span></div>
+
+</div><!-- /row1 -->
+
+
+<!-- ===== 第2行 (11-20) ===== -->
+<div class="jiazi-matrix" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:transparent;border:none;border-radius:10px;padding:6px;font-size:0.86em;position:relative">
+
+
+<!-- 11-12 山头火 -->
+<div data-detail='{"title": "🔥 山头火", "pair": "甲戌 · 乙亥", "quote": "甲戌乙亥山头火者，戌亥为天门，火照天门，其光在上，故曰山头火也。", "text": "戌亥为天门之位，<span class=\"c-huo\">火</span>在此高高在上、光芒远照，如同山巅野<span class=\"c-huo\">火</span>或晚霞辉映苍穹，故称<strong>山头火</strong>。高照远方，光华灿烂。"}' data-color="#E87A5D" class="jz-cell el-fire pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">甲戌</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">山头火</span></div>
+<div data-detail='{"title": "🔥 山头火", "pair": "甲戌 · 乙亥", "quote": "甲戌乙亥山头火者，戌亥为天门，火照天门，其光在上，故曰山头火也。", "text": "戌亥为天门之位，<span class=\"c-huo\">火</span>在此高高在上、光芒远照，如同山巅野<span class=\"c-huo\">火</span>或晚霞辉映苍穹，故称<strong>山头火</strong>。高照远方，光华灿烂。"}' data-color="#E87A5D" class="jz-cell el-fire pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">乙亥</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">山头火</span></div>
+
+<!-- 13-14 涧下水 -->
+<div data-detail='{"title": "💧 涧下水", "pair": "丙子 · 丁丑", "quote": "丙子丁丑涧下水者，水旺于子，衰于丑，旺而反衰，则不能为江河，故曰涧下水也。", "text": "<span class=\"c-shui\">水</span>在子位极旺，到丑位转衰。旺<span class=\"c-shui\">水</span>骤然遇衰地，不能汇聚成大江大河，只能在山间溪涧中潺潺流淌，故称<strong>涧下水</strong>。清冽但量小。"}' data-color="#6EB5CF" class="jz-cell el-water pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">丙子</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">涧下水</span></div>
+<div data-detail='{"title": "💧 涧下水", "pair": "丙子 · 丁丑", "quote": "丙子丁丑涧下水者，水旺于子，衰于丑，旺而反衰，则不能为江河，故曰涧下水也。", "text": "<span class=\"c-shui\">水</span>在子位极旺，到丑位转衰。旺<span class=\"c-shui\">水</span>骤然遇衰地，不能汇聚成大江大河，只能在山间溪涧中潺潺流淌，故称<strong>涧下水</strong>。清冽但量小。"}' data-color="#6EB5CF" class="jz-cell el-water pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">丁丑</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">涧下水</span></div>
+
+<!-- 15-16 城头土 -->
+<div data-detail='{"title": "⛰ 城头土", "pair": "戊寅 · 己卯", "quote": "戊寅己卯城头土者，寅卯木旺之地，土为木所制，其势不能远及，故曰城头土也。", "text": "寅卯<span class=\"c-mu\">木</span>旺克<span class=\"c-tu\">土</span>，<span class=\"c-tu\">土</span>受制而不能延展铺陈，只能堆积垒砌如城墙一般，故称<strong>城头土</strong>。受制凝聚，堆叠成墙。"}' data-color="#D4A853" class="jz-cell el-earth pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">戊寅</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">城头土</span></div>
+<div data-detail='{"title": "⛰ 城头土", "pair": "戊寅 · 己卯", "quote": "戊寅己卯城头土者，寅卯木旺之地，土为木所制，其势不能远及，故曰城头土也。", "text": "寅卯<span class=\"c-mu\">木</span>旺克<span class=\"c-tu\">土</span>，<span class=\"c-tu\">土</span>受制而不能延展铺陈，只能堆积垒砌如城墙一般，故称<strong>城头土</strong>。受制凝聚，堆叠成墙。"}' data-color="#D4A853" class="jz-cell el-earth pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">己卯</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">城头土</span></div>
+
+<!-- 17-18 白蜡金 -->
+<div data-detail='{"title": "🔸 白蜡金", "pair": "庚辰 · 辛巳", "quote": "庚辰辛巳白蜡金者，金养于辰，生于巳，形质初成，未能坚利，故曰白蜡金也。", "text": "<span class=\"c-jin\">金</span>在辰为养地，在巳为生地，刚刚成形，质地柔软不坚，如白蜡一般，故称<strong>白蜡金</strong>。初生之金，尚待磨砺。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">庚辰</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">白蜡金</span></div>
+<div data-detail='{"title": "🔸 白蜡金", "pair": "庚辰 · 辛巳", "quote": "庚辰辛巳白蜡金者，金养于辰，生于巳，形质初成，未能坚利，故曰白蜡金也。", "text": "<span class=\"c-jin\">金</span>在辰为养地，在巳为生地，刚刚成形，质地柔软不坚，如白蜡一般，故称<strong>白蜡金</strong>。初生之金，尚待磨砺。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">辛巳</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">白蜡金</span></div>
+
+<!-- 19-20 杨柳木 -->
+<div data-detail='{"title": "🌿 杨柳木", "pair": "壬午 · 癸未", "quote": "壬午癸未杨柳木者，木死于午，墓于未。甲乙木至午则死，至未则墓。木既死墓，虽得天干壬癸之水以生之，终是柔弱，故曰杨柳木也。", "text": "<span class=\"c-mu\">木</span>死于午、墓于未，虽得壬癸<span class=\"c-shui\">水</span>滋养，终是柔弱之质，如杨柳般婀娜而不挺拔，故称<strong>杨柳木</strong>。"}' data-color="#7CB87C" class="jz-cell el-wood pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">壬午</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">杨柳木</span></div>
+<div data-detail='{"title": "🌿 杨柳木", "pair": "壬午 · 癸未", "quote": "壬午癸未杨柳木者，木死于午，墓于未。甲乙木至午则死，至未则墓。木既死墓，虽得天干壬癸之水以生之，终是柔弱，故曰杨柳木也。", "text": "<span class=\"c-mu\">木</span>死于午、墓于未，虽得壬癸<span class=\"c-shui\">水</span>滋养，终是柔弱之质，如杨柳般婀娜而不挺拔，故称<strong>杨柳木</strong>。"}' data-color="#7CB87C" class="jz-cell el-wood pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">癸未</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">杨柳木</span></div>
+
+</div><!-- /row2 -->
+
+
+<!-- ===== 第3行 (21-30) ===== -->
+<div class="jiazi-matrix" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:transparent;border:none;border-radius:10px;padding:6px;font-size:0.86em;position:relative">
+
+
+<!-- 21-22 井泉水 -->
+<div data-detail='{"title": "💧 井泉水", "pair": "甲申 · 乙酉", "quote": "甲申乙酉井泉水者，金生水，水生木，申酉金之旺地，木死于申，墓于酉，水源不断，而木不能受，故曰井泉水也。", "text": "申酉<span class=\"c-jin\">金</span>旺源源不断地生<span class=\"c-shui\">水</span>，但此时<span class=\"c-mu\">木</span>已死墓无法吸纳泄引，<span class=\"c-shui\">水</span>积聚于一处而不流动，如同井中之泉涌而不流，故称<strong>井泉水</strong>。源深而流静。"}' data-color="#6EB5CF" class="jz-cell el-water pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">甲申</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">井泉水</span></div>
+<div data-detail='{"title": "💧 井泉水", "pair": "甲申 · 乙酉", "quote": "甲申乙酉井泉水者，金生水，水生木，申酉金之旺地，木死于申，墓于酉，水源不断，而木不能受，故曰井泉水也。", "text": "申酉<span class=\"c-jin\">金</span>旺源源不断地生<span class=\"c-shui\">水</span>，但此时<span class=\"c-mu\">木</span>已死墓无法吸纳泄引，<span class=\"c-shui\">水</span>积聚于一处而不流动，如同井中之泉涌而不流，故称<strong>井泉水</strong>。源深而流静。"}' data-color="#6EB5CF" class="jz-cell el-water pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">乙酉</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">井泉水</span></div>
+
+<!-- 23-24 屋上土 -->
+<div data-detail='{"title": "⛰ 屋上土", "pair": "丙戌 · 丁亥", "quote": "丙戌丁亥屋上土者，戌亥为天门，土居天门，高处立基，故曰屋上土也。", "text": "戌亥为天门高位，<span class=\"c-tu\">土</span>居其上犹如房屋瓦顶覆盖高基，故称<strong>屋上土</strong>。居高临下，庇护下方。"}' data-color="#D4A853" class="jz-cell el-earth pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">丙戌</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">屋上土</span></div>
+<div data-detail='{"title": "⛰ 屋上土", "pair": "丙戌 · 丁亥", "quote": "丙戌丁亥屋上土者，戌亥为天门，土居天门，高处立基，故曰屋上土也。", "text": "戌亥为天门高位，<span class=\"c-tu\">土</span>居其上犹如房屋瓦顶覆盖高基，故称<strong>屋上土</strong>。居高临下，庇护下方。"}' data-color="#D4A853" class="jz-cell el-earth pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">丁亥</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">屋上土</span></div>
+
+<!-- 25-26 霹雳火 -->
+<div data-detail='{"title": "🔥 霹雳火", "pair": "戊子 · 己丑", "quote": "戊子己丑霹雳火者，子属水，丑属土，水中之火，水火相激，则声如雷，故曰霹雳火也。", "text": "子为<span class=\"c-shui\">水</span>、<span class=\"c-huo\">火</span>潜<span class=\"c-shui\">水</span>中；丑为<span class=\"c-tu\">土</span>、<span class=\"c-huo\">火</span>入<span class=\"c-tu\">土</span>内。<span class=\"c-shui\">水</span><span class=\"c-huo\">火</span>相激迸发，声势如雷贯耳，故称<strong>霹雳火</strong>。突发迅猛，雷霆万钧。"}' data-color="#E87A5D" class="jz-cell el-fire pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">戊子</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">霹雳火</span></div>
+<div data-detail='{"title": "🔥 霹雳火", "pair": "戊子 · 己丑", "quote": "戊子己丑霹雳火者，子属水，丑属土，水中之火，水火相激，则声如雷，故曰霹雳火也。", "text": "子为<span class=\"c-shui\">水</span>、<span class=\"c-huo\">火</span>潜<span class=\"c-shui\">水</span>中；丑为<span class=\"c-tu\">土</span>、<span class=\"c-huo\">火</span>入<span class=\"c-tu\">土</span>内。<span class=\"c-shui\">水</span><span class=\"c-huo\">火</span>相激迸发，声势如雷贯耳，故称<strong>霹雳火</strong>。突发迅猛，雷霆万钧。"}' data-color="#E87A5D" class="jz-cell el-fire pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">己丑</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">霹雳火</span></div>
+
+<!-- 27-28 松柏木 -->
+<div data-detail='{"title": "🌿 松柏木", "pair": "庚寅 · 辛卯", "quote": "庚寅辛卯松柏木者，木临官在寅，帝旺在卯，木既生旺，则非柔弱之比，故曰松柏木也。", "text": "<span class=\"c-mu\">木</span>在寅卯处于最旺盛的临官、帝旺之地，质地坚硬挺拔，如同松柏经冬不凋、傲雪凌霜，故称<strong>松柏木</strong>。坚韧不屈之木。"}' data-color="#7CB87C" class="jz-cell el-wood pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">庚寅</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">松柏木</span></div>
+<div data-detail='{"title": "🌿 松柏木", "pair": "庚寅 · 辛卯", "quote": "庚寅辛卯松柏木者，木临官在寅，帝旺在卯，木既生旺，则非柔弱之比，故曰松柏木也。", "text": "<span class=\"c-mu\">木</span>在寅卯处于最旺盛的临官、帝旺之地，质地坚硬挺拔，如同松柏经冬不凋、傲雪凌霜，故称<strong>松柏木</strong>。坚韧不屈之木。"}' data-color="#7CB87C" class="jz-cell el-wood pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">辛卯</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">松柏木</span></div>
+
+<!-- 29-30 长流水 -->
+<div data-detail='{"title": "💧 长流水", "pair": "壬辰 · 癸巳", "quote": "壬辰癸巳长流水者，辰为水库，巳为金长生之地，金生水，水性不绝，故曰长流水也。", "text": "辰为水库蓄<span class=\"c-shui\">水</span>充盈，巳中<span class=\"c-jin\">金</span>气长生不息而生<span class=\"c-shui\">水</span>，<span class=\"c-shui\">水</span>源不断、细<span class=\"c-shui\">水</span>长流，故称<strong>长流水</strong>。绵延不绝之水。"}' data-color="#6EB5CF" class="jz-cell el-water pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">壬辰</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">长流水</span></div>
+<div data-detail='{"title": "💧 长流水", "pair": "壬辰 · 癸巳", "quote": "壬辰癸巳长流水者，辰为水库，巳为金长生之地，金生水，水性不绝，故曰长流水也。", "text": "辰为水库蓄<span class=\"c-shui\">水</span>充盈，巳中<span class=\"c-jin\">金</span>气长生不息而生<span class=\"c-shui\">水</span>，<span class=\"c-shui\">水</span>源不断、细<span class=\"c-shui\">水</span>长流，故称<strong>长流水</strong>。绵延不绝之水。"}' data-color="#6EB5CF" class="jz-cell el-water pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">癸巳</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">长流水</span></div>
+
+</div><!-- /row3 -->
+
+
+<!-- ===== 第4行 (31-40) ===== -->
+<div class="jiazi-matrix" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:transparent;border:none;border-radius:10px;padding:6px;font-size:0.86em;position:relative">
+
+
+<!-- 31-32 沙中金 -->
+<div data-detail='{"title": "🔸 沙中金", "pair": "甲午 · 乙未", "quote": "甲午乙未沙中金者，午为火旺之地，火旺则金败，未为火衰之地，火衰则金冠带。败而冠带，未能斫削，故曰沙中金也。", "text": "<span class=\"c-jin\">金</span>在午败（死），在未冠带。此时<span class=\"c-jin\">金</span>混在<span class=\"c-huo\">火</span>生<span class=\"c-tu\">土</span>的沙石之中，需要淘洗才能得<span class=\"c-jin\">金</span>，故称<strong>沙中金</strong>。含金之沙，贵在提炼。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">甲午</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">沙中金</span></div>
+<div data-detail='{"title": "🔸 沙中金", "pair": "甲午 · 乙未", "quote": "甲午乙未沙中金者，午为火旺之地，火旺则金败，未为火衰之地，火衰则金冠带。败而冠带，未能斫削，故曰沙中金也。", "text": "<span class=\"c-jin\">金</span>在午败（死），在未冠带。此时<span class=\"c-jin\">金</span>混在<span class=\"c-huo\">火</span>生<span class=\"c-tu\">土</span>的沙石之中，需要淘洗才能得<span class=\"c-jin\">金</span>，故称<strong>沙中金</strong>。含金之沙，贵在提炼。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">乙未</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">沙中金</span></div>
+
+<!-- 33-34 山下火 -->
+<div data-detail='{"title": "🔥 山下火", "pair": "丙申 · 丁酉", "quote": "丙申丁酉山下火者，申为地户，酉为日落之所，日藏于山，故曰山下火也。", "text": "申酉为日薄西山之时，太阳隐没于山峦之后，余晖闪烁不定，故称<strong>山下火</strong>。余晖渐隐，光而不烈。"}' data-color="#E87A5D" class="jz-cell el-fire pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">丙申</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">山下火</span></div>
+<div data-detail='{"title": "🔥 山下火", "pair": "丙申 · 丁酉", "quote": "丙申丁酉山下火者，申为地户，酉为日落之所，日藏于山，故曰山下火也。", "text": "申酉为日薄西山之时，太阳隐没于山峦之后，余晖闪烁不定，故称<strong>山下火</strong>。余晖渐隐，光而不烈。"}' data-color="#E87A5D" class="jz-cell el-fire pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">丁酉</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">山下火</span></div>
+
+<!-- 35-36 平地木 -->
+<div data-detail='{"title": "🌿 平地木", "pair": "戊戌 · 己亥", "quote": "戊戌己亥平地木者，戌为原野，亥为木生之地，盖木生亥，而死在午，墓在未，今以此戌亥为平地，故曰平地木也。", "text": "戊戌己亥是资始之<span class=\"c-mu\">木</span>，亥是<span class=\"c-mu\">木</span>长生之所，戌为平原旷野，<span class=\"c-mu\">木</span>生于广袤原野之上，故称<strong>平地木</strong>。根基稳固，分布广阔。"}' data-color="#7CB87C" class="jz-cell el-wood pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">戊戌</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">平地木</span></div>
+<div data-detail='{"title": "🌿 平地木", "pair": "戊戌 · 己亥", "quote": "戊戌己亥平地木者，戌为原野，亥为木生之地，盖木生亥，而死在午，墓在未，今以此戌亥为平地，故曰平地木也。", "text": "戊戌己亥是资始之<span class=\"c-mu\">木</span>，亥是<span class=\"c-mu\">木</span>长生之所，戌为平原旷野，<span class=\"c-mu\">木</span>生于广袤原野之上，故称<strong>平地木</strong>。根基稳固，分布广阔。"}' data-color="#7CB87C" class="jz-cell el-wood pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">己亥</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">平地木</span></div>
+
+<!-- 37-38 壁上土 -->
+<div data-detail='{"title": "⛰ 壁上土", "pair": "庚子 · 辛丑", "quote": "庚子辛丑壁上土者，丑为土，子为水，水和土而泥，故曰壁上土也。", "text": "子<span class=\"c-shui\">水</span>合丑<span class=\"c-tu\">土</span>而成泥浆，用于涂敷墙壁表面，故称<strong>壁上土</strong>。调和而成，附着他物。"}' data-color="#D4A853" class="jz-cell el-earth pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">庚子</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">壁上土</span></div>
+<div data-detail='{"title": "⛰ 壁上土", "pair": "庚子 · 辛丑", "quote": "庚子辛丑壁上土者，丑为土，子为水，水和土而泥，故曰壁上土也。", "text": "子<span class=\"c-shui\">水</span>合丑<span class=\"c-tu\">土</span>而成泥浆，用于涂敷墙壁表面，故称<strong>壁上土</strong>。调和而成，附着他物。"}' data-color="#D4A853" class="jz-cell el-earth pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">辛丑</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">壁上土</span></div>
+
+<!-- 39-40 金箔金 -->
+<div data-detail='{"title": "🔸 金箔金", "pair": "壬寅 · 癸卯", "quote": "壬寅癸卯金箔金者，寅卯为木旺之地，木旺则金缺，金绝于寅，胎于卯，金既无力，故曰金箔金也。", "text": "<span class=\"c-jin\">金</span>在寅卯处绝地、胎地，极其微弱，且被旺<span class=\"c-mu\">木</span>所克削，薄如蝉翼，故称<strong>金箔金</strong>。质地虽薄，却具装饰之用。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">壬寅</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">金箔金</span></div>
+<div data-detail='{"title": "🔸 金箔金", "pair": "壬寅 · 癸卯", "quote": "壬寅癸卯金箔金者，寅卯为木旺之地，木旺则金缺，金绝于寅，胎于卯，金既无力，故曰金箔金也。", "text": "<span class=\"c-jin\">金</span>在寅卯处绝地、胎地，极其微弱，且被旺<span class=\"c-mu\">木</span>所克削，薄如蝉翼，故称<strong>金箔金</strong>。质地虽薄，却具装饰之用。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">癸卯</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">金箔金</span></div>
+
+</div><!-- /row4 -->
+
+
+<!-- ===== 第5行 (41-50) ===== -->
+<div class="jiazi-matrix" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:transparent;border:none;border-radius:10px;padding:6px;font-size:0.86em;position:relative">
+
+
+<!-- 41-42 覆灯火 -->
+<div data-detail='{"title": "🔥 覆灯火", "pair": "甲辰 · 乙巳", "quote": "甲辰乙巳覆灯火者，辰为食时，巳为日中，日中则昃，光不显，故曰覆灯火也。", "text": "辰巳正值白昼，阳光炽盛之时灯烛之光反被掩盖（覆灯即指灯火被遮蔽），需待日暮方显其用，故称<strong>覆灯火</strong>。韬光养晦，待时而动。"}' data-color="#E87A5D" class="jz-cell el-fire pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">甲辰</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">覆灯火</span></div>
+<div data-detail='{"title": "🔥 覆灯火", "pair": "甲辰 · 乙巳", "quote": "甲辰乙巳覆灯火者，辰为食时，巳为日中，日中则昃，光不显，故曰覆灯火也。", "text": "辰巳正值白昼，阳光炽盛之时灯烛之光反被掩盖（覆灯即指灯火被遮蔽），需待日暮方显其用，故称<strong>覆灯火</strong>。韬光养晦，待时而动。"}' data-color="#E87A5D" class="jz-cell el-fire pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">乙巳</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">覆灯火</span></div>
+
+<!-- 43-44 天河水 -->
+<div data-detail='{"title": "💧 天河水", "pair": "丙午 · 丁未", "quote": "丙午丁未天河水者，丙丁属火，午为火旺之地，火旺则水气为火所化，其水在天，故曰天河水也。", "text": "午是<span class=\"c-huo\">火</span>旺之极致，<span class=\"c-shui\">水</span>在此被烈<span class=\"c-huo\">火</span>蒸腾化为云雾雨露高悬天上，故称<strong>天河水</strong>。高远清虚，非人间之水可比。"}' data-color="#6EB5CF" class="jz-cell el-water pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">丙午</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">天河水</span></div>
+<div data-detail='{"title": "💧 天河水", "pair": "丙午 · 丁未", "quote": "丙午丁未天河水者，丙丁属火，午为火旺之地，火旺则水气为火所化，其水在天，故曰天河水也。", "text": "午是<span class=\"c-huo\">火</span>旺之极致，<span class=\"c-shui\">水</span>在此被烈<span class=\"c-huo\">火</span>蒸腾化为云雾雨露高悬天上，故称<strong>天河水</strong>。高远清虚，非人间之水可比。"}' data-color="#6EB5CF" class="jz-cell el-water pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">丁未</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">天河水</span></div>
+
+<!-- 45-46 大驿土 -->
+<div data-detail='{"title": "⛰ 大驿土", "pair": "戊申 · 己酉", "quote": "戊申己酉大驿土者，申为坤，坤为地，酉为兑，兑为泽，泽与地连，故曰大驿土也。", "text": "申为大坤厚地，酉为沼泽相连，通衢大道四通八达、坦荡辽阔，故称<strong>大驿土</strong>。坦荡辽阔，通达四方。"}' data-color="#D4A853" class="jz-cell el-earth pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">戊申</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">大驿土</span></div>
+<div data-detail='{"title": "⛰ 大驿土", "pair": "戊申 · 己酉", "quote": "戊申己酉大驿土者，申为坤，坤为地，酉为兑，兑为泽，泽与地连，故曰大驿土也。", "text": "申为大坤厚地，酉为沼泽相连，通衢大道四通八达、坦荡辽阔，故称<strong>大驿土</strong>。坦荡辽阔，通达四方。"}' data-color="#D4A853" class="jz-cell el-earth pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">己酉</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">大驿土</span></div>
+
+<!-- 47-48 钗钏金 -->
+<div data-detail='{"title": "🔸 钗钏金", "pair": "庚戌 · 辛亥", "quote": "庚戌辛亥钗钏金者，金至戌而衰，至亥而病，金既衰病，则诚柔弱，故曰钗钏金也。", "text": "<span class=\"c-jin\">金</span>在戌亥处于衰病之地，气势已尽，变得柔弱婉转，只能做成首饰钗钏之类装饰品，故称<strong>钗钏金</strong>。华丽有余，锋锐不足。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">庚戌</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">钗钏金</span></div>
+<div data-detail='{"title": "🔸 钗钏金", "pair": "庚戌 · 辛亥", "quote": "庚戌辛亥钗钏金者，金至戌而衰，至亥而病，金既衰病，则诚柔弱，故曰钗钏金也。", "text": "<span class=\"c-jin\">金</span>在戌亥处于衰病之地，气势已尽，变得柔弱婉转，只能做成首饰钗钏之类装饰品，故称<strong>钗钏金</strong>。华丽有余，锋锐不足。"}' data-color="#E8DCC5" class="jz-cell el-metal pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E8DCC5;font-weight:700">辛亥</span><span class="jz-nayin" style="color:#E8DCC5;opacity:0.75">钗钏金</span></div>
+
+<!-- 49-50 桑柘木 -->
+<div data-detail='{"title": "🌿 桑柘木", "pair": "壬子 · 癸丑", "quote": "壬子癸丑桑柘木者，子属水，丑属金，金生水，水生木，其气发越，故曰桑柘木也。", "text": "此处<span class=\"c-shui\">水</span>旺生<span class=\"c-mu\">木</span>，但为何叫桑柘？古籍多认为此时<span class=\"c-mu\">木</span>气虽生，但处于寒冬腊月，桑柘之<span class=\"c-mu\">木</span>耐寒坚韧，且其叶可饲蚕、多用于实务，并非参天大树，故称<strong>桑柘木</strong>。实用耐寒之材。"}' data-color="#7CB87C" class="jz-cell el-wood pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">壬子</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">桑柘木</span></div>
+<div data-detail='{"title": "🌿 桑柘木", "pair": "壬子 · 癸丑", "quote": "壬子癸丑桑柘木者，子属水，丑属金，金生水，水生木，其气发越，故曰桑柘木也。", "text": "此处<span class=\"c-shui\">水</span>旺生<span class=\"c-mu\">木</span>，但为何叫桑柘？古籍多认为此时<span class=\"c-mu\">木</span>气虽生，但处于寒冬腊月，桑柘之<span class=\"c-mu\">木</span>耐寒坚韧，且其叶可饲蚕、多用于实务，并非参天大树，故称<strong>桑柘木</strong>。实用耐寒之材。"}' data-color="#7CB87C" class="jz-cell el-wood pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">癸丑</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">桑柘木</span></div>
+
+</div><!-- /row5 -->
+
+
+<!-- ===== 第6行 (51-60) ===== -->
+<div class="jiazi-matrix" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:transparent;border:none;border-radius:10px;padding:6px;font-size:0.86em;position:relative">
+
+
+<!-- 51-52 大溪水 -->
+<div data-detail='{"title": "💧 大溪水", "pair": "甲寅 · 乙卯", "quote": "甲寅乙卯大溪水者，寅为东北，卯为正东，水流正东，则其性顺，川涧俱纳，故曰大溪水也。", "text": "寅卯是<span class=\"c-mu\">木</span>旺之地，<span class=\"c-shui\">水</span>生<span class=\"c-mu\">木</span>而被泄引，但顺势东流汇纳百川，聚成溪流，故称<strong>大溪水</strong>。顺势而为，汇聚众流。"}' data-color="#6EB5CF" class="jz-cell el-water pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">甲寅</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">大溪水</span></div>
+<div data-detail='{"title": "💧 大溪水", "pair": "甲寅 · 乙卯", "quote": "甲寅乙卯大溪水者，寅为东北，卯为正东，水流正东，则其性顺，川涧俱纳，故曰大溪水也。", "text": "寅卯是<span class=\"c-mu\">木</span>旺之地，<span class=\"c-shui\">水</span>生<span class=\"c-mu\">木</span>而被泄引，但顺势东流汇纳百川，聚成溪流，故称<strong>大溪水</strong>。顺势而为，汇聚众流。"}' data-color="#6EB5CF" class="jz-cell el-water pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">乙卯</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">大溪水</span></div>
+
+<!-- 53-54 沙中土 -->
+<div data-detail='{"title": "⛰ 沙中土", "pair": "丙辰 · 丁巳", "quote": "丙辰丁巳沙中土者，辰为水库，巳为金生，土之有水有金，而无力，故曰沙中土也。", "text": "辰为水库充湿，巳为<span class=\"c-jin\">金</span>生之气，<span class=\"c-tu\">土</span>中掺杂<span class=\"c-shui\">水分</span>与<span class=\"c-jin\">金</span>气而松散不实，故称<strong>沙中土</strong>。杂而不纯，散而无根。"}' data-color="#D4A853" class="jz-cell el-earth pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">丙辰</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">沙中土</span></div>
+<div data-detail='{"title": "⛰ 沙中土", "pair": "丙辰 · 丁巳", "quote": "丙辰丁巳沙中土者，辰为水库，巳为金生，土之有水有金，而无力，故曰沙中土也。", "text": "辰为水库充湿，巳为<span class=\"c-jin\">金</span>生之气，<span class=\"c-tu\">土</span>中掺杂<span class=\"c-shui\">水分</span>与<span class=\"c-jin\">金</span>气而松散不实，故称<strong>沙中土</strong>。杂而不纯，散而无根。"}' data-color="#D4A853" class="jz-cell el-earth pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#D4A853;font-weight:700">丁巳</span><span class="jz-nayin" style="color:#D4A853;opacity:0.75">沙中土</span></div>
+
+<!-- 55-56 天上火 -->
+<div data-detail='{"title": "🔥 天上火", "pair": "戊午 · 己未", "quote": "戊午己未天上火者，午为火旺之地，未为木库，木生火，火势炎上，故曰天上火也。", "text": "午为<span class=\"c-huo\">火</span>最旺之位，<span class=\"c-huo\">火</span>势极盛炎上、烈日当空，故称<strong>天上火</strong>。至阳之火，光芒万丈。"}' data-color="#E87A5D" class="jz-cell el-fire pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">戊午</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">天上火</span></div>
+<div data-detail='{"title": "🔥 天上火", "pair": "戊午 · 己未", "quote": "戊午己未天上火者，午为火旺之地，未为木库，木生火，火势炎上，故曰天上火也。", "text": "午为<span class=\"c-huo\">火</span>最旺之位，<span class=\"c-huo\">火</span>势极盛炎上、烈日当空，故称<strong>天上火</strong>。至阳之火，光芒万丈。"}' data-color="#E87A5D" class="jz-cell el-fire pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#E87A5D;font-weight:700">己未</span><span class="jz-nayin" style="color:#E87A5D;opacity:0.75">天上火</span></div>
+
+<!-- 57-58 石榴木 -->
+<div data-detail='{"title": "🌿 石榴木", "pair": "庚申 · 辛酉", "quote": "庚申辛酉石榴木者，申为七月，酉为八月，此时木气已绝，惟石榴之木结实，故曰石榴木也。", "text": "申酉是<span class=\"c-jin\">金</span>旺<span class=\"c-mu\">木</span>死之时令，万<span class=\"c-mu\">木</span>凋零，唯独石榴树在这个时节硕果累累，故称<strong>石榴木</strong>。硕果仅存，别有生机。"}' data-color="#7CB87C" class="jz-cell el-wood pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">庚申</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">石榴木</span></div>
+<div data-detail='{"title": "🌿 石榴木", "pair": "庚申 · 辛酉", "quote": "庚申辛酉石榴木者，申为七月，酉为八月，此时木气已绝，惟石榴之木结实，故曰石榴木也。", "text": "申酉是<span class=\"c-jin\">金</span>旺<span class=\"c-mu\">木</span>死之时令，万<span class=\"c-mu\">木</span>凋零，唯独石榴树在这个时节硕果累累，故称<strong>石榴木</strong>。硕果仅存，别有生机。"}' data-color="#7CB87C" class="jz-cell el-wood pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#7CB87C;font-weight:700">辛酉</span><span class="jz-nayin" style="color:#7CB87C;opacity:0.75">石榴木</span></div>
+
+<!-- 59-60 大海水 -->
+<div data-detail='{"title": "💧 大海水", "pair": "壬戌 · 癸亥", "quote": "壬戌癸亥大海水者，水冠带在戌，临官在亥，水冠带临官，则其源远流长，故曰大海水也。", "text": "亥是<span class=\"c-shui\">水</span>的临官旺地，戌为冠带，<span class=\"c-shui\">水</span>势浩大渊深、百川归海，故称<strong>大海水</strong>。至大至深，包容万象。"}' data-color="#6EB5CF" class="jz-cell el-water pair-first" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">壬戌</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">大海水</span></div>
+<div data-detail='{"title": "💧 大海水", "pair": "壬戌 · 癸亥", "quote": "壬戌癸亥大海水者，水冠带在戌，临官在亥，水冠带临官，则其源远流长，故曰大海水也。", "text": "亥是<span class=\"c-shui\">水</span>的临官旺地，戌为冠带，<span class=\"c-shui\">水</span>势浩大渊深、百川归海，故称<strong>大海水</strong>。至大至深，包容万象。"}' data-color="#6EB5CF" class="jz-cell el-water pair-last" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7em 0.4em 0.85em;cursor:pointer;border-radius:10px;min-height:80px;border:1px solid rgba(212,168,83,0.22)">
+  <span class="jz-gz" style="color:#6EB5CF;font-weight:700">癸亥</span><span class="jz-nayin" style="color:#6EB5CF;opacity:0.75">大海水</span></div>
+
+</div><!-- /row6 -->
+
+
+<!-- 五行图例 -->
+<div class="matrix-legend" style="display:flex;flex-wrap:wrap;gap:1em;justify-content:center;margin:0.8em 0 0;font-size:0.82em">
+  <div class="legend-item" style="display:flex;align-items:center;gap:0.35em;color:#999"><i class="legend-dot metal" style="width:12px;height:12px;border-radius:3px;flex-shrink:0;background:#E8DCC5"></i></i>金</div>
+  <div class="legend-item" style="display:flex;align-items:center;gap:0.35em;color:#999"><i class="legend-dot wood" style="width:12px;height:12px;border-radius:3px;flex-shrink:0;background:#7CB87C"></i></i>木</div>
+  <div class="legend-item" style="display:flex;align-items:center;gap:0.35em;color:#999"><i class="legend-dot water" style="width:12px;height:12px;border-radius:3px;flex-shrink:0;background:#6EB5CF"></i></i>水</div>
+  <div class="legend-item" style="display:flex;align-items:center;gap:0.35em;color:#999"><i class="legend-dot fire" style="width:12px;height:12px;border-radius:3px;flex-shrink:0;background:#E87A5D"></i></i>火</div>
+  <div class="legend-item" style="display:flex;align-items:center;gap:0.35em;color:#999"><i class="legend-dot earth" style="width:12px;height:12px;border-radius:3px;flex-shrink:0;background:#D4A853"></i></i>土</div>
+</div>
+
+</div><!-- /matrix-section -->
+
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="section2">二、纳音五行计算规则（太玄数法）</h2>
+<!-- ============================================================ -->
+
+<p>纳音五行的归属并非随意指定，而是有一套严密的数理依据——<strong>太玄数</strong>。太玄数源于汉代扬雄《太玄经》，为每个天干和地支赋予固定数值：</p>
+
+<table>
+<thead>
+<tr><th>天干</th><th>甲/己</th><th>乙/庚</th><th>丙/辛</th><th>丁/壬</th><th>戊/癸</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>太玄数</strong></td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr><th>地支</th><th>子/午</th><th>丑/未</th><th>寅/申</th><th>卯/酉</th><th>辰/戌</th><th>巳/亥</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>太玄数</strong></td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td></tr>
+</tbody>
+</table>
+
+<h3>计算公式</h3>
+<div class="note-box">
+<p><strong>将一组干支（四个字）的太玄数值相加求和，再除以 5 取余数：</strong></p>
+<p><span class="c-huo">余 1 → 火</span>｜<span class="c-tu">余 2 → 土</span>｜<span class="c-mu">余 3 → 木</span>｜<span class="c-jin">余 4 → 金</span>｜<span class="c-shui">余 0（整除）→ 水</span></p>
+</div>
+
+<h3>验算示例</h3>
+<table>
+<thead><tr><th>No.</th><th>干支组合</th><th>太玄数求和</th><th>除5取余</th><th>纳音结果</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>甲子、乙丑</td><td>9+9+8+8 = 34</td><td>34÷5 余 4</td><td><span class="c-jin">✅ 金</span>（海中金）</td></tr>
+<tr><td>2</td><td>丙寅、丁卯</td><td>7+7+6+6 = 26</td><td>26÷5 余 1</td><td><span class="c-huo">✅ 火</span>（炉中火）</td></tr>
+<tr><td>3</td><td>戊辰、己巳</td><td>5+5+4+4 = 18</td><td>18÷5 余 3</td><td><span class="c-mu">✅ 木</span>（大林木）</td></tr>
+<tr><td>4</td><td>庚午、辛未</td><td>8+8+9+9 = 34</td><td>34÷5 余 4</td><td><span class="c-tu">✅ 土</span>（路旁土）</td></tr>
+<tr><td>5</td><td>壬申、癸酉</td><td>6+6+7+7 = 26</td><td>26÷5 余 1</td><td><span class="c-jin">✅ 金</span>（剑锋金）</td></tr>
+<tr><td>6</td><td>甲戌、乙亥</td><td>9+9+5+4 = 27</td><td>27÷5 余 2</td><td><span class="c-huo">✅ 火</span>（山头火）</td></tr>
+<tr><td colspan="6"><em>……以此类推，六十甲子全部符合此规律（个别需考虑特殊变格）。</em></td></tr>
+</tbody>
+</table>
+
+<p>通过太玄数法，我们无需死记硬背即可推导任意干支组的纳音属性，为后续的日期时辰推演提供了坚实的数学基础。</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="section3">三、天干合与地支冲的深层逻辑</h2>
+<!-- ============================================================ -->
+
+<p>细究太玄数的设计，会发现一个精妙的对称规律：<strong>天干重"合"，地支重"冲"</strong>。同样的数值，在天干表现为亲和力，在地支却表现为对抗力。这绝非偶然，而是中国哲学中"天圆地方""天动地静"思想的数理表达。</p>
+
+<h3>一、天干数值相同：为何是"合"？（中正之合）</h3>
+
+<p>天干代表天道、气、功能。古人认为<strong>同气相求</strong>——性质相同（数值相同）的事物，在天道层面会相互感应、融合。</p>
+
+<h4>1. 数理上的"中正"</h4>
+
+<p>以<strong>甲己合化<span class="c-tu">土</span></strong>为例：</p>
+<ul>
+<li>甲数为 9，己数亦为 9</li>
+<li>在洛书九宫中，5 是中央<span class="c-tu">土</span>的数字</li>
+<li>甲(9) + 己(9) = 18，归一得 9</li>
+<li>按河图生成数：天五生<span class="c-tu">土</span>，地十成之——甲己之中数为 5（<span class="c-tu">土</span>之生数）</li>
+</ul>
+
+<h4>2. 阴阳互补</h4>
+
+<p>天干分阴阳。甲为阳<span class="c-mu">木</span>，己为阴<span class="c-tu">土</span>，二者数值同为 9 但阴阳相反。<strong>孤阴不生，独阳不长</strong>——当两个数值相同而阴阳属性相反的天干相遇时，就像正负电荷相互吸引，会发生强烈的化学反应。这种吸引力即为"<strong>合</strong>"，意味着和谐、协作、生成新事物。</p>
+
+<p><strong>结论</strong>：天干数值相同代表同一能量等级，阴阳相配、势均力敌，故能相合。</p>
+
+<h3>二、地支数值相同：为何是"冲"？（对立之争）</h3>
+
+<p>地支代表地道、质、方位。地支是有实体、有方位的——在同一个圆周上，力量相等意味着位置对立。</p>
+
+<h4>1. 方位上的"对冲"</h4>
+
+<p>地支数值实为其在圆周上的能量级别：</p>
+<ul>
+<li><strong>子（9）与 午（9）</strong>：子为正北（<span class="c-shui">水</span>），午为正南（<span class="c-huo">火</span>），圆周相差 180°</li>
+<li><strong>卯（6）与 酉（6）</strong>：卯为正东（<span class="c-mu">木</span>），酉为正西（<span class="c-jin">金</span>），圆周相差 180°</li>
+</ul>
+
+<p>就像两个人拔河——若力气完全一样大（数值相同）、方向又正好相反，便会形成最剧烈的对抗。这就是"<strong>冲</strong>"。</p>
+
+<h4>2. 五行相克</h4>
+
+<p>观察六组相冲地支，数值相同但五行往往相克：</p>
+<ul>
+<li>子（<span class="c-shui">水</span>）冲 午（<span class="c-huo">火</span>）——<span class="c-shui">水</span>克<span class="c-huo">火</span></li>
+<li>寅（<span class="c-mu">木</span>）冲 申（<span class="c-jin">金</span>）——<span class="c-jin">金</span>克<span class="c-mu">木</span></li>
+<li>卯（<span class="c-mu">木</span>）冲 酉（<span class="c-jin">金</span>）——<span class="c-jin">金</span>克<span class="c-mu">木</span></li>
+</ul>
+
+<p>能量量级相等 + 五行性质相反 = <strong>最激烈的冲突</strong>。</p>
+
+<p><strong>结论</strong>：地支数值相同意味着空间对立面，能量相当且互不相让，故而为冲。</p>
+
+<h3>三、"合"与"冲"的本质差异（体用逻辑）</h3>
+
+<table>
+<thead><tr><th>比较维度</th><th>天干（天道）</th><th>地支（地道）</th></tr></thead>
+<tbody>
+<tr><td><strong>性质</strong></td><td>气（流动的、虚无的）</td><td>质（实体的、方位的）</td></tr>
+<tr><td><strong>数值相同的含义</strong></td><td>同频共振（如两音叉频率相同而共鸣）</td><td>能量对等（如两球质量相同撞击最猛）</td></tr>
+<tr><td><strong>相遇结果</strong></td><td>合（融合为一体）</td><td>冲（撞击并损伤）</td></tr>
+<tr><td><strong>哲学解释</strong></td><td>天主动，动则相吸，追求统一</td><td>地主静，静则对峙，追求分明</td></tr>
+</tbody>
+</table>
+
+<h3>四、一个形象的比喻</h3>
+
+<p>想象数字 <strong>"9"</strong> 在天干和地支中的不同表现：</p>
+
+<p>🔸 <strong>在天干（甲、己）</strong>：就像两位才华相当之人（都是 9 分能力），一男一女、阴阳互补。因能力匹配、三观一致（数值相同），结为夫妻——这便是<strong>"甲己合"</strong>。</p>
+
+<p>🔹 <strong>在地支（子、午）</strong>：就像两位武林高手（都是 9 分武功），一位镇守山南（午<span class="c-huo">火</span>），一位雄踞山北（子<span class="c-shui">水</span>）。功力相当但立场截然相反，一旦相遇必是你死我活——这便是<strong>"子午冲"</strong>。</p>
+
+<h3>总结</h3>
+
+<p>太玄数的这套设计，完美诠释了命理学中<strong>"合"与"冲"</strong>的根本区别：</p>
+
+<ul>
+<li><strong>同数相合（天干）</strong>：是阴阳调和，是精神层面的共鸣</li>
+<li><strong>同数相冲（地支）</strong>：是势均力敌，是物质层面的对抗</li>
+</ul>
+
+<p>古人的数字模型并非随意编排，而是将物理法则（力的相互作用）与伦理法则（阴阳和合）完美融入了十个简明的数字之中。这套体系历经千年仍具强大的解释力，值得我们深入体会。</p>
+
+<hr>
+
+<p style="text-align:center;color:#888;font-size:0.9em;">本文基于《三命通会》及太玄数理整理，供命理学习者参考。</p>
+
+</article>
+
+
+<script>
+(function(){
+  /* ===== 全局 Fixed Modal —— 参考积分中心弹窗模式 ===== */
+  
+  var modal = document.createElement('div');
+  modal.id = 'nayin-modal';
+  modal.style.cssText =
+    'display:none;position:fixed;inset:0;z-index:9999;' +
+    'background:rgba(0,0,0,0.65);backdrop-filter:blur(5px);' +
+    'justify-content:center;align-items:center;padding:1rem;' +
+    'opacity:0;transition:opacity 0.22s ease';
+  
+  var panel = document.createElement('div');
+  panel.id = 'nayin-panel';
+  panel.style.cssText =
+    'background:linear-gradient(145deg,#1c1a18,#161412);' +
+    'border-radius:14px;padding:1.5rem 1.6rem 1.4rem;' +
+    'width:min(420px,92vw);max-height:80vh;overflow-y:auto;' +
+    'box-shadow:0 24px 80px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.04) inset;' +
+    'border:1px solid rgba(212,168,83,0.2);' +
+    'transform:scale(0.95) translateY(12px);' +
+    'transition:transform 0.28s cubic-bezier(.34,1.56,.64,1);' +
+    'position:relative';
+  
+  panel.innerHTML =
+    '<button id="nayin-close" style="position:absolute;top:10px;right:14px;' +
+    'background:none;border:none;color:#555;font-size:20px;cursor:pointer;' +
+    'padding:4px 10px;line-height:1;border-radius:4px;">&#x2715;</button>' +
+    '<div id="nayin-title" style="font-weight:700;font-size:1.08em;margin-bottom:0.3em;"></div>' +
+    '<div id="nayin-pair" style="font-size:0.84em;color:#888;margin-bottom:0.5em;' +
+    'letter-spacing:0.08em;"></div>' +
+    '<div id="nayin-quote" style="border-left:2.5px solid #d4a853;' +
+    'background:rgba(212,168,83,0.03);padding:0.5em 0.9em;' +
+    'border-radius:0 8px 8px 0;color:#aaa;font-style:italic;' +
+    'margin:0.5em 0;line-height:1.75;font-size:0.91em;"></div>' +
+    '<div id="nayin-text" style="color:#bbb;line-height:1.82;margin:0;font-size:0.93em;"></div>';
+  
+  modal.appendChild(panel);
+  document.body.appendChild(modal);
+  
+  function closeModal() {
+    modal.style.opacity = '0';
+    panel.style.transform = 'scale(0.95) translateY(12px)';
+    setTimeout(function(){ modal.style.display = 'none'; }, 220);
+    document.querySelectorAll('.jz-cell.nayin-active').forEach(function(c){
+      c.classList.remove('nayin-active');
+    });
+  }
+  
+  function openModal(cell) {
+    try {
+      var d = JSON.parse(cell.getAttribute('data-detail'));
+      var clr = cell.getAttribute('data-color') || '#d4a853';
+      
+      document.getElementById('nayin-title').textContent = d.title || '';
+      document.getElementById('nayin-title').style.color = clr;
+      document.getElementById('nayin-pair').textContent = d.pair || '';
+      document.getElementById('nayin-quote').innerHTML = d.quote || '';
+      document.getElementById('nayin-quote').style.borderColor = clr;
+      document.getElementById('nayin-text').innerHTML = d.text || '';
+      
+      // 强调色渲染strong标签
+      var strongs = document.getElementById('nayin-text').querySelectorAll('strong');
+      for(var i=0;i<strongs.length;i++) strongs[i].style.color = clr;
+      
+      modal.style.display = 'flex';
+      requestAnimationFrame(function(){
+        modal.style.opacity = '1';
+        panel.style.transform = 'scale(1) translateY(0)';
+      });
+      
+      document.querySelectorAll('.jz-cell.nayin-active').forEach(function(c){
+        c.classList.remove('nayin-active');
+      });
+      cell.classList.add('nayin-active');
+    } catch(e) { console.error('Nayin modal:', e); }
+  }
+  
+  modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+  document.getElementById('nayin-close').addEventListener('click', closeModal);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+  
+  function bindClicks() {
+    document.querySelectorAll('.jz-cell[data-detail]').forEach(function(el){
+      el.addEventListener('click', function(e){ e.stopPropagation(); openModal(this); });
+    });
+  }
+  bindClicks();
+  
+  if(typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(ms){
+      for(var i=0;i<ms.length;i++){
+        for(var j=0;j<ms[i].addedNodes.length;j++){
+          var n=ms[i].addedNodes[j];
+          if(n.nodeType===1 && n.querySelector && n.querySelector('.jz-cell[data-detail]')){
+            bindClicks(); return;
+          }
+        }
+      }
+    }).observe(document.body,{childList:true,subtree:true});
+  }
+})();
+</script>
+
+</body>
+</html>

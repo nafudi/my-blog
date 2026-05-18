@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ========== 用户表 ==========
+model User {
+  id            String   @id // 手动生成：YYYYMMDD + 5位序号（如 2026051200001）
+  name          String?
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  passwordPlain String?  @map("password_plain")
+  image         String?
+  role          String   @default("user") // "user" | "admin"
+  emailVerified DateTime?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // 关系
+  posts         Post[]
+  comments      Comment[]
+  donations     Donation[]
+  credits       Int      @default(0)
+  creditTransactions  CreditTransaction[]
+
+  @@map("users")
+}
+
+// ========== 文章表 ==========
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  date        String   // YYYY-MM-DD
+  published   Boolean  @default(true)
+  userId      String?  @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // 关系
+  comments    Comment[]
+  donations   Donation[]
+  author      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@map("posts")
+}
+
+// ========== 评论表 ==========
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  postSlug  String   @map("post_slug")
+  userId    String   @map("user_id")
+  parentId  String?  @map("parent_id") // 嵌套回复
+  status    String   @default("pending") // "pending" | "approved"
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // 关系
+  post      Post     @relation(fields: [postSlug], references: [slug], onDelete: Cascade)
+  author    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+
+  @@index([postSlug])
+  @@index([userId])
+  @@map("comments")
+}
+
+// ========== 打赏记录表 ==========
+model Donation {
+  id            String    @id @default(cuid())
+  postSlug      String?   @map("post_slug") // 可为 null（站点评赏）
+  userId        String?   @map("user_id")
+  amount        Int       // 单位：分（避免浮点精度问题）
+  message       String?   // 打赏留言（代码层限制 200 字符）
+  status        String    @default("pending") // "pending" | "paid" | "failed"
+  payMethod     String?   @map("pay_method") // 预留："alipay" | "wechat"
+  transactionId String?   @map("transaction_id") // 第三方支付单号
+  paidAt        DateTime? @map("paid_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  // 关系
+  post   Post? @relation(fields: [postSlug], references: [slug], onDelete: SetNull)
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([postSlug])
+  @@index([userId])
+  @@map("donations")
+}
+
+
+// ========== 积分流水表 ==========
+model CreditTransaction {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  amount      Int                  // 正=获得, 负=消耗
+  balance     Int                  // 操作后余额
+  type        String               // "initial" | "purchase" | "consume" | "admin"
+  description String?
+  relatedId   String?  @map("related_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("credit_transactions")
+}
+
+
+// ========== 兑换码表 ==========
+model RedemptionCode {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique @db.VarChar(16)
+  credits     Int      @default(20)
+  userId      String?  @map("user_id")
+  redeemedAt  DateTime? @map("redeemed_at")
+  status      String   @default("active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("redemption_codes")
+}

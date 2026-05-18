@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+/* ===== 自定义主题变量 ===== */
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: #1a1a2e;
+  --gold-primary: #d4a853;
+  --gold-light: #e8c878;
+  --gold-dark: #a67c3d;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-tertiary: #e0e0e0;
+  --text-muted: #cccccc;
+  --border-color: rgba(212, 168, 83, 0.15);
+}
+
+/* ===== 全局样式 ===== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: transparent;
+  background: #020205;
+  color: var(--text-primary);
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== 布局隔离：防止文章内容溢出影响侧边栏 ===== */
+body > * {
+  overflow-x: hidden;
+}
+
+/* 内容区域半透明背景 */
+.main-content {
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(2px);
+}
+
+/* ===== 滚动条美化 ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-primary);
+}
+
+/* ===== 选中文字样式 ===== */
+::selection {
+  background: rgba(212, 168, 83, 0.3);
+  color: var(--gold-light);
+}
+
+/* ===== 金色光效动画 ===== */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.glow-text {
+  background: linear-gradient(
+    90deg,
+    var(--gold-dark),
+    var(--gold-light),
+    var(--gold-primary),
+    var(--gold-light)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ===== 卡片悬浮效果 ===== */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 1px solid var(--border-color);
+}
+.card-hover:hover {
+  border-color: var(--gold-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(212, 168, 83, 0.15), 0 0 0 1px rgba(212, 168, 83, 0.05);
+}
+
+/* ===== AI Markdown 渲染样式 ===== */
+.ai-markdown {
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+.ai-markdown p { margin: 4px 0; }
+.ai-markdown p:first-child { margin-top: 0; }
+.ai-markdown p:last-child { margin-bottom: 0; }
+.ai-markdown strong, .ai-markdown b {
+  color: #e8c878;
+  font-weight: 600;
+}
+.ai-markdown h1, .ai-markdown h2, .ai-markdown h3,
+.ai-markdown h4, .ai-markdown h5, .ai-markdown h6 {
+  color: #d4a853;
+  margin: 10px 0 6px;
+  line-height: 1.4;
+}
+.ai-markdown h3 { font-size: 15px; }
+.ai-markdown h4 { font-size: 14px; }
+.ai-markdown ul, .ai-markdown ol {
+  margin: 6px 0;
+  padding-left: 18px;
+}
+.ai-markdown li { margin: 2px 0; }
+.ai-markdown code {
+  background: rgba(212, 168, 83, 0.12);
+  color: #e8c878;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+.ai-markdown pre {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(212, 168, 83, 0.15);
+  border-radius: 6px;
+  padding: 10px;
+  margin: 8px 0;
+  overflow-x: auto;
+}
+.ai-markdown pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+.ai-markdown blockquote {
+  border-left: 3px solid #d4a853;
+  padding-left: 12px;
+  margin: 8px 0;
+  color: #cccccc;
+}
+.ai-markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 8px 0;
+}
+.ai-markdown th, .ai-markdown td {
+  border: 1px solid rgba(212, 168, 83, 0.2);
+  padding: 4px 8px;
+  text-align: left;
+  font-size: 12px;
+}
+.ai-markdown th {
+  background: rgba(212, 168, 83, 0.12);
+  color: #d4a853;
+}
+.ai-markdown hr {
+  border: none;
+  border-top: 1px solid rgba(212, 168, 83, 0.2);
+  margin: 10px 0;
+}
