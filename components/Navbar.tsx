@@ -244,6 +244,11 @@ export default function Navbar() {
               </div>
             ))}
 
+            {/* 情绪笔记入口 */}
+            <Link href="/mood-notes" className={linkClass} style={{ color: colors.textSecondary }}>
+              💭 情绪笔记
+            </Link>
+
             {status === "loading" ? (
               <span className={fontSizes.caption} style={{ color: colors.textTertiary }}>
                 ...
