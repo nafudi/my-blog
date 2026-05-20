@@ -26,6 +26,7 @@ model User {
   donations     Donation[]
   credits       Int      @default(0)
   creditTransactions  CreditTransaction[]
+  moodNotes     MoodNote[]
 
   @@map("users")
 }
@@ -125,4 +126,22 @@ model RedemptionCode {
   createdAt   DateTime @default(now()) @map("created_at")
 
   @@map("redemption_codes")
+}
+
+
+// ========== 情绪笔记表 ==========
+model MoodNote {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  content   String
+  mood      String?
+  isPublic  Boolean  @default(false) @map("is_public")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("mood_notes")
 }
