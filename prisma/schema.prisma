@@ -55,7 +55,7 @@ model Post {
 // ========== 评论表 ==========
 model Comment {
   id        String   @id @default(cuid())
-  content   String
+  content   String   @db.Text
   postSlug  String   @map("post_slug")
   userId    String   @map("user_id")
   parentId  String?  @map("parent_id") // 嵌套回复
@@ -133,8 +133,8 @@ model RedemptionCode {
 model MoodNote {
   id        String   @id @default(cuid())
   userId    String
-  title     String
-  content   String
+  title     String   @db.VarChar(500)
+  content   String   @db.Text
   mood      String?
   isPublic  Boolean  @default(false) @map("is_public")
   createdAt DateTime @default(now()) @map("created_at")
