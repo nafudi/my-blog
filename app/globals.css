@@ -173,3 +173,43 @@ body > * {
   border-top: 1px solid rgba(212, 168, 83, 0.2);
   margin: 10px 0;
 }
+
+/* ====== 情绪笔记富文本编辑器样式 ====== */
+
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: #666;
+  pointer-events: none;
+}
+
+[contenteditable] {
+  line-height: 1.75;
+  word-break: break-word;
+}
+
+[contenteditable] h1 {
+  font-size: 1.75em;
+  font-weight: 700;
+  margin: 0.5em 0 0.3em;
+  color: #d4a853;
+}
+
+[contenteditable] h2 {
+  font-size: 1.4em;
+  font-weight: 700;
+  margin: 0.5em 0 0.25em;
+  color: #e8c878;
+}
+
+[contenteditable] ul, [contenteditable] ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+[contenteditable] li {
+  margin: 0.15em 0;
+}
+
+[contenteditable] p {
+  margin: 0.4em 0;
+}
