@@ -22,8 +22,18 @@ const XI_SUAN_FIXED_LINKS = [
   {
     key: "bazi-paipan",
     title: "八字排盘",
-    icon: "🔮",
+    icon: "\uD83D\uDD2E",
     href: "/bazi",
+  },
+];
+
+// 自省分类下的固定页签
+const ZI_XING_LINKS = [
+  {
+    key: "mood-notes",
+    title: "情绪笔记",
+    icon: "\uD83D\uDCDD",
+    href: "/mood-notes",
   },
 ];
 
@@ -112,13 +122,13 @@ export default function PostSidebar() {
       });
       const data = await res.json();
       if (data.ok) {
-        setRedeemResult("✅ " + data.message + "（余额：" + data.newBalance + ")");
+        setRedeemResult("\u2705 " + data.message + "（余额：" + data.newBalance + ")");
         setRedeemCode("");
         try { window.dispatchEvent(new Event('credits:changed')); } catch(_) {}
       } else {
-        setRedeemResult("❌ " + (data.error || "未知错误"));
+        setRedeemResult("\u274C " + (data.error || "未知错误"));
       }
-    } catch { setRedeemResult("❌ 网络错误"); }
+    } catch { setRedeemResult("\u274C 网络错误"); }
     setRedeemLoading(false);
   }
 
@@ -158,7 +168,7 @@ export default function PostSidebar() {
         }}
       >
         <span className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
-          {isOpen ? "✕" : "☰"}
+          {isOpen ? "\u2715" : "\u2630"}
         </span>
       </button>
 
@@ -291,6 +301,68 @@ export default function PostSidebar() {
                   </div>
                 );
               })}
+
+              {/* ===== 自省分区 ===== */}
+              <div>
+                <button
+                  onClick={() => toggleCat("__zi_xing__")}
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all ${fontSizes.bodySm}`}
+                  style={{
+                    color: ZI_XING_LINKS.some(l => pathname === l.href) ? colors.goldPrimary : colors.textSecondary,
+                    background: ZI_XING_LINKS.some(l => pathname === l.href) ? "rgba(212,168,83,0.1)" : "transparent",
+                  }}
+                >
+                  <span
+                    className={`text-xs transition-transform duration-200 ${
+                      expandedCats.has("__zi_xing__") ? "rotate-90" : ""
+                    }`}
+                  >
+                    ▶
+                  </span>
+                  <span className="font-medium truncate flex-1">自省</span>
+                  <span
+                    className={`${fontSizes.caption} px-1.5 py-0.5 rounded-full`}
+                    style={{
+                      color: colors.textTertiary,
+                      background: "rgba(212,168,83,0.08)",
+                    }}
+                  >
+                    {ZI_XING_LINKS.length}
+                  </span>
+                </button>
+
+                <div
+                  className={`overflow-hidden transition-all duration-200 ${
+                    expandedCats.has("__zi_xing__") ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <div className="pl-5 pr-1 py-1 space-y-0.5">
+                    {ZI_XING_LINKS.map((link) => {
+                      const isActive = pathname === link.href;
+                      return (
+                        <Link
+                          key={link.key}
+                          href={link.href}
+                          className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-all ${fontSizes.bodySm}`}
+                          style={{
+                            color: isActive ? colors.goldPrimary : colors.textSecondary,
+                            background: isActive ? "rgba(212,168,83,0.12)" : "transparent",
+                          }}
+                        >
+                          <span className="text-base">{link.icon}</span>
+                          <span className="truncate flex-1">{link.title}</span>
+                          {isActive && (
+                            <span
+                              className="w-1.5 h-1.5 rounded-full"
+                              style={{ background: colors.goldPrimary }}
+                            />
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
@@ -327,7 +399,7 @@ export default function PostSidebar() {
               </button>
             </form>
             {redeemResult && (
-              <div className={"text-xs mt-2 px-2 py-1.5 rounded-md break-all " + (redeemResult.includes("✅") ? "text-[#5cb85c] bg-[rgba(92,184,92,0.08)]" : "text-[#d9534f] bg-[rgba(217,83,79,0.08)]")}>
+              <div className={"text-xs mt-2 px-2 py-1.5 rounded-md break-all " + (redeemResult.includes("\u2705") ? "text-[#5cb85c] bg-[rgba(92,184,92,0.08)]" : "text-[#d9534f] bg-[rgba(217,83,79,0.08)]")}>
                 {redeemResult}
               </div>
             )}
@@ -341,7 +413,7 @@ export default function PostSidebar() {
               background: pathname === "/" ? "rgba(212,168,83,0.15)" : "transparent",
             }}
           >
-            <span className="text-lg">🏠</span>
+            <span className="text-lg">\uD83C\uDFE0</span>
             <span className="font-medium">返回首页</span>
           </Link>
         </div>
