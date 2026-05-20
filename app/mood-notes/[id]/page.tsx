@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -29,10 +29,13 @@ export default function MoodNoteEditor() {
 
   const editorRef = useRef<HTMLDivElement>(null);
   const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [mood, setMood] = useState("");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
   const [savedMsg, setSavedMsg] = useState("");
+  // 标记是否已完成数据加载（用于控制编辑器初始化时机）
+  const [dataLoaded, setDataLoaded] = useState(isNew);
 
   // 加载已有笔记
   useEffect(() => {
@@ -45,8 +48,11 @@ export default function MoodNoteEditor() {
       .then((data) => {
         if (data.error) return;
         setTitle(data.title || "");
+        setContent(data.content || "");
         setMood(data.mood || "");
-        if (editorRef.current) editorRef.current.innerHTML = data.content || "";
+        // 标记数据已加载，触发编辑器渲染
+        setDataLoaded(true);
+        setLoading(false);
       })
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -66,14 +72,14 @@ export default function MoodNoteEditor() {
   }, []);
 
   async function handleSave() {
-    const content = editorRef.current?.innerHTML || "";
+    const htmlContent = editorRef.current?.innerHTML || "";
     if (!title.trim()) {
-      setSavedMsg("请输入标题");
+      setSavedMsg("\u8BF7\u8F93\u5165\u6807\u9898");
       setTimeout(() => setSavedMsg(""), 2000);
       return;
     }
-    if (!content.trim()) {
-      setSavedMsg("请输入内容");
+    if (!htmlContent.trim()) {
+      setSavedMsg("\u8BF7\u8F93\u5165\u5185\u5BB9");
       setTimeout(() => setSavedMsg(""), 2000);
       return;
     }
@@ -82,7 +88,7 @@ export default function MoodNoteEditor() {
     try {
       const url = isNew ? "/api/mood-notes" : `/api/mood-notes/${noteId}`;
       const method = isNew ? "POST" : "PUT";
-      const body: Record<string, any> = { title: title.trim(), content, mood };
+      const body: Record<string, any> = { title: title.trim(), content: htmlContent, mood };
       if (!isNew && noteId && noteId !== "new") body.id = noteId;
 
       const res = await fetch(url, {
@@ -92,15 +98,15 @@ export default function MoodNoteEditor() {
       });
       const data = await res.json();
       if (res.ok) {
-        setSavedMsg(isNew ? "✅ 创建成功！" : "✅ 保存成功！");
+        setSavedMsg(isNew ? "\u2705 \u521B\u5EFA\u6210\u529F\uFF01" : "\u2705 \u4FDD\u5B58\u6210\u529F\uFF01");
         if (isNew && data.id) {
           setTimeout(() => router.push(`/mood-notes/${data.id}`), 800);
         }
       } else {
-        setSavedMsg("❌ " + (data.error || "保存失败"));
+        setSavedMsg("\u274C " + (data.error || "\u4FDD\u5B58\u5931\u8D25"));
       }
     } catch {
-      setSavedMsg("❌ 网络错误");
+      setSavedMsg("\u274C \u7F51\u7EDC\u9519\u8BEF");
     }
     setSaving(false);
     setTimeout(() => setSavedMsg(""), 2500);
@@ -108,13 +114,13 @@ export default function MoodNoteEditor() {
 
   async function handleDelete() {
     if (isNew || !noteId || noteId === "new") return;
-    if (!confirm("确定删除这篇笔记吗？")) return;
+    if (!confirm("\u786E\u5B9A\u5220\u9664\u8FC9\u7BC7\u7B14\u8BB0\u5417\uFF1F")) return;
     try {
       const res = await fetch(`/api/mood-notes/${noteId}`, { method: "DELETE" });
       if (res.ok) router.push("/mood-notes");
-      else alert("删除失败");
+      else alert("\u5220\u9664\u5931\u8D25");
     } catch {
-      alert("网络错误");
+      alert("\u7F51\u7EDC\u9519\u8BEF");
     }
   }
 
@@ -122,7 +128,7 @@ export default function MoodNoteEditor() {
   if (status === "loading" || loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="text-[#d4a853] text-lg animate-pulse">{loading ? "加载中..." : "请先登录"}</div>
+        <div className="text-[#d4a853] text-lg animate-pulse">{loading ? "\u52A0\u8F7D\u4E2D..." : "\u8BF7\u5148\u767B\u5555"}</div>
       </div>
     );
   }
@@ -135,10 +141,10 @@ export default function MoodNoteEditor() {
           href="/mood-notes"
           className="text-sm text-[#888] hover:text-[#d4a853] transition-colors"
         >
-          ← 返回列表
+          &larr; \u8FD4\u56DE\u5217\u8868
         </Link>
         <h1 className={`${fonts.heading} text-2xl font-bold`} style={{ color: "#d4a853" }}>
-          {isNew ? "写新笔记" : "编辑笔记"}
+          {isNew ? "\u5199\u65B0\u7B14\u8BB0" : "\u7F16\u8F91\u7B14\u8BB0"}
         </h1>
       </div>
 
@@ -147,7 +153,7 @@ export default function MoodNoteEditor() {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="笔记标题..."
+        placeholder="\u7B14\u8BB0\u6807\u9898..."
         maxLength={200}
         className="w-full bg-transparent border-b-2 border-transparent focus:border-[#d4a853] outline-none pb-3 mb-6 text-2xl font-bold placeholder:text-[#444]"
         style={{ color: "#e8e6e3" }}
@@ -159,15 +165,15 @@ export default function MoodNoteEditor() {
         style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(212,168,83,0.12)" }}
       >
         {[
-          { cmd: "bold", label: "B", hint: "粗体" },
-          { cmd: "italic", label: "I", hint: "斜体" },
-          { cmd: "underline", label: "U", hint: "下划线" },
+          { cmd: "bold", label: "B", hint: "\u7C97\u4F53" },
+          { cmd: "italic", label: "I", hint: "\u659C\u4F53" },
+          { cmd: "underline", label: "U", hint: "\u4E0B\u5212\u7EBF" },
           { type: "sep" },
-          { cmd: "formatBlock", label: "H1", val: "h1", hint: "标题1" },
-          { cmd: "formatBlock", label: "H2", val: "h2", hint: "标题2" },
+          { cmd: "formatBlock", label: "H1", val: "h1", hint: "\u6807\u98981" },
+          { cmd: "formatBlock", label: "H2", val: "h2", hint: "\u6807\u98982" },
           { type: "sep" },
-          { cmd: "insertUnorderedList", label: "• 列表", hint: "无序列表" },
-          { cmd: "insertOrderedList", label: "1. 列表", hint: "有序列表" },
+          { cmd: "insertUnorderedList", label: "\u2022 \u5217\u8868", hint: "\u65E0\u5E8F\u5217\u8868" },
+          { cmd: "insertOrderedList", label: "1. \u5217\u8868", hint: "\u6709\u5E8F\u5217\u8868" },
         ].map((btn, i) =>
           btn.type === "sep" ? (
             <span key={i} className="w-px h-6 mx-1 bg-[rgba(212,168,83,0.2)]" />
@@ -188,18 +194,20 @@ export default function MoodNoteEditor() {
         )}
       </div>
 
-      {/* 编辑器区域 */}
+      {/* 编辑器区域 - 用key确保数据加载后重新挂载并注入内容 */}
       <div
+        key={dataLoaded ? "loaded" : "loading"}
         ref={editorRef}
         contentEditable
         suppressContentEditableWarning
-        data-placeholder="开始写下你的想法..."
+        data-placeholder="\u5F00\u59CB\u5199\u4E0B\u4F60\u7684\u60F3\u6CD5..."
         className="min-h-[400px] p-5 rounded-xl outline-none"
         style={{
           background: "rgba(255,255,255,0.02)",
           border: "1px solid rgba(212,168,83,0.08)",
           color: "#e8e6e3",
         }}
+        dangerouslySetInnerHTML={dataLoaded && content ? { __html: content } : undefined}
       />
 
       {/* 情绪选择 + 操作按钮 */}
@@ -240,7 +248,7 @@ export default function MoodNoteEditor() {
               onClick={handleDelete}
               className="px-4 py-2 rounded-lg text-sm border border-red-900 text-red-400 hover:bg-red-950/20 transition-all"
             >
-              🗑 删除
+              \uD83DDDCCC1 \u5220\u9664
             </button>
           )}
           <button
@@ -255,7 +263,7 @@ export default function MoodNoteEditor() {
               color: "#0a0a0f",
             }}
           >
-            {saving ? "保存中..." : isNew ? "创建笔记" : "保存修改"}
+            {saving ? "\u4FDD\u5B58\u4E2D..." : isNew ? "\u521B\u5EFA\u7B14\u8BB0" : "\u4FDD\u5B58\u4FEE\u6539"}
           </button>
         </div>
       </div>
