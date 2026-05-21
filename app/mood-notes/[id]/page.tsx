@@ -74,7 +74,7 @@ export default function MoodNoteEditor() {
   async function handleSave() {
     const htmlContent = editorRef.current?.innerHTML || "";
     if (!title.trim()) {
-      setSavedMsg("\u8BF7\u8F93\u5165\u6807\u9898");
+      setSavedMsg("请输入标题");
       setTimeout(() => setSavedMsg(""), 2000);
       return;
     }
@@ -106,7 +106,7 @@ export default function MoodNoteEditor() {
         setSavedMsg("\u274C " + (data.error || "\u4FDD\u5B58\u5931\u8D25"));
       }
     } catch {
-      setSavedMsg("\u274C \u7F51\u7EDC\u9519\u8BEF");
+      setSavedMsg("\u274C 网络错误");
     }
     setSaving(false);
     setTimeout(() => setSavedMsg(""), 2500);
@@ -118,9 +118,9 @@ export default function MoodNoteEditor() {
     try {
       const res = await fetch(`/api/mood-notes/${noteId}`, { method: "DELETE" });
       if (res.ok) router.push("/mood-notes");
-      else alert("\u5220\u9664\u5931\u8D25");
+      else alert("删除失败");
     } catch {
-      alert("\u7F51\u7EDC\u9519\u8BEF");
+      alert("网络错误");
     }
   }
 
@@ -141,10 +141,10 @@ export default function MoodNoteEditor() {
           href="/mood-notes"
           className="text-sm text-[#888] hover:text-[#d4a853] transition-colors"
         >
-          &larr; \u8FD4\u56DE\u5217\u8868
+          &larr; ← 返回列表
         </Link>
         <h1 className={`${fonts.heading} text-2xl font-bold`} style={{ color: "#d4a853" }}>
-          {isNew ? "\u5199\u65B0\u7B14\u8BB0" : "\u7F16\u8F91\u7B14\u8BB0"}
+          {isNew ? "写新笔记" : "编辑笔记"}
         </h1>
       </div>
 
@@ -153,7 +153,7 @@ export default function MoodNoteEditor() {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="\u7B14\u8BB0\u6807\u9898..."
+        placeholder="笔记标题..."
         maxLength={200}
         className="w-full bg-transparent border-b-2 border-transparent focus:border-[#d4a853] outline-none pb-3 mb-6 text-2xl font-bold placeholder:text-[#444]"
         style={{ color: "#e8e6e3" }}
@@ -165,15 +165,15 @@ export default function MoodNoteEditor() {
         style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(212,168,83,0.12)" }}
       >
         {[
-          { cmd: "bold", label: "B", hint: "\u7C97\u4F53" },
-          { cmd: "italic", label: "I", hint: "\u659C\u4F53" },
-          { cmd: "underline", label: "U", hint: "\u4E0B\u5212\u7EBF" },
+          { cmd: "bold", label: "B", hint: "粗体" },
+          { cmd: "italic", label: "I", hint: "斜体" },
+          { cmd: "underline", label: "U", hint: "下划线" },
           { type: "sep" },
-          { cmd: "formatBlock", label: "H1", val: "h1", hint: "\u6807\u98981" },
-          { cmd: "formatBlock", label: "H2", val: "h2", hint: "\u6807\u98982" },
+          { cmd: "formatBlock", label: "H1", val: "h1", hint: "标题1" },
+          { cmd: "formatBlock", label: "H2", val: "h2", hint: "标题2" },
           { type: "sep" },
-          { cmd: "insertUnorderedList", label: "\u2022 \u5217\u8868", hint: "\u65E0\u5E8F\u5217\u8868" },
-          { cmd: "insertOrderedList", label: "1. \u5217\u8868", hint: "\u6709\u5E8F\u5217\u8868" },
+          { cmd: "insertUnorderedList", label: "\u2022 \u5217\u8868", hint: "无序列表" },
+          { cmd: "insertOrderedList", label: "1. \u5217\u8868", hint: "有序列表" },
         ].map((btn, i) =>
           btn.type === "sep" ? (
             <span key={i} className="w-px h-6 mx-1 bg-[rgba(212,168,83,0.2)]" />
@@ -200,7 +200,7 @@ export default function MoodNoteEditor() {
         ref={editorRef}
         contentEditable
         suppressContentEditableWarning
-        data-placeholder="\u5F00\u59CB\u5199\u4E0B\u4F60\u7684\u60F3\u6CD5..."
+        data-placeholder="开始写下你的想法..."
         className="min-h-[400px] p-5 rounded-xl outline-none"
         style={{
           background: "rgba(255,255,255,0.02)",
@@ -248,7 +248,7 @@ export default function MoodNoteEditor() {
               onClick={handleDelete}
               className="px-4 py-2 rounded-lg text-sm border border-red-900 text-red-400 hover:bg-red-950/20 transition-all"
             >
-              \uD83DDDCCC1 \u5220\u9664
+              🗑️ 删除
             </button>
           )}
           <button
@@ -263,7 +263,7 @@ export default function MoodNoteEditor() {
               color: "#0a0a0f",
             }}
           >
-            {saving ? "\u4FDD\u5B58\u4E2D..." : isNew ? "\u521B\u5EFA\u7B14\u8BB0" : "\u4FDD\u5B58\u4FEE\u6539"}
+            {saving ? "保存中..." : isNew ? "创建笔记" : "保存修改"}
           </button>
         </div>
       </div>
