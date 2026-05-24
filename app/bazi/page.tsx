@@ -222,13 +222,13 @@ export default function BaziPage() {
 
   const [calendar, setCalendar] = useState('公历');
 
-  const [year, setYear] = useState('1998');
+  const [year, setYear] = useState('');
 
-  const [month, setMonth] = useState('1');
+  const [month, setMonth] = useState('');
 
-  const [day, setDay] = useState('22');
+  const [day, setDay] = useState('');
 
-  const [time, setTime] = useState('4:00');
+  const [time, setTime] = useState('');
 
   const [yearZhu, setYearZhu] = useState('丁丑');
 
@@ -342,7 +342,11 @@ export default function BaziPage() {
 
 
 
-  const validateInputs = (): string | null => {
+  const     // 空值检测
+    if (!year || !year.trim()) return '请输入年份';
+    if (!month || !month.trim()) return '请输入月份';
+    if (!day || !day.trim()) return '请输入日期';
+    if (!time || !time.trim()) return '请输入时间';
 
     const y = parseInt(year, 10), m = parseInt(month, 10), d = parseInt(day, 10);
 
