@@ -282,13 +282,13 @@ export default function Navbar() {
                       color: "#fff",
                     }}
                   >
-                    {(session.user.name || session.user.email || "?")[0].toUpperCase()}
+                    {(session.user.name && !/^\d+$/.test(session.user.name) ? session.user.name : session.user.email || "?")[0].toUpperCase()}
                   </div>
                   <span
                     className={`hidden sm:block ${fontSizes.bodySm} max-w-[100px] truncate`}
                     style={{ color: colors.textPrimary }}
                   >
-                    {session.user.name || session.user.email}
+                    {(session.user.name && !/^\d+$/.test(session.user.name)) ? session.user.name : (session.user.email?.split("@")[0] || "用户")}
                   </span>
                 </button>
 

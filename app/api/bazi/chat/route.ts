@@ -5,15 +5,15 @@
  * Body:
  *   messages: { role: 'user' | 'assistant'; content: string }[]
  *   baziResult: object  (calc API 返回的 bazi + dayun JSON)
- *   model?: string      (可选，默认 deepseek-ai/DeepSeek-V3.2)
+ *   model?: string      (可选，默认 deepseek-ai/DeepSeek-V3)
  *
  * Response: { reply: string }
  */
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_URL = process.env.SILICONFLOW_API_URL!;
-const API_KEY = process.env.SILICONFLOW_API_KEY!;
-const DEFAULT_MODEL = process.env.SILICONFLOW_MODEL!;
+const SILICONFLOW_API_KEY = process.env.SILICONFLOW_API_KEY || 'sk-mpewwwwmwkpfysjwtwtjdkzligqmtmwvhnzdfzyogwjnlsll';
+const SILICONFLOW_BASE_URL = 'https://api.siliconflow.cn/v1';
+const DEFAULT_MODEL = 'deepseek-ai/DeepSeek-V3';
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,13 +31,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: '缺少 baziResult（八字计算结果）' },
         { status: 400 }
-      );
-    }
-
-    if (!API_KEY) {
-      return NextResponse.json(
-        { error: '未配置 SILICONFLOW_API_KEY' },
-        { status: 500 }
       );
     }
 
@@ -60,11 +53,11 @@ ${JSON.stringify(baziResult, null, 2)}`;
       stream: false,
     };
 
-    const upstream = await fetch(API_URL, {
+    const upstream = await fetch(`${SILICONFLOW_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': `Bearer ${SILICONFLOW_API_KEY}`,
       },
       body: JSON.stringify(payload),
     });

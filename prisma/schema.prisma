@@ -27,6 +27,9 @@ model User {
   credits       Int      @default(0)
   creditTransactions  CreditTransaction[]
   moodNotes     MoodNote[]
+  moodNoteLikes    MoodNoteLike[]
+  moodNoteCollects MoodNoteCollect[]
+  moodNotePrefs    MoodNoteUserPref[]
 
   @@map("users")
 }
@@ -131,17 +134,69 @@ model RedemptionCode {
 
 // ========== 情绪笔记表 ==========
 model MoodNote {
-  id        String   @id @default(cuid())
-  userId    String
-  title     String   @db.VarChar(500)
-  content   String   @db.Text
-  mood      String?
-  isPublic  Boolean  @default(false) @map("is_public")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id           String   @id @default(cuid())
+  userId       String
+  title        String            @db.VarChar(500)
+  content      String            @db.Text
+  mood         String?
+  isPublic     Boolean  @default(false) @map("is_public")
+  likeCount    Int      @default(0) @map("like_count")
+  collectCount Int      @default(0) @map("collect_count")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes        MoodNoteLike[]
+  collects     MoodNoteCollect[]
 
   @@index([userId])
+  @@index([isPublic, updatedAt])
   @@map("mood_notes")
+}
+
+// ========== 笔记点赞表 ==========
+model MoodNoteLike {
+  id        String   @id @default(cuid())
+  noteId    String   @map("note_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  note      MoodNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([noteId, userId])  // 同一人同一笔记只能点一次赞
+  @@index([noteId])
+  @@index([userId])
+  @@map("mood_note_likes")
+}
+
+// ========== 笔记收藏表 ==========
+model MoodNoteCollect {
+  id        String   @id @default(cuid())
+  noteId    String   @map("note_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  note      MoodNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([noteId, userId])  // 同一人同一笔记只能收一次
+  @@index([noteId])
+  @@index([userId])
+  @@map("mood_note_collects")
+}
+
+// ========== 用户作者偏好表 ==========
+model MoodNoteUserPref {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  targetUserId String   @map("target_user_id")  // 被操作的作者
+  action       String                        // "block" | "priority"
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, targetUserId, action])
+  @@index([userId])
+  @@map("mood_note_user_prefs")
 }
