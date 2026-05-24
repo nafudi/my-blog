@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic';
 
 // ==================== 配置 ====================
 
-const SILICONFLOW_API_KEY = process.env.SILICONFLOW_API_KEY || 'sk-blpjrfcqhqwyvnwozurzmlufndtrbnbbxpcmxrmueopwjzjk';
+const SILICONFLOW_API_KEY = process.env.SILICONFLOW_API_KEY || 'sk-mpewwwwmwkpfysjwtwtjdkzligqmtmwvhnzdfzyogwjnlsll';
 const SILICONFLOW_BASE_URL = 'https://api.siliconflow.cn/v1';
 const MODEL = 'deepseek-ai/DeepSeek-V3';
 const MAX_HISTORY = 20;
