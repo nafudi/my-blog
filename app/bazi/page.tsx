@@ -810,6 +810,60 @@ function LeftPanel(props: {
 
 
 
+  // 字段级错误状态（blur 校验）
+
+  const [fieldError, setFieldError] = useState<Record<string, string> | null>(null);
+
+  const validateField = (field: string, value: string): string => {
+    switch (field) {
+      case 'year': {
+        const y = parseInt(value, 10);
+        if (!value || isNaN(y) || y < 1 || y > 9999) return '年份: 1-9999';
+        return '';
+      }
+      case 'month': {
+        const m = parseInt(value, 10);
+        if (!value || isNaN(m) || m < 1 || m > 12) return '月份: 1-12';
+        return '';
+      }
+      case 'day': {
+        const d = parseInt(value, 10);
+        if (!value || isNaN(d) || d < 1 || d > 31) return '日期: 1-31';
+        return '';
+      }
+      case 'time': {
+        const cleaned = value.replace(/：/g, ':');
+        const parts = cleaned.split(':');
+        const h = parseInt(parts[0] || '0', 10);
+        const m = parseInt(parts[1] || '0', 10);
+        if (!value) return '请输入时间';
+        if (isNaN(h) || h < 0 || h > 23) return '小时: 0-23';
+        if (parts[1] !== undefined && (isNaN(m) || m < 0 || m > 59)) return '分钟: 0-59';
+        return '';
+      }
+      default:
+        return '';
+    }
+  };
+
+  const handleYearBlur = () => {
+    const err = validateField('year', year);
+    setFieldError(err ? { ...fieldError, year: err } : fieldError ? { ...fieldError, year: undefined } : null);
+  };
+  const handleMonthBlur = () => {
+    const err = validateField('month', month);
+    setFieldError(err ? { ...fieldError, month: err } : fieldError ? { ...fieldError, month: undefined } : null);
+  };
+  const handleDayBlur = () => {
+    const err = validateField('day', day);
+    setFieldError(err ? { ...fieldError, day: err } : fieldError ? { ...fieldError, day: undefined } : null);
+  };
+  const handleTimeBlur = () => {
+    const err = validateField('time', time);
+    setFieldError(err ? { ...fieldError, time: err } : fieldError ? { ...fieldError, time: undefined } : null);
+  };
+
+
   // 输入处理函数（与主组件一致）
 
   const clamp = (val: string, min: number, max: number) => {
