@@ -942,13 +942,29 @@ function LeftPanel(props: {
 
             <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
 
-              <div style={{ flex: 1 }}><label style={labelStyle}>年</label><input type="number" value={year} onChange={e => handleYearChange(e.target.value)} min={1} max={9999} style={inputStyle} /></div>
+              <div style={{ flex: 1 }}><label style={labelStyle}>年</label><input type="text" value={year} onChange={e => handleYearChange(e.target.value)} onBlur={handleYearBlur}
+                  inputMode="numeric" pattern="[0-9]*"
+                  style={{ ...inputStyle, borderColor: fieldError?.year ? '#ef4444' : undefined }} />
+                {fieldError?.year && <div style={{ fontSize: 10, color: '#ef4444', marginTop: 2 }}>{fieldError.year}</div>}
+              </div>
 
-              <div style={{ flex: 1 }}><label style={labelStyle}>月</label><input type="number" value={month} onChange={e => handleMonthChange(e.target.value)} min={1} max={12} style={inputStyle} /></div>
+              <div style={{ flex: 1 }}><label style={labelStyle}>月</label><input type="text" value={month} onChange={e => handleMonthChange(e.target.value)} onBlur={handleMonthBlur}
+                  inputMode="numeric" pattern="[0-9]*"
+                  style={{ ...inputStyle, borderColor: fieldError?.month ? '#ef4444' : undefined }} />
+                {fieldError?.month && <div style={{ fontSize: 10, color: '#ef4444', marginTop: 2 }}>{fieldError.month}</div>}
+              </div>
 
-              <div style={{ flex: 1 }}><label style={labelStyle}>日</label><input type="number" value={day} onChange={e => handleDayChange(e.target.value)} min={1} max={31} style={inputStyle} /></div>
+              <div style={{ flex: 1 }}><label style={labelStyle}>日</label><input type="text" value={day} onChange={e => handleDayChange(e.target.value)} onBlur={handleDayBlur}
+                  inputMode="numeric" pattern="[0-9]*"
+                  style={{ ...inputStyle, borderColor: fieldError?.day ? '#ef4444' : undefined }} />
+                {fieldError?.day && <div style={{ fontSize: 10, color: '#ef4444', marginTop: 2 }}>{fieldError.day}</div>}
+              </div>
 
-              <div style={{ flex: 1 }}><label style={labelStyle}>时间</label><input type="text" value={time} onChange={e => handleTimeChange(e.target.value)} placeholder="时:分" style={inputStyle} /></div>
+              <div style={{ flex: 1 }}><label style={labelStyle}>时间</label><input type="text" value={time} onChange={e => handleTimeChange(e.target.value)} onBlur={handleTimeBlur}
+                  placeholder="时:分"
+                  style={{ ...inputStyle, borderColor: fieldError?.time ? '#ef4444' : undefined }} />
+                {fieldError?.time && <div style={{ fontSize: 10, color: '#ef4444', marginTop: 2 }}>{fieldError.time}</div>}
+              </div>
 
             </div>
 
