@@ -342,6 +342,7 @@ export default function BaziPage() {
 
 
 
+  const validateInputs = (): string | null => {
     // 空值检测
     if (!year || !year.trim()) return '请输入年份';
     if (!month || !month.trim()) return '请输入月份';
