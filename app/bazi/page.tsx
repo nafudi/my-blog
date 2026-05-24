@@ -342,7 +342,7 @@ export default function BaziPage() {
 
 
 
-  const     // 空值检测
+    // 空值检测
     if (!year || !year.trim()) return '请输入年份';
     if (!month || !month.trim()) return '请输入月份';
     if (!day || !day.trim()) return '请输入日期';
