@@ -93,20 +93,20 @@ export async function POST(req: Request) {
   const specifiedConvId = (body.conversationId || '').trim();
 
   if (specifiedConvId) {
-    const existing = getConversationById(specifiedConvId);
+    const existing = await getConversationById(specifiedConvId);
     if (existing) {
       conversation = existing;
     } else {
       // ID 不存在（异常情况），创建新对话兜底
-      conversation = createConversation(userId);
+      conversation = await createConversation(userId);
       console.warn(`[AI Chat] conversationId ${specifiedConvId} not found, created new: ${conversation.id}`);
     }
   } else {
-    conversation = getOrCreateActiveConversation(userId);
+    conversation = await getOrCreateActiveConversation(userId);
   }
-  saveMessage(conversation.id, 'user', question);
+  await saveMessage(conversation.id, 'user', question);
 
-  const historyMsgs = getRecentMessages(conversation.id, MAX_HISTORY);
+  const historyMsgs = await getRecentMessages(conversation.id, MAX_HISTORY);
   const openaiMsgs = toOpenAIMessages(historyMsgs);
 
   // ---- 4. 构造 AI 消息数组 ----
