@@ -346,7 +346,7 @@ export default function BaziPage() {
 
     const y = parseInt(year, 10), m = parseInt(month, 10), d = parseInt(day, 10);
 
-    const [hStr, mStr] = time.split(':');
+    const [hStr, mStr] = time.replace(/：/g, ':').split(':');
 
     const h = parseInt(hStr || '0', 10), min = parseInt(mStr || '0', 10);
 
