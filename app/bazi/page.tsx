@@ -846,22 +846,23 @@ function LeftPanel(props: {
     }
   };
 
-  const handleYearBlur = () => {
-    const err = validateField('year', year);
-    setFieldError(err ? { ...fieldError, year: err } : fieldError ? { ...fieldError, year: undefined } : null);
+    const updateFieldError = (field: string, error: string) => {
+    setFieldError(prev => {
+      const current = prev || {};
+      if (error) {
+        return { ...current, [field]: error };
+      } else {
+        const next = { ...current };
+        delete next[field];
+        return Object.keys(next).length > 0 ? next : null;
+      }
+    });
   };
-  const handleMonthBlur = () => {
-    const err = validateField('month', month);
-    setFieldError(err ? { ...fieldError, month: err } : fieldError ? { ...fieldError, month: undefined } : null);
-  };
-  const handleDayBlur = () => {
-    const err = validateField('day', day);
-    setFieldError(err ? { ...fieldError, day: err } : fieldError ? { ...fieldError, day: undefined } : null);
-  };
-  const handleTimeBlur = () => {
-    const err = validateField('time', time);
-    setFieldError(err ? { ...fieldError, time: err } : fieldError ? { ...fieldError, time: undefined } : null);
-  };
+
+  const handleYearBlur = () => updateFieldError('year', validateField('year', year));
+  const handleMonthBlur = () => updateFieldError('month', validateField('month', month));
+  const handleDayBlur = () => updateFieldError('day', validateField('day', day));
+  const handleTimeBlur = () => updateFieldError('time', validateField('time', time));
 
 
   // 输入处理函数（与主组件一致）
