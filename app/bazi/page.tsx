@@ -301,9 +301,8 @@ export default function BaziPage() {
   /* ========== 输入校验 ========== */
 
   const clamp = (val: string, min: number, max: number) => {
-
+    if (!val || val === '' ) return '';
     const n = parseInt(val, 10);
-
     if (isNaN(n)) return String(min);
 
     if (n < min) return String(min);
@@ -873,9 +872,8 @@ function LeftPanel(props: {
   // 输入处理函数（与主组件一致）
 
   const clamp = (val: string, min: number, max: number) => {
-
+    if (!val || val === '' ) return '';
     const n = parseInt(val, 10);
-
     if (isNaN(n)) return String(min);
 
     if (n < min) return String(min);
